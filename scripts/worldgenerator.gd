@@ -28,7 +28,7 @@ var biome_data = {
 }
 
 var object_data = {
-	"plains": {"birchtnuttree": 0.01, "reanimationstone": 0.00001},
+	"plains": {"birchtnuttree": 0.005, "reanimationstone": 0.00001},
 	"forest": {},
 	"rockies": {},
 	"ocean": {}
@@ -95,19 +95,17 @@ func settile(width, height):
 				elif between(moist, 0.4, 0.6) and temp > 0.4:					
 					biome[pos] = "forest"
 					tilemap.set_cellv(pos, tiles[randomtile(biome_data, "forest")])
-					if(!havePlayerSpawned):
-						spawnplayer(pos)
 					
 				else:
-					if(!havePlayerSpawned):
-						spawnplayer(pos)
 					biome[pos] = "plains"
 					tilemap.set_cellv(pos, tiles[randomtile(biome_data, "plains")])
+					if(!havePlayerSpawned):
+						spawnplayer(pos)
 			else:
 				biome[pos] = "plains"
 				tilemap.set_cellv(pos, tiles[randomtile(biome_data, "plains")])
 				if(!havePlayerSpawned):
-						spawnplayer(pos)
+					spawnplayer(pos)
 	setobject()
 				
 func _input(event):
