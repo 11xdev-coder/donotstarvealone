@@ -8,7 +8,7 @@ var temperature = {}
 var altitude = {}
 var moisture = {}
 var biome = {}
-var playerwx = preload("res://scenes/playerwx.tscn")
+var playerwx = preload("res://scenes/mlue.tscn")
 var playerpos
 var havePlayerSpawned = false
 
