@@ -9,4 +9,5 @@
 script = ExtResource( 2 )
 
 [node name="sprite" type="Sprite" parent="Player"]
+position = Vector2( 0, -13 )
 texture = ExtResource( 1 )
