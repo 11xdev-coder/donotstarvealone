@@ -1,13 +1,8 @@
 extends KinematicBody2D
 
-var p_MAXSPEED = 50
 var p_vel = Vector2.ZERO
-var v2zero = Vector2.ZERO
-
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+const p_MAXSPEED = 25
+const v2zero = Vector2.ZERO
 
 
 # Called when the node enters the scene tree for the first time.
@@ -26,4 +21,4 @@ func _physics_process(delta):
 	else:
 		p_vel = v2zero
 		
-	move_and_collide(p_vel * delta * p_MAXSPEED)
+	p_vel = move_and_slide(p_vel * p_MAXSPEED)

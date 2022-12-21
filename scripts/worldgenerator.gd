@@ -1,8 +1,8 @@
 extends Node2D
 
 
-export var width = 600
-export var height = 600
+export var width = 1000
+export var height = 1000
 onready var tilemap = $TileMap
 var temperature = {}
 var altitude = {}
