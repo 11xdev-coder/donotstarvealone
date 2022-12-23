@@ -3,15 +3,14 @@
 [ext_resource path="res://instances/birchnutree.png" type="Texture" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 3.5, 1.33333 )
+extents = Vector2( 10.5, 3 )
 
 [node name="birchtree" type="Node2D"]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="collision" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2( -1.5, -4 )
-scale = Vector2( 1e-05, 1e-05 )
+position = Vector2( -1.5, -3 )
 shape = SubResource( 1 )
 
 [node name="Birchnutree" type="Sprite" parent="StaticBody2D"]
