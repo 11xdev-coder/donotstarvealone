@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://instances/Player.png" type="Texture" id=1]
 [ext_resource path="res://scripts/player.gd" type="Script" id=2]
@@ -8,11 +8,74 @@ radius = 6.0
 
 [sub_resource type="Animation" id=2]
 length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "walkbackward"
+length = 0.7
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 8, 9 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "walkforward"
+length = 0.7
+loop = true
+
+[sub_resource type="Animation" id=6]
+resource_name = "walkleft"
+length = 0.7
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 6, 7 ]
+}
 
 [sub_resource type="Animation" id=3]
 resource_name = "walkright"
-length = 0.3
+length = 0.7
 loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 4, 5 ]
+}
 
 [node name="Node2D" type="Node2D"]
 
@@ -20,15 +83,17 @@ loop = true
 script = ExtResource( 2 )
 
 [node name="collision" type="CollisionShape2D" parent="Player"]
-position = Vector2( 0, -1 )
+position = Vector2( 0, 13 )
 scale = Vector2( 1, 0.2 )
 shape = SubResource( 1 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
+[node name="animation" type="AnimationPlayer" parent="Player"]
 anims/RESET = SubResource( 2 )
+anims/walkbackward = SubResource( 5 )
+anims/walkforward = SubResource( 4 )
+anims/walkleft = SubResource( 6 )
 anims/walkright = SubResource( 3 )
 
 [node name="sprite" type="Sprite" parent="Player"]
-position = Vector2( 0, -13 )
 texture = ExtResource( 1 )
 hframes = 62
