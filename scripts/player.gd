@@ -8,6 +8,8 @@ onready var animationPlayer = $animation
 onready var treeanim = $treeanim
 onready var animState = treeanim.get("parameters/playback")
 
+func _ready():
+	treeanim.active = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
