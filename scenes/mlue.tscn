@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://instances/mlue.png" type="Texture" id=1]
 [ext_resource path="res://scripts/player.gd" type="Script" id=2]
@@ -72,6 +72,20 @@ tracks/1/keys = {
 "update": 0,
 "values": [ Vector2( -1, 1 ) ]
 }
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "state_attack_finished"
+} ]
+}
 
 [sub_resource type="Animation" id=28]
 resource_name = "attackforward"
@@ -99,6 +113,20 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 1, 1 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "state_attack_finished"
+} ]
 }
 
 [sub_resource type="Animation" id=35]
@@ -128,6 +156,20 @@ tracks/1/keys = {
 "update": 0,
 "values": [ Vector2( -1, 1 ) ]
 }
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "state_attack_finished"
+} ]
+}
 
 [sub_resource type="Animation" id=36]
 resource_name = "attackright"
@@ -155,6 +197,20 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 1, 1 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "state_attack_finished"
+} ]
 }
 
 [sub_resource type="Animation" id=30]
@@ -385,6 +441,29 @@ tracks/1/keys = {
 "values": [ Vector2( 1, 1 ) ]
 }
 
+[sub_resource type="AnimationNodeAnimation" id=37]
+animation = "attackleft"
+
+[sub_resource type="AnimationNodeAnimation" id=38]
+animation = "attackbackward"
+
+[sub_resource type="AnimationNodeAnimation" id=39]
+animation = "attackforward"
+
+[sub_resource type="AnimationNodeAnimation" id=40]
+animation = "attackright"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id=41]
+blend_point_0/node = SubResource( 37 )
+blend_point_0/pos = Vector2( -1, 0 )
+blend_point_1/node = SubResource( 38 )
+blend_point_1/pos = Vector2( 0, 1 )
+blend_point_2/node = SubResource( 39 )
+blend_point_2/pos = Vector2( 0, -0.9 )
+blend_point_3/node = SubResource( 40 )
+blend_point_3/pos = Vector2( 1, 0 )
+blend_mode = 1
+
 [sub_resource type="AnimationNodeAnimation" id=11]
 animation = "idleleft"
 
@@ -435,12 +514,18 @@ blend_mode = 1
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=22]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=42]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=43]
+
 [sub_resource type="AnimationNodeStateMachine" id=23]
+states/attack/node = SubResource( 41 )
+states/attack/position = Vector2( 448.333, 223.666 )
 states/idle/node = SubResource( 15 )
 states/idle/position = Vector2( 659.667, 224.333 )
 states/walk/node = SubResource( 20 )
-states/walk/position = Vector2( 1018.33, 214.333 )
-transitions = [ "idle", "walk", SubResource( 21 ), "walk", "idle", SubResource( 22 ) ]
+states/walk/position = Vector2( 921.663, 223.222 )
+transitions = [ "idle", "walk", SubResource( 21 ), "walk", "idle", SubResource( 22 ), "idle", "attack", SubResource( 42 ), "attack", "idle", SubResource( 43 ) ]
 start_node = "idle"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=24]
@@ -474,6 +559,7 @@ anims/walkright = SubResource( 3 )
 tree_root = SubResource( 23 )
 anim_player = NodePath("../animation")
 parameters/playback = SubResource( 24 )
+parameters/attack/blend_position = Vector2( 0, 0 )
 parameters/idle/blend_position = Vector2( 0, 0 )
 parameters/walk/blend_position = Vector2( 0, 0 )
 
