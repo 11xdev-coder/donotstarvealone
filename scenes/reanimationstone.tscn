@@ -8,6 +8,7 @@ extents = Vector2( 210, 125 )
 [node name="reanimationstone" type="Node2D"]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2( 0, -25 )

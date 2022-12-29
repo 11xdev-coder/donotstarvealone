@@ -1,7 +1,8 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://instances/mlue.png" type="Texture" id=1]
 [ext_resource path="res://scripts/player.gd" type="Script" id=2]
+[ext_resource path="res://scenes/attackbox.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 6.0
@@ -43,6 +44,30 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("attackboxpivot:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("attackboxpivot/attackbox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
 }
 
 [sub_resource type="Animation" id=27]
@@ -86,6 +111,30 @@ tracks/2/keys = {
 "method": "state_attack_finished"
 } ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("attackboxpivot:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("attackboxpivot/attackbox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
 
 [sub_resource type="Animation" id=28]
 resource_name = "attackforward"
@@ -127,6 +176,30 @@ tracks/2/keys = {
 "args": [  ],
 "method": "state_attack_finished"
 } ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("attackboxpivot:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ -90.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("attackboxpivot/attackbox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
 }
 
 [sub_resource type="Animation" id=35]
@@ -170,6 +243,30 @@ tracks/2/keys = {
 "method": "state_attack_finished"
 } ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("attackboxpivot:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 180.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("attackboxpivot/attackbox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
 
 [sub_resource type="Animation" id=36]
 resource_name = "attackright"
@@ -211,6 +308,30 @@ tracks/2/keys = {
 "args": [  ],
 "method": "state_attack_finished"
 } ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("attackboxpivot:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("attackboxpivot/attackbox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
 }
 
 [sub_resource type="Animation" id=30]
@@ -530,9 +651,12 @@ start_node = "idle"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=24]
 
+[sub_resource type="CapsuleShape2D" id=44]
+
 [node name="Node2D" type="Node2D"]
 
 [node name="Player" type="KinematicBody2D" parent="."]
+collision_layer = 2
 script = ExtResource( 2 )
 
 [node name="collision" type="CollisionShape2D" parent="Player"]
@@ -571,3 +695,16 @@ zoom = Vector2( 0.3, 0.3 )
 texture = ExtResource( 1 )
 hframes = 62
 frame = 14
+
+[node name="attackboxpivot" type="Position2D" parent="Player"]
+position = Vector2( 0, 1 )
+
+[node name="attackbox" parent="Player/attackboxpivot" instance=ExtResource( 3 )]
+position = Vector2( 15, 0 )
+collision_mask = 12
+
+[node name="CollisionShape2D" parent="Player/attackboxpivot/attackbox" index="0"]
+scale = Vector2( 1, 0.7 )
+shape = SubResource( 44 )
+
+[editable path="Player/attackboxpivot/attackbox"]

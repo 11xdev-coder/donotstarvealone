@@ -17,9 +17,10 @@ var state = move
 
 func _ready():
 	treeanim.active = true
+	get_node("attackboxpivot/attackbox/CollisionShape2D").disabled = true  
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _physics_process(delta):
 	match state:
 		move:
 			state_move(delta)

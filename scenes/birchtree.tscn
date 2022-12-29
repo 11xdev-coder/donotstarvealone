@@ -8,6 +8,7 @@ extents = Vector2( 10.5, 3 )
 [node name="birchtree" type="Node2D"]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_mask = 0
 
 [node name="collision" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2( -1.5, -3 )
