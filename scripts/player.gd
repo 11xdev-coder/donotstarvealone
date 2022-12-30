@@ -1,8 +1,10 @@
 extends KinematicBody2D
 
 var p_vel = Vector2.ZERO
-const p_MAXSPEED = 25
+
 const v2zero = Vector2.ZERO
+
+export(int) var p_MAXSPEED = 25
 
 onready var animationPlayer = $animation
 onready var treeanim = $treeanim
