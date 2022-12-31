@@ -18,7 +18,7 @@ var tiles = {"grass": 0, "forestgrass": 1, "sand": 2, "water": 3}
 var object_tiles = {
 	"birchtnuttree": preload("res://scenes//birchtree.tscn"),
 	"reanimationstone": preload("res://scenes//reanimationstone.tscn"),
-	"treenutter": preload("res://scenes/treenutter.tscn")
+	"treenutter": preload("res://scenes//enemies//treenutter.tscn")
 }
 
 var biome_data = {

@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://instances/treenutter.png" type="Texture" id=1]
 [ext_resource path="res://scenes/cols/hurtbox.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scripts/treenut_ai.gd" type="Script" id=3]
-[ext_resource path="res://scenes/Stats.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/Stats.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/treenut_ai.gd" type="Script" id=4]
+[ext_resource path="res://scenes/enemies/playerdetection.tscn" type="PackedScene" id=5]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -152,10 +153,13 @@ extents = Vector2( 10, 3.5 )
 [sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 10, 9.5 )
 
+[sub_resource type="CircleShape2D" id=8]
+radius = 87.0517
+
 [node name="treenutter" type="KinematicBody2D"]
 collision_layer = 4
 collision_mask = 3
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 
 [node name="sprite" type="Sprite" parent="."]
 rotation = -0.174533
@@ -179,10 +183,17 @@ collision_layer = 16
 position = Vector2( 0, -0.5 )
 shape = SubResource( 7 )
 
-[node name="Stats" parent="." instance=ExtResource( 4 )]
+[node name="Stats" parent="." instance=ExtResource( 3 )]
 max_health = 100
+
+[node name="playerdetection" parent="." instance=ExtResource( 5 )]
+
+[node name="CollisionShape2D" parent="playerdetection" index="0"]
+self_modulate = Color( 1, 1, 1, 0.262745 )
+shape = SubResource( 8 )
 
 [connection signal="area_entered" from="hurtbox" to="." method="_on_hurtbox_area_entered"]
 [connection signal="ded" from="Stats" to="." method="_on_Stats_ded"]
 
 [editable path="hurtbox"]
+[editable path="playerdetection"]
