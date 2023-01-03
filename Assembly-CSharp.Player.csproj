@@ -69,6 +69,7 @@
      <Folder Include="Library\PackageCache\com.unity.2d.pixel-perfect@5.0.2\Tests" />
      <None Include="Library\PackageCache\com.unity.2d.pixel-perfect@5.0.2\package.json" />
      <Folder Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Editor Resources" />
+     <Folder Include="Assets\prefabs\objects" />
      <Folder Include="Library\PackageCache\com.unity.2d.common@8.0.1\Tests" />
      <None Include="Library\PackageCache\com.unity.modules.assetbundle@1.0.0\package.json" />
      <None Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\package.json" />
@@ -115,12 +116,14 @@
      <None Include="Library\PackageCache\com.unity.modules.unityanalytics@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.modules.subsystems@1.0.0" />
      <None Include="Library\PackageCache\com.unity.ide.rider@3.0.16\package.json" />
+     <Folder Include="Assets\prefabs\tiles" />
      <None Include="Library\PackageCache\com.unity.modules.video@1.0.0\package.json" />
      <None Include="Library\PackageCache\com.unity.test-framework@1.1.33\package.json" />
      <Folder Include="Library\PackageCache\com.unity.modules.unityanalytics@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.modules.physics@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Scripts" />
      <Folder Include="Library\PackageCache\com.unity.modules.vr@1.0.0" />
+     <Folder Include="Assets\Sprites\objects" />
      <Folder Include="Library\PackageCache\com.unity.sysroot.linux-x86_64@2.0.4\Tests" />
      <Folder Include="Library\PackageCache\com.unity.modules.physics2d@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.2d.common@8.0.1\Path" />

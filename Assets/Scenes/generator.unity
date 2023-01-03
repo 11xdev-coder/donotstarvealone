@@ -244,13 +244,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b459f6cc62192f0478ce0cac5350e5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 1000
-  height: 1000
-  freq: 5
+  width: 200
+  height: 200
+  freq: 10
+  partToSpawnPlayer: 2
+  havePlayerSpawned: 0
+  treeOffset: {x: 0, y: 1, z: -1}
   grassTurf: {fileID: 1970644549684593396, guid: 23121d15d52b7e348bf1a4086ac29994, type: 3}
   forestTurf: {fileID: 4913204713415024889, guid: 6cf96df180039c3419c7a3d3ba0245a8, type: 3}
   rockylandTurf: {fileID: 2521666577832647120, guid: 2871582631f66524eb4373f27cecf63f, type: 3}
   ocean: {fileID: 6329480749866894395, guid: 7a3406ffdb3e66747aaec7efb7c4bcba, type: 3}
+  player: {fileID: 8135622700621970481, guid: cec0938a436200f4297ba2793772e0be, type: 3}
+  birchnutTree: {fileID: 7750068207470972085, guid: 88a61fec119037543aff7174d3f5441c, type: 3}
+  pineTree: {fileID: 5957941118420886137, guid: 381c69051f9e978449ab81a9277a67f4, type: 3}
+  miniBoulder: {fileID: 5387719478794832004, guid: a95354cc321f8c24a82c22e19b0d3ada, type: 3}
+  rockOcean: {fileID: 3760209886624295797, guid: 0cada2eee32f5f94d9c8810e5a53b9a8, type: 3}
 --- !u!4 &1607024656
 Transform:
   m_ObjectHideFlags: 0
@@ -259,7 +267,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1607024654}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.6936195, y: 0.47822785, z: 0.033025466}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
