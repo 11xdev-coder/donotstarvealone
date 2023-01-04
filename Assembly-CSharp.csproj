@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\worldgenerator.cs" />
+     <Compile Include="Assets\Scripts\playerController.cs" />
      <Folder Include="Assets" />
      <None Include="Library\PackageCache\com.unity.modules.subsystems@1.0.0\package.json" />
      <None Include="Library\PackageCache\com.unity.modules.jsonserialize@1.0.0\package.json" />
@@ -118,6 +119,7 @@
      <None Include="Library\PackageCache\com.unity.ide.rider@3.0.16\package.json" />
      <Folder Include="Assets\prefabs\tiles" />
      <None Include="Library\PackageCache\com.unity.modules.video@1.0.0\package.json" />
+     <Folder Include="Assets\prefabs\mlue" />
      <None Include="Library\PackageCache\com.unity.test-framework@1.1.33\package.json" />
      <Folder Include="Library\PackageCache\com.unity.modules.unityanalytics@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.modules.physics@1.0.0" />
@@ -191,6 +193,7 @@
      <Folder Include="Library\PackageCache\com.unity.modules.audio@1.0.0" />
      <None Include="Library\PackageCache\com.unity.modules.terrain@1.0.0\package.json" />
      <None Include="Library\PackageCache\com.unity.2d.sprite@1.0.0\package.json" />
+     <Folder Include="Assets\Sprites\mlue" />
      <Folder Include="Library\PackageCache\com.unity.ide.visualstudio@2.0.16" />
      <None Include="Library\PackageCache\com.unity.collections@1.2.4\package.json" />
      <None Include="Library\PackageCache\com.unity.modules.androidjni@1.0.0\package.json" />
