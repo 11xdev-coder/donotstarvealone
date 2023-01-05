@@ -1,15 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
+    [Header("animations")] 
+    public Animator animator;
+    public AnimatorController walkController;
+    
     public Rigidbody2D playerRB;
     public int speed = 10;
+    
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        animator.runtimeAnimatorController = walkController;
+        animator.enabled = false;
     }
 
     // Update is called once per frame
@@ -29,6 +37,7 @@ public class playerController : MonoBehaviour
         else
         {
             // Stop the player horizontally
+            animator.enabled = false;
             playerRB.velocity = new Vector2(0, playerRB.velocity.y);
         }
 
@@ -37,15 +46,20 @@ public class playerController : MonoBehaviour
         {
             // Move the player up
             playerRB.velocity = new Vector2(playerRB.velocity.x, speed);
+            animator.enabled = true;
+            animator.Play("walkbackward");
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
             // Move the player down
             playerRB.velocity = new Vector2(playerRB.velocity.x, -speed);
+            animator.enabled = true;
+            animator.Play("walkfront");
         }
         else
         {
             // Stop the player vertically
+            animator.enabled = false;
             playerRB.velocity = new Vector2(playerRB.velocity.x, 0);
         }
     }

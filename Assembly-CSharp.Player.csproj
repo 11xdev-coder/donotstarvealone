@@ -219,6 +219,7 @@
      <Folder Include="Library\PackageCache\com.unity.modules.unitywebrequesttexture@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.ugui@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.2d.spriteshape@9.0.1" />
+     <Folder Include="Assets\Animations\mlue" />
      <None Include="Library\PackageCache\com.unity.modules.ui@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.2d.spriteshape@9.0.1\Tests" />
      <Folder Include="Assets\Sprites" />

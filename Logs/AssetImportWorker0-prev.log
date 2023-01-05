@@ -15,7 +15,7 @@ D:/Projects/donotstarvealone
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-63010
+53066
 Successfully changed project path to: D:/Projects/donotstarvealone
 D:/Projects/donotstarvealone
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -47,11 +47,11 @@ D:/Projects/donotstarvealone
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [25108] Host "[IP] 192.168.31.45 [Port] 0 [Flags] 2 [Guid] 600356894 [EditorId] 600356894 [Version] 1048832 [Id] WindowsEditor(7,super_hero_box) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+Player connection [18804] Host "[IP] 192.168.31.45 [Port] 0 [Flags] 2 [Guid] 589614635 [EditorId] 589614635 [Version] 1048832 [Id] WindowsEditor(7,super_hero_box) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
 
-Player connection [25108] Host "[IP] 192.168.31.45 [Port] 0 [Flags] 2 [Guid] 600356894 [EditorId] 600356894 [Version] 1048832 [Id] WindowsEditor(7,super_hero_box) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [18804] Host "[IP] 192.168.31.45 [Port] 0 [Flags] 2 [Guid] 589614635 [EditorId] 589614635 [Version] 1048832 [Id] WindowsEditor(7,super_hero_box) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
 
-Refreshing native plugins compatible for Editor in 6.32 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 5.63 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2022.2.1f1 (4fead5835099)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2022.2.1f1/Editor/Data/Resources/UnitySubsystems
@@ -67,45 +67,45 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2022.2.1f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2022.2.1f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2022.2.1f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56784
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56904
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.2.1f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.2.1f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.2.1f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-Registered in 0.007826 seconds.
-- Loaded All Assemblies, in  0.253 seconds
+Registered in 0.008381 seconds.
+- Loaded All Assemblies, in  0.256 seconds
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.228 seconds
+- Finished resetting the current domain, in  0.225 seconds
 Domain Reload Profiling:
-	ReloadAssembly (151ms)
-		BeginReloadAssembly (58ms)
+	ReloadAssembly (154ms)
+		BeginReloadAssembly (59ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
 		LoadAllAssembliesAndSetupDomain (0ms)
-			LoadAssemblies (57ms)
+			LoadAssemblies (58ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
 			SetupTypeCache (96ms)
-				TypeCache.Initialize (96ms)
+				TypeCache.Initialize (95ms)
 					TypeCache.ScanAssembly (94ms)
 				ResolveRequiredComponents (0ms)
 		FinalizeReload (0ms)
 			ReleaseScriptCaches (0ms)
 			RebuildScriptCaches (0ms)
-			SetupLoadedEditorAssemblies (180ms)
+			SetupLoadedEditorAssemblies (178ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (23ms)
+				InitializePlatformSupportModulesInManaged (21ms)
 				SetLoadedEditorAssemblies (6ms)
 				RefreshPlugins (0ms)
 				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (111ms)
-				ProcessInitializeOnLoadMethodAttributes (39ms)
+				ProcessInitializeOnLoadAttributes (110ms)
+				ProcessInitializeOnLoadMethodAttributes (40ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
@@ -113,50 +113,50 @@ Domain Reload Profiling:
 ========================================================================
 Worker process is ready to serve import requests
 Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.488 seconds
-Refreshing native plugins compatible for Editor in 1.79 ms, found 3 plugins.
+- Loaded All Assemblies, in  0.493 seconds
+Refreshing native plugins compatible for Editor in 1.80 ms, found 3 plugins.
 Native extension for LinuxStandalone target not found
 Native extension for WindowsStandalone target not found
 Native extension for OSXStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.425 seconds
+- Finished resetting the current domain, in  0.433 seconds
 Domain Reload Profiling:
-	ReloadAssembly (164ms)
-		BeginReloadAssembly (91ms)
+	ReloadAssembly (175ms)
+		BeginReloadAssembly (99ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (4ms)
+			DisableScriptedObjects (5ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (17ms)
-		LoadAllAssembliesAndSetupDomain (323ms)
-			LoadAssemblies (60ms)
+			CreateAndSetChildDomain (18ms)
+		LoadAllAssembliesAndSetupDomain (316ms)
+			LoadAssemblies (66ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (300ms)
-				TypeCache.Initialize (180ms)
-					TypeCache.ScanAssembly (177ms)
+			SetupTypeCache (296ms)
+				TypeCache.Initialize (177ms)
+					TypeCache.ScanAssembly (173ms)
 				ResolveRequiredComponents (2ms)
 		FinalizeReload (0ms)
 			ReleaseScriptCaches (0ms)
 			RebuildScriptCaches (0ms)
-			SetupLoadedEditorAssemblies (305ms)
+			SetupLoadedEditorAssemblies (313ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (11ms)
 				SetLoadedEditorAssemblies (7ms)
 				RefreshPlugins (0ms)
-				BeforeProcessingInitializeOnLoad (50ms)
-				ProcessInitializeOnLoadAttributes (200ms)
-				ProcessInitializeOnLoadMethodAttributes (33ms)
+				BeforeProcessingInitializeOnLoad (52ms)
+				ProcessInitializeOnLoadAttributes (204ms)
+				ProcessInitializeOnLoadMethodAttributes (34ms)
 				AfterProcessingInitializeOnLoad (5ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (5ms)
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
-Refreshing native plugins compatible for Editor in 1.80 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 2.04 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 2701 Unused Serialized files (Serialized files now loaded: 0)
 Unloading 35 unused Assets / (69.8 KB). Loaded Objects now: 3164.
 Memory consumption went from 427.2 MB to 427.1 MB.
-Total: 3.273300 ms (FindLiveObjects: 0.203300 ms CreateObjectMapping: 0.125600 ms MarkObjects: 2.858100 ms  DeleteObjects: 0.085500 ms)
+Total: 2.989100 ms (FindLiveObjects: 0.196300 ms CreateObjectMapping: 0.083600 ms MarkObjects: 2.617800 ms  DeleteObjects: 0.090500 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
@@ -171,187 +171,17 @@ AssetImportParameters requested are different than current active one (requested
   custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 423278.639909 seconds.
-  path: Assets/Sprites/mlue.png
-  artifactKey: Guid(f193fbbc3cbc9b24c94390ab8d507260) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+  Time since last request: 457594.859322 seconds.
+  path: Assets/Animations/mlue
+  artifactKey: Guid(af3661d045c673a4caf0e2c0baaecae7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
 Number of updated assets reloaded before import = 0
-Start importing Assets/Sprites/mlue.png using Guid(f193fbbc3cbc9b24c94390ab8d507260) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '65a42a5fe7d1ff11843895d59456eab1') in 0.083106 seconds 
-Number of asset objects unloaded after import = 3
-========================================================================
-Received Import Request.
-  Time since last request: 27.296862 seconds.
-  path: Assets/Sprites/mlue.png
-  artifactKey: Guid(f193fbbc3cbc9b24c94390ab8d507260) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/Sprites/mlue.png using Guid(f193fbbc3cbc9b24c94390ab8d507260) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a8d86857f80ba099bf565f48c291a001') in 0.054583 seconds 
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 13.088213 seconds.
-  path: Assets/Sprites/mlue.png
-  artifactKey: Guid(f193fbbc3cbc9b24c94390ab8d507260) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/Sprites/mlue.png using Guid(f193fbbc3cbc9b24c94390ab8d507260) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0bee4ac51ba7276a4abc0862bf4c9d0e') in 0.161115 seconds 
-Number of asset objects unloaded after import = 3
-========================================================================
-Received Import Request.
-  Time since last request: 40.277805 seconds.
-  path: Assets/prefabs/mlue/mlue 1.prefab
-  artifactKey: Guid(88670bf19999536439ddd2ab195ea0f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/prefabs/mlue/mlue 1.prefab using Guid(88670bf19999536439ddd2ab195ea0f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '84bcefd4b37a0f4afc40468cd527f161') in 0.040619 seconds 
-Number of asset objects unloaded after import = 10
-========================================================================
-Received Import Request.
-  Time since last request: 3.717625 seconds.
-  path: Assets/prefabs/mlue/mlue2d.prefab
-  artifactKey: Guid(88670bf19999536439ddd2ab195ea0f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/prefabs/mlue/mlue2d.prefab using Guid(88670bf19999536439ddd2ab195ea0f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1a855f9e7b8fd3b23dcf597128b5bb44') in 0.030391 seconds 
-Number of asset objects unloaded after import = 10
-========================================================================
-Received Import Request.
-  Time since last request: 3.847102 seconds.
-  path: Assets/prefabs/mlue/mlue3d.prefab
-  artifactKey: Guid(03112737f42819f45a74bd616bc47bf7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/prefabs/mlue/mlue3d.prefab using Guid(03112737f42819f45a74bd616bc47bf7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '96ccc3a233e21947f7e87e1a6fea4939') in 0.024409 seconds 
-Number of asset objects unloaded after import = 94
-========================================================================
-Received Import Request.
-  Time since last request: 2.474495 seconds.
-  path: Assets/prefabs/mlue/mlue.prefab
-  artifactKey: Guid(88670bf19999536439ddd2ab195ea0f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/prefabs/mlue/mlue.prefab using Guid(88670bf19999536439ddd2ab195ea0f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c2648ec88f4fa5051bf5760cf70104ea') in 0.027179 seconds 
-Number of asset objects unloaded after import = 10
-========================================================================
-Received Import Request.
-  Time since last request: 672.595726 seconds.
-  path: Assets/prefabs/mlue/mlue.prefab
-  artifactKey: Guid(88670bf19999536439ddd2ab195ea0f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/prefabs/mlue/mlue.prefab using Guid(88670bf19999536439ddd2ab195ea0f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f7f4f735d431b8cebb8199d4aa7cadea') in 0.011154 seconds 
-Number of asset objects unloaded after import = 10
-========================================================================
-Received Import Request.
-  Time since last request: 223.415566 seconds.
-  path: Assets/Sprites/mlue.png
-  artifactKey: Guid(f193fbbc3cbc9b24c94390ab8d507260) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/Sprites/mlue.png using Guid(f193fbbc3cbc9b24c94390ab8d507260) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c70de25996f15dda090494ed22b671af') in 0.084123 seconds 
-Number of asset objects unloaded after import = 3
-========================================================================
-Received Import Request.
-  Time since last request: 45.196105 seconds.
-  path: Assets/Sprites/mlue.png
-  artifactKey: Guid(f193fbbc3cbc9b24c94390ab8d507260) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/Sprites/mlue.png using Guid(f193fbbc3cbc9b24c94390ab8d507260) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6a4285ecc7c26062332c96bb216ef8f5') in 0.051058 seconds 
-Number of asset objects unloaded after import = 3
-========================================================================
-Received Import Request.
-  Time since last request: 151.794325 seconds.
-  path: Assets/Sprites/mlue
-  artifactKey: Guid(7d769fbee650be6429fe8e8e19e38553) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/Sprites/mlue using Guid(7d769fbee650be6429fe8e8e19e38553) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c96036e22da817dfa6072b55e5494582') in 0.001666 seconds 
+Start importing Assets/Animations/mlue using Guid(af3661d045c673a4caf0e2c0baaecae7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd12a3b1f1a385d70b0c52a32b716b8c2') in 0.005438 seconds 
 Number of asset objects unloaded after import = 0
 ========================================================================
 Received Import Request.
-  Time since last request: 10.957102 seconds.
-  path: Assets/Sprites/mlue/mlueBody.png
-  artifactKey: Guid(997d57037b5dceb49b9cb3cfcdeed60d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+  Time since last request: 11.709085 seconds.
+  path: Assets/Animations/mlue/mlue.controller
+  artifactKey: Guid(cffdf1a29ba908c4296ea7f3b93682a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
 Number of updated assets reloaded before import = 0
-Start importing Assets/Sprites/mlue/mlueBody.png using Guid(997d57037b5dceb49b9cb3cfcdeed60d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8c99a33502dc1ec9d7f0b3253002e721') in 0.012723 seconds 
-Number of asset objects unloaded after import = 3
-========================================================================
-Received Import Request.
-  Time since last request: 56.112919 seconds.
-  path: Assets/Sprites/mlue/mlueHead.png
-  artifactKey: Guid(c1164eb8732dab64596ef5eded9b6874) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/Sprites/mlue/mlueHead.png using Guid(c1164eb8732dab64596ef5eded9b6874) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b8694e1b8097e68f2a766d899a680fec') in 0.015841 seconds 
-Number of asset objects unloaded after import = 3
-========================================================================
-Received Import Request.
-  Time since last request: 157.071410 seconds.
-  path: Assets/Sprites/mlue/mlueArm.png
-  artifactKey: Guid(506bc800f5dfaf342b97edd83bf4b362) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/Sprites/mlue/mlueArm.png using Guid(506bc800f5dfaf342b97edd83bf4b362) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0a4f413dfd252bf22a3cecf20905fa09') in 0.012023 seconds 
-Number of asset objects unloaded after import = 3
-========================================================================
-Received Import Request.
-  Time since last request: 8.678484 seconds.
-  path: Assets/Sprites/mlue/mlueArm.png
-  artifactKey: Guid(506bc800f5dfaf342b97edd83bf4b362) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/Sprites/mlue/mlueArm.png using Guid(506bc800f5dfaf342b97edd83bf4b362) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b86199e840e6ef0c63dae60872eb1877') in 0.019393 seconds 
-Number of asset objects unloaded after import = 3
-========================================================================
-Received Import Request.
-  Time since last request: 0.000011 seconds.
-  path: Assets/Sprites/mlue/mlueLeg.png
-  artifactKey: Guid(3ad51b58fd247f74c873cb35b410bf8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Number of updated assets reloaded before import = 0
-Start importing Assets/Sprites/mlue/mlueLeg.png using Guid(3ad51b58fd247f74c873cb35b410bf8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1649f635b2a3b3bd56d691a13b04f4bf') in 0.074077 seconds 
-Number of asset objects unloaded after import = 3
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.463 seconds
-Refreshing native plugins compatible for Editor in 1.79 ms, found 3 plugins.
-Native extension for LinuxStandalone target not found
-Native extension for WindowsStandalone target not found
-Native extension for OSXStandalone target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.590 seconds
-Domain Reload Profiling:
-	ReloadAssembly (165ms)
-		BeginReloadAssembly (106ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (5ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (34ms)
-		LoadAllAssembliesAndSetupDomain (296ms)
-			LoadAssemblies (61ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (273ms)
-				TypeCache.Initialize (159ms)
-					TypeCache.ScanAssembly (155ms)
-				ResolveRequiredComponents (2ms)
-		FinalizeReload (0ms)
-			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (0ms)
-			SetupLoadedEditorAssemblies (314ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (17ms)
-				SetLoadedEditorAssemblies (7ms)
-				RefreshPlugins (0ms)
-				BeforeProcessingInitializeOnLoad (50ms)
-				ProcessInitializeOnLoadAttributes (202ms)
-				ProcessInitializeOnLoadMethodAttributes (29ms)
-				AfterProcessingInitializeOnLoad (8ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (8ms)
-Refreshing native plugins compatible for Editor in 2.19 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 2690 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 24 unused Assets / (36.4 KB). Loaded Objects now: 3183.
-Memory consumption went from 429.8 MB to 429.7 MB.
-Total: 3.669000 ms (FindLiveObjects: 0.202200 ms CreateObjectMapping: 0.226000 ms MarkObjects: 3.195500 ms  DeleteObjects: 0.044600 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+Start importing Assets/Animations/mlue/mlue.controller using Guid(cffdf1a29ba908c4296ea7f3b93682a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '686b1ec25751348018b5fa4ca53e4542') in 0.030062 seconds 
+Number of asset objects unloaded after import = 1
