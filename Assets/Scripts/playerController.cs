@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
     [Header("animations")] 
     public Animator animator;
-    public AnimatorController walkController;
+    public RuntimeAnimatorController walkController;
     
     public Rigidbody2D playerRB;
     public int speed = 10;
@@ -20,6 +19,11 @@ public class playerController : MonoBehaviour
         animator.enabled = false;
     }
 
+    void StopAnimator()
+    {
+        animator.enabled = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -28,16 +32,20 @@ public class playerController : MonoBehaviour
         {
             // Move the player to the left
             playerRB.velocity = new Vector2(-speed, playerRB.velocity.y);
+            animator.enabled = true;
+            animator.Play("walkleft");
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             // Move the player to the right
             playerRB.velocity = new Vector2(speed, playerRB.velocity.y);
+            animator.enabled = true;
+            animator.Play("walkright");
         }
         else
         {
             // Stop the player horizontally
-            animator.enabled = false;
+            Invoke("StopAnimator", animator.GetCurrentAnimatorStateInfo(0).length);
             playerRB.velocity = new Vector2(0, playerRB.velocity.y);
         }
 
@@ -59,7 +67,8 @@ public class playerController : MonoBehaviour
         else
         {
             // Stop the player vertically
-            animator.enabled = false;
+            Invoke("StopAnimator", animator.GetCurrentAnimatorStateInfo(0).length);
+            animator.StopPlayback();
             playerRB.velocity = new Vector2(playerRB.velocity.x, 0);
         }
     }
