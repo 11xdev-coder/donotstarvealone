@@ -7,6 +7,7 @@ public class playerController : MonoBehaviour
     [Header("animations")] 
     public Animator animator;
     public RuntimeAnimatorController walkController;
+    public string currentSide;
     
     public Rigidbody2D playerRB;
     public int speed = 10;
@@ -16,12 +17,15 @@ public class playerController : MonoBehaviour
     void Start()
     {
         animator.runtimeAnimatorController = walkController;
-        animator.enabled = false;
+        animator.enabled = true;
     }
 
-    void StopAnimator()
+    void Playidle()
     {
-        animator.enabled = false;
+        if (currentSide == "north" || currentSide == "south")
+            animator.Play("idle");
+        else if (currentSide == "east" || currentSide == "west")
+            animator.Play("idlesideways");
     }
 
     // Update is called once per frame
@@ -32,20 +36,20 @@ public class playerController : MonoBehaviour
         {
             // Move the player to the left
             playerRB.velocity = new Vector2(-speed, playerRB.velocity.y);
-            animator.enabled = true;
             animator.Play("walkleft");
+            currentSide = "east";
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             // Move the player to the right
             playerRB.velocity = new Vector2(speed, playerRB.velocity.y);
-            animator.enabled = true;
             animator.Play("walkright");
+            currentSide = "west";
         }
         else
         {
             // Stop the player horizontally
-            Invoke("StopAnimator", animator.GetCurrentAnimatorStateInfo(0).length);
+            Invoke("Playidle", animator.GetCurrentAnimatorStateInfo(0).length);
             playerRB.velocity = new Vector2(0, playerRB.velocity.y);
         }
 
@@ -54,21 +58,20 @@ public class playerController : MonoBehaviour
         {
             // Move the player up
             playerRB.velocity = new Vector2(playerRB.velocity.x, speed);
-            animator.enabled = true;
             animator.Play("walkbackward");
+            currentSide = "north";
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
             // Move the player down
             playerRB.velocity = new Vector2(playerRB.velocity.x, -speed);
-            animator.enabled = true;
             animator.Play("walkfront");
+            currentSide = "south";
         }
         else
         {
             // Stop the player vertically
-            Invoke("StopAnimator", animator.GetCurrentAnimatorStateInfo(0).length);
-            animator.StopPlayback();
+            Invoke("Playidle", animator.GetCurrentAnimatorStateInfo(0).length);
             playerRB.velocity = new Vector2(playerRB.velocity.x, 0);
         }
     }

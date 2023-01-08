@@ -240,6 +240,10 @@ PrefabInstance:
       propertyPath: m_CullingMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1265627261400454318, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1560381327992363669, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
       propertyPath: m_LocalScale.z
       value: 1
