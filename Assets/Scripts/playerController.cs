@@ -36,20 +36,19 @@ public class playerController : MonoBehaviour
         {
             // Move the player to the left
             playerRB.velocity = new Vector2(-speed, playerRB.velocity.y);
-            animator.Play("walkleft");
+            animator.Play("walk");
             currentSide = "east";
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             // Move the player to the right
             playerRB.velocity = new Vector2(speed, playerRB.velocity.y);
-            animator.Play("walkright");
+            animator.Play("walk");
             currentSide = "west";
         }
         else
         {
             // Stop the player horizontally
-            Invoke("Playidle", animator.GetCurrentAnimatorStateInfo(0).length);
             playerRB.velocity = new Vector2(0, playerRB.velocity.y);
         }
 
@@ -58,20 +57,19 @@ public class playerController : MonoBehaviour
         {
             // Move the player up
             playerRB.velocity = new Vector2(playerRB.velocity.x, speed);
-            animator.Play("walkbackward");
+            animator.Play("walk");
             currentSide = "north";
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
             // Move the player down
             playerRB.velocity = new Vector2(playerRB.velocity.x, -speed);
-            animator.Play("walkfront");
+            animator.Play("walk");
             currentSide = "south";
         }
         else
         {
             // Stop the player vertically
-            Invoke("Playidle", animator.GetCurrentAnimatorStateInfo(0).length);
             playerRB.velocity = new Vector2(playerRB.velocity.x, 0);
         }
     }
