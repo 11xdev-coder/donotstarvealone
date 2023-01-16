@@ -4,73 +4,48 @@ using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
-    [Header("animations")] 
+    public float moveSpeed = 5f;
     public Animator animator;
-    public RuntimeAnimatorController walkController;
-    public string currentSide;
-    
-    public Rigidbody2D playerRB;
-    public int speed = 10;
-    
-    
-    // Start is called before the first frame update
-    void Start()
+
+    private Rigidbody2D rb;
+    private Vector2 movement;
+
+    private void Start()
     {
-        animator.runtimeAnimatorController = walkController;
-        animator.enabled = true;
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    void Playidle()
+    private void Update()
     {
-        if (currentSide == "north" || currentSide == "south")
-            animator.Play("idle");
-        else if (currentSide == "east" || currentSide == "west")
-            animator.Play("idlesideways");
+        // Get input from the W, A, S, and D keys
+        float horizontal = 0f;
+        float vertical = 0f;
+        if (Input.GetKey(KeyCode.W))
+        {
+            vertical = 1f;
+            animator.Play("walkbackward");
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            horizontal = -1f;
+            animator.Play("walkleft");
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            vertical = -1f;
+            animator.Play("walkfront");
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            horizontal = 1f;
+            animator.Play("walkright");
+        }
+        movement = new Vector2(horizontal, vertical);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        // Check for left and right input
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            // Move the player to the left
-            playerRB.velocity = new Vector2(-speed, playerRB.velocity.y);
-            animator.Play("walk");
-            currentSide = "east";
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            // Move the player to the right
-            playerRB.velocity = new Vector2(speed, playerRB.velocity.y);
-            animator.Play("walk");
-            currentSide = "west";
-        }
-        else
-        {
-            // Stop the player horizontally
-            playerRB.velocity = new Vector2(0, playerRB.velocity.y);
-        }
-
-        // Check for up and down input
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            // Move the player up
-            playerRB.velocity = new Vector2(playerRB.velocity.x, speed);
-            animator.Play("walk");
-            currentSide = "north";
-        }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            // Move the player down
-            playerRB.velocity = new Vector2(playerRB.velocity.x, -speed);
-            animator.Play("walk");
-            currentSide = "south";
-        }
-        else
-        {
-            // Stop the player vertically
-            playerRB.velocity = new Vector2(playerRB.velocity.x, 0);
-        }
+        // Move the player based on the input
+        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 }
