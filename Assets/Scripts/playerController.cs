@@ -13,6 +13,7 @@ public class playerController : MonoBehaviour
     public float horizontal;
     public float vertical;
     public bool diagonal = false;
+    public bool playsidewaysAnim;
 
     private void Start()
     {
@@ -39,6 +40,19 @@ public class playerController : MonoBehaviour
         {
             animator.Play("walkleft");
         }
+
+        if (vertical == 0 & horizontal == 0)
+        {
+            if (playsidewaysAnim)
+            {
+                animator.Play("idlesideways");
+            }
+            else
+            {
+                animator.Play("idle"); 
+            }
+            
+        }
     }
 
     private void Update()
@@ -46,26 +60,37 @@ public class playerController : MonoBehaviour
         // Get input from the W, A, S, and D keys
         horizontal = 0f;
         vertical = 0f;
+        
         if (Input.GetKey(KeyCode.W))
         {
+            playsidewaysAnim = false;
             vertical = 1f;
             PlayAnimation();
         }
         if (Input.GetKey(KeyCode.A))
         {
+            playsidewaysAnim = true;
             diagonal = true;
             horizontal = -1f;
             PlayAnimation();
         }
         if (Input.GetKey(KeyCode.S))
         {
+            playsidewaysAnim = false;
             vertical = -1f;
             PlayAnimation();
         }
         if (Input.GetKey(KeyCode.D))
         {
+            playsidewaysAnim = true;
             diagonal = true;
             horizontal = 1f;
+            PlayAnimation();
+        }
+        
+        // idle check
+        if (!Input.GetKey(KeyCode.A) | !Input.GetKey(KeyCode.W) | !Input.GetKey(KeyCode.S) | !Input.GetKey(KeyCode.D))
+        {
             PlayAnimation();
         }
 
