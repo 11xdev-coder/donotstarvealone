@@ -23,35 +23,18 @@ public class playerController : MonoBehaviour
     private void PlayAnimation()
     {
         if (horizontal == 0 & vertical > 0)
-        {
-            if(!diagonal)
-                animator.Play("walkbackward");
-        }
+            if(!diagonal) animator.Play("walkbackward");
+        
         if (horizontal == 0 & vertical < 0)
-        {   
-            if(!diagonal)
-                animator.Play("walkfront");
-        }
-        if (vertical == 0 & horizontal > 0 || vertical != 0 & horizontal > 0)
-        {
-            animator.Play("walkright");
-        }
-        if (vertical == 0 & horizontal < 0 || vertical != 0 & horizontal < 0)
-        {
-            animator.Play("walkleft");
-        }
+            if(!diagonal) animator.Play("walkfront");
+        
+        if (vertical == 0 & horizontal > 0 || vertical != 0 & horizontal > 0) animator.Play("walkright");
+        if (vertical == 0 & horizontal < 0 || vertical != 0 & horizontal < 0) animator.Play("walkleft");
 
         if (vertical == 0 & horizontal == 0)
         {
-            if (playsidewaysAnim)
-            {
-                animator.Play("idlesideways");
-            }
-            else
-            {
-                animator.Play("idle"); 
-            }
-            
+            if (playsidewaysAnim) animator.Play("idlesideways");
+            else animator.Play("idle");
         }
     }
 
