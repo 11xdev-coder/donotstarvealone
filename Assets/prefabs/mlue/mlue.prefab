@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 722559217235082476}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0520629, y: -1.2528234, z: 0}
+  m_LocalPosition: {x: 101, y: 101, z: -1}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -48,8 +48,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e283ab90baf95742b914b9bdd3e4716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerRB: {fileID: 2953616171494367703}
-  speed: 1
+  moveSpeed: 5
+  animator: {fileID: 843045843684994102}
+  horizontal: 0
+  vertical: 0
+  diagonal: 0
+  playsidewaysAnim: 0
 --- !u!50 &2953616171494367703
 Rigidbody2D:
   serializedVersion: 4
@@ -76,7 +80,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &4433990683640518281
 BoxCollider2D:
   m_ObjectHideFlags: 0

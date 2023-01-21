@@ -22,7 +22,7 @@ public class worldgenerator : MonoBehaviour
     public GameObject ocean;
 
     [Header("objects")] 
-    public GameObject player;
+    public Transform player;
     public GameObject birchnutTree;
     public GameObject pineTree;
     public GameObject miniBoulder;
@@ -118,7 +118,7 @@ public class worldgenerator : MonoBehaviour
                     {
                         if (x > width / partToSpawnPlayer && y > height / partToSpawnPlayer && !havePlayerSpawned)
                         {
-                            Instantiate(player, new Vector3(x, y, -1), Quaternion.identity);
+                            player.transform.position = new Vector3(x, y, -1);
                             havePlayerSpawned = true;
                         }
                             
@@ -150,12 +150,12 @@ public class worldgenerator : MonoBehaviour
                             objectToInstantiate.GetComponent<SpriteRenderer>().sortingOrder = height - y;
                             if (objectToInstantiate.name.Contains("Tree"))
                             {
-                                objectPosition = new Vector3(x, y, -1) + treeOffset;
+                                objectPosition = new Vector3(x, y, -0.3f) + treeOffset;
                                 Instantiate(objectToInstantiate, objectPosition, Quaternion.identity);
                             }
                             else
                             {
-                                objectPosition = new Vector3(x, y, -1);
+                                objectPosition = new Vector3(x, y, -0.3f);
                                 Instantiate(objectToInstantiate, objectPosition, Quaternion.identity);
                             }
                         }
