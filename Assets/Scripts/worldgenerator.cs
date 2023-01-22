@@ -22,7 +22,7 @@ public class worldgenerator : MonoBehaviour
     public GameObject ocean;
 
     [Header("objects")] 
-    public Transform player;
+    public GameObject player;
     public GameObject birchnutTree;
     public GameObject pineTree;
     public GameObject miniBoulder;
@@ -118,7 +118,7 @@ public class worldgenerator : MonoBehaviour
                     {
                         if (x > width / partToSpawnPlayer && y > height / partToSpawnPlayer && !havePlayerSpawned)
                         {
-                            player.transform.position = new Vector3(x, y, -1);
+                            Instantiate(player, new Vector3(x, y, -1), Quaternion.identity);
                             havePlayerSpawned = true;
                         }
                             

@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!95 &264749995 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 843045843684994102, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-  m_PrefabInstance: {fileID: 6011908889616050226}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &738411749
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,78 +227,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: mlue
       objectReference: {fileID: 0}
-    - target: {fileID: 843045843684994102, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_UpdateMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 843045843684994102, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_CullingMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1265627261400454318, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1560381327992363669, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2540577310447290970, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2540577310447290970, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.075
-      objectReference: {fileID: 0}
-    - target: {fileID: 2540577310447290970, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2540577310447290970, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2540577310447290970, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2540577310447290970, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2540577310447290970, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2540577310447290970, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3520627924729506852, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_SortingOrder
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4730328541580573804, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: animator
-      value: 
-      objectReference: {fileID: 264749995}
-    - target: {fileID: 4730328541580573804, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: walkController
-      value: 
-      objectReference: {fileID: 9100000, guid: cffdf1a29ba908c4296ea7f3b93682a0, type: 2}
-    - target: {fileID: 5351691645146526244, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_Name
-      value: mlueBodyFront
-      objectReference: {fileID: 0}
-    - target: {fileID: 5648388215669791402, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5871425372680946904, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6776549432209531629, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -348,16 +271,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7743031882232306832, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8305044307075458397, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4562720018742632180, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
