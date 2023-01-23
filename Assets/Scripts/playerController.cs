@@ -1,21 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
+using Vector2 = UnityEngine.Vector2;
 
 public class playerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public Animator animator;
+    public Camera camera;
 
     private Rigidbody2D rb;
-    private Vector2 movement;
+    public Vector2 movement;
+    public Vector2 mousePosition;
+    public Vector2 moveDirection;
     
     public float horizontal;
     public float vertical;
     public bool diagonal = false;
     public bool playsidewaysAnim;
 
-    private void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
@@ -70,13 +75,22 @@ public class playerController : MonoBehaviour
             horizontal = 1f;
             PlayAnimation();
         }
+
+        if (Input.GetMouseButton(0))
+        {
+            mousePosition = camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition); // convert mouse screen position to world position
+            moveDirection = mousePosition - rb.position; // get the direction from player to mouse position
+            horizontal = Mathf.Clamp(moveDirection.x, -1f, 1f); // limit the horizontal value to -1 and 1
+            vertical = Mathf.Clamp(moveDirection.y, -1f, 1f); // limit the vertical value to -1 and 1
+            
+        }
         
         // idle check
         if (!Input.GetKey(KeyCode.A) | !Input.GetKey(KeyCode.W) | !Input.GetKey(KeyCode.S) | !Input.GetKey(KeyCode.D))
         {
             PlayAnimation();
         }
-
+        // is s or d pressed
         if (Input.GetKeyUp(KeyCode.S) | Input.GetKeyUp(KeyCode.D))
         {
             diagonal = false;
@@ -84,9 +98,13 @@ public class playerController : MonoBehaviour
         movement = new Vector2(horizontal, vertical);
     }
 
-    private void FixedUpdate()
+    public void MoveToMousePosition()
     {
-        // Move the player based on the input
+        
+    }
+
+    private void FixedUpdate()
+    { 
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 }
