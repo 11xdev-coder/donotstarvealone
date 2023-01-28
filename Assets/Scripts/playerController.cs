@@ -12,8 +12,6 @@ public class playerController : MonoBehaviour
 
     private Rigidbody2D rb;
     public Vector2 movement;
-    public Vector2 mousePosition;
-    public Vector2 moveDirection;
     
     public float horizontal;
     public float vertical;
@@ -75,15 +73,6 @@ public class playerController : MonoBehaviour
             horizontal = 1f;
             PlayAnimation();
         }
-
-        if (Input.GetMouseButton(0))
-        {
-            mousePosition = camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition); // convert mouse screen position to world position
-            moveDirection = mousePosition - rb.position; // get the direction from player to mouse position
-            horizontal = Mathf.Clamp(moveDirection.x, -1f, 1f); // limit the horizontal value to -1 and 1
-            vertical = Mathf.Clamp(moveDirection.y, -1f, 1f); // limit the vertical value to -1 and 1
-            
-        }
         
         // idle check
         if (!Input.GetKey(KeyCode.A) | !Input.GetKey(KeyCode.W) | !Input.GetKey(KeyCode.S) | !Input.GetKey(KeyCode.D))
@@ -95,7 +84,6 @@ public class playerController : MonoBehaviour
         {
             diagonal = false;
         }
-        movement = new Vector2(horizontal, vertical);
     }
 
     public void MoveToMousePosition()
@@ -105,6 +93,15 @@ public class playerController : MonoBehaviour
 
     private void FixedUpdate()
     { 
+        //Vector2 mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
+        //Vector2 direction = (mousePos - rb.position).normalized;
+
+        //if (Input.GetMouseButton(0))
+        //{
+        //    rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
+        //}
+
+        movement = new Vector2(horizontal, vertical);
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 }
