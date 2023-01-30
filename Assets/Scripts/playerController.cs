@@ -49,13 +49,14 @@ public class playerController : MonoBehaviour
         // Get input from the W, A, S, and D keys
         horizontal = 0f;
         vertical = 0f;
-        
+        // if w pressed
         if (Input.GetKey(KeyCode.W))
         {
             playsidewaysAnim = false;
             vertical = 1f;
             PlayAnimation();
         }
+        // if a pressed
         if (Input.GetKey(KeyCode.A))
         {
             playsidewaysAnim = true;
@@ -63,12 +64,14 @@ public class playerController : MonoBehaviour
             horizontal = -1f;
             PlayAnimation();
         }
+        // if s pressed
         if (Input.GetKey(KeyCode.S))
         {
             playsidewaysAnim = false;
             vertical = -1f;
             PlayAnimation();
         }
+        // if d pressed
         if (Input.GetKey(KeyCode.D))
         {
             playsidewaysAnim = true;
@@ -76,7 +79,7 @@ public class playerController : MonoBehaviour
             horizontal = 1f;
             PlayAnimation();
         }
-        
+        // if left clicked pressed
         if (Input.GetMouseButton(0))
         {
             moveToMouse = true;
