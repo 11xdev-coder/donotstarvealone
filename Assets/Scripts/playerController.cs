@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
@@ -10,20 +7,21 @@ public class playerController : MonoBehaviour
     public Animator animator;
     public Camera camera;
 
-    private Rigidbody2D rb;
+    private Rigidbody2D _rb;
     public Vector2 movement;
     public Vector2 targetPos;
     public Vector2 direction;
-    private bool moveToMouse = false;
+    public Vector2 mousePosition;
+    private bool _moveToMouse;
     
     public float horizontal;
     public float vertical;
-    public bool diagonal = false;
+    public bool diagonal;
     public bool playsidewaysAnim;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
     }
 
     private void PlayAnimation()
@@ -82,7 +80,7 @@ public class playerController : MonoBehaviour
         // if left clicked pressed
         if (Input.GetMouseButton(0))
         {
-            moveToMouse = true;
+            _moveToMouse = true;
         }
         else
         {
@@ -100,14 +98,20 @@ public class playerController : MonoBehaviour
         }
     }
 
+    public void MoveToMouse()
+    {
+        mousePosition = camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
+        
+    }
+
     private void FixedUpdate()
     {
-        if (moveToMouse)
+        if (_moveToMouse)
         {
             targetPos = camera.ScreenToWorldPoint(Input.mousePosition);
             direction = new Vector2(targetPos.x - transform.position.x, targetPos.y - transform.position.y);
             movement = direction.normalized;
         }
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        _rb.MovePosition(_rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 }
