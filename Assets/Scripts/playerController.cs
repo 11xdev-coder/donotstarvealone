@@ -11,7 +11,6 @@ public class playerController : MonoBehaviour
     public Vector2 movement;
     public Vector2 targetPos;
     public Vector2 direction;
-    public Vector2 mousePosition;
     private bool _moveToMouse;
     
     public float horizontal;
@@ -82,6 +81,10 @@ public class playerController : MonoBehaviour
         {
             _moveToMouse = true;
         }
+        if (Input.GetMouseButtonUp(0))
+        {
+            _moveToMouse = false;
+        }
         else
         {
             // idle check
@@ -94,24 +97,27 @@ public class playerController : MonoBehaviour
             {
                 diagonal = false;
             }
-            movement = new Vector2(horizontal, vertical);
         }
+        movement = new Vector2(horizontal, vertical);
     }
 
     public void MoveToMouse()
     {
-        mousePosition = camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
-        
+        targetPos = camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
+        Vector2 selfPos = new Vector2(transform.position.x, transform.position.y);
+        transform.Translate((targetPos - selfPos).normalized * moveSpeed  * Time.deltaTime);
     }
 
     private void FixedUpdate()
     {
         if (_moveToMouse)
         {
-            targetPos = camera.ScreenToWorldPoint(Input.mousePosition);
-            direction = new Vector2(targetPos.x - transform.position.x, targetPos.y - transform.position.y);
-            movement = direction.normalized;
+            MoveToMouse();
         }
-        _rb.MovePosition(_rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        else
+        {
+            _rb.MovePosition(_rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        }
+        
     }
 }
