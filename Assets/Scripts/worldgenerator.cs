@@ -118,7 +118,7 @@ public class worldgenerator : MonoBehaviour
                     {
                         if (x > width / partToSpawnPlayer && y > height / partToSpawnPlayer && !havePlayerSpawned)
                         {
-                            Instantiate(player, new Vector3(x, y, -1), Quaternion.identity);
+                            player.transform.position = new Vector3(x, y, -1);
                             havePlayerSpawned = true;
                         }
                             

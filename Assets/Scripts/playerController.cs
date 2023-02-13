@@ -3,7 +3,7 @@ using Vector2 = UnityEngine.Vector2;
 
 public class playerController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float moveSpeed = 1.5f;
     public Animator animator;
     public Camera camera;
 
@@ -99,25 +99,22 @@ public class playerController : MonoBehaviour
             }
         }
         movement = new Vector2(horizontal, vertical);
-    }
-
-    public void MoveToMouse()
-    {
-        targetPos = camera.GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
-        Vector2 selfPos = new Vector2(transform.position.x, transform.position.y);
-        transform.Translate((targetPos - selfPos).normalized * moveSpeed  * Time.deltaTime);
-    }
-
-    private void FixedUpdate()
-    {
+        
         if (_moveToMouse)
         {
             MoveToMouse();
         }
         else
         {
-            _rb.MovePosition(_rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+            _rb.MovePosition(_rb.position + movement * moveSpeed * Time.deltaTime);
         }
-        
+    }
+
+    public void MoveToMouse()
+    {
+        targetPos = camera.ScreenToWorldPoint(Input.mousePosition);
+        direction = (targetPos - (Vector2)transform.position).normalized;
+        Debug.DrawLine(targetPos, (Vector2)transform.position, Color.gray, 2f);
+        _rb.MovePosition((Vector2)transform.position + direction * moveSpeed * Time.deltaTime);
     }
 }

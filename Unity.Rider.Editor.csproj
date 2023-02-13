@@ -70,8 +70,8 @@
      <Compile Include="Library\PackageCache\com.unity.ide.rider@3.0.16\Rider\Editor\UnitTesting\RiderTestRunner.cs" />
      <Compile Include="Library\PackageCache\com.unity.ide.rider@3.0.16\Rider\Editor\ProjectGeneration\GUIDProvider.cs" />
      <Compile Include="Library\PackageCache\com.unity.ide.rider@3.0.16\Rider\Editor\ProjectGeneration\IFileIO.cs" />
-     <Compile Include="Library\PackageCache\com.unity.ide.rider@3.0.16\Rider\Editor\Util\FileSystemUtil.cs" />
      <Compile Include="Library\PackageCache\com.unity.ide.rider@3.0.16\Rider\Editor\UnitTesting\SyncTestRunCallback.cs" />
+     <Compile Include="Library\PackageCache\com.unity.ide.rider@3.0.16\Rider\Editor\Util\FileSystemUtil.cs" />
      <Compile Include="Library\PackageCache\com.unity.ide.rider@3.0.16\Rider\Editor\PluginSettings.cs" />
      <Compile Include="Library\PackageCache\com.unity.ide.rider@3.0.16\Rider\Editor\ProjectGeneration\SolutionGuidGenerator.cs" />
      <Compile Include="Library\PackageCache\com.unity.ide.rider@3.0.16\Rider\Editor\ProjectGeneration\ProjectGenerationFlag.cs" />
