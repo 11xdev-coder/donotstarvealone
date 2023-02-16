@@ -38,6 +38,7 @@ public class InventoryManager : MonoBehaviour
 
     public void Update()
     {
+        // setting active item cursor if me moving item
         itemCursor.SetActive(isMovingItem);
         itemCursor.transform.position = Input.mousePosition;
         if (isMovingItem)
