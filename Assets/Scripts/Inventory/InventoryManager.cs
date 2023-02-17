@@ -51,6 +51,14 @@ public class InventoryManager : MonoBehaviour
             else
                 BeginItemMove();
         }
+        
+        else if (Input.GetMouseButtonDown(1)) // right click
+        {
+            if (isMovingItem)
+                PutSingle();
+            else
+                TakeHalf();
+        }
     }
 
     #region Item Stuff
@@ -159,6 +167,22 @@ public class InventoryManager : MonoBehaviour
         Refresh();
         return true;
     }
+    
+    public bool TakeHalf()
+    {
+        originalSlot = FindClosestSlot();
+        if (originalSlot == null || originalSlot.GetItem() == null)
+            return false; // no item to take half from
+
+        movingSlot = new SlotClass(originalSlot.GetItem(), Mathf.CeilToInt(originalSlot.GetCount() / 2f)); // setting the moving slot to item we clicked on but with half count
+        originalSlot.SubCount(Mathf.CeilToInt(originalSlot.GetCount() / 2f)); // taking half from orig slot
+        if(originalSlot.GetCount() < 1)
+            originalSlot.Clear();
+        
+        isMovingItem = true;
+        Refresh();
+        return true;
+    }
 
     public bool EndItemMove()
     {
@@ -199,6 +223,31 @@ public class InventoryManager : MonoBehaviour
         }
 
         isMovingItem = false;
+        Refresh();
+        return true;
+    }
+    
+    public bool PutSingle()
+    {
+        originalSlot = FindClosestSlot();
+        
+        if (originalSlot == null)
+            return false;
+        
+        movingSlot.SubCount(1);
+        if (originalSlot.GetItem() != null && originalSlot.GetItem() == movingSlot.GetItem())
+            originalSlot.AddCount(1);
+        else
+            originalSlot.AddItem(movingSlot.GetItem(), 1);    
+        
+        if (movingSlot.GetCount() < 1)
+        {
+            isMovingItem = false;
+            movingSlot.Clear();
+        }
+        else
+            isMovingItem = true;
+        
         Refresh();
         return true;
     }
