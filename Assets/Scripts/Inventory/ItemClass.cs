@@ -7,8 +7,29 @@ public abstract class ItemClass : ScriptableObject
     public Sprite ItemSprite;
     public bool isStackable;
 
-    public abstract ItemClass GetItem();
-    public abstract ToolClass GetTool();
-    public abstract MiscClass GetMisc();
-    public abstract ConsumableClass GetConsumable();
+    public virtual void Use(playerController caller)
+    {
+        
+    }
+    
+    public virtual ItemClass GetItem()
+    {
+        return this;
+        
+    }
+
+    public virtual ToolClass GetTool()
+    {
+        return null; 
+    }
+
+    public virtual MiscClass GetMisc()
+    {
+        return null; 
+    }
+
+    public virtual ConsumableClass GetConsumable()
+    {
+        return null;
+    }
 }

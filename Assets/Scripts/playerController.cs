@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using Vector2 = UnityEngine.Vector2;
 
 public class playerController : MonoBehaviour
@@ -17,6 +18,8 @@ public class playerController : MonoBehaviour
     public float vertical;
     public bool diagonal;
     public bool playsidewaysAnim;
+
+    public InventoryManager inventory;
 
     private void Awake()
     {
@@ -79,7 +82,7 @@ public class playerController : MonoBehaviour
         // if left clicked pressed
         if (Input.GetMouseButton(0))
         {
-            _moveToMouse = true;
+            //_moveToMouse = true;
         }
         if (Input.GetMouseButtonUp(0))
         {
@@ -102,11 +105,19 @@ public class playerController : MonoBehaviour
         
         if (_moveToMouse)
         {
-            MoveToMouse();
+            //MoveToMouse();
         }
         else
         {
             _rb.MovePosition(_rb.position + movement * moveSpeed * Time.deltaTime);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            // use selected item
+            // TO-DO: MAKE TOOL-EQUIP SLOT
+            if(inventory.selectedItem != null)
+                inventory.selectedItem.Use(this);
         }
     }
 

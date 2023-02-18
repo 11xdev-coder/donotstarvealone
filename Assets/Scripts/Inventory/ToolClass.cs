@@ -1,6 +1,7 @@
+using System.Runtime.InteropServices;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Tool", menuName = "Item/Tool")]
+[CreateAssetMenu(fileName = "New Tool", menuName = "Item/Tool/Tool Base")]
 public class ToolClass : ItemClass
 {
     public ToolType toolType;
@@ -12,9 +13,11 @@ public class ToolClass : ItemClass
         Axe,
         Hammer
     }
-    
-    public override ItemClass GetItem() { return this; }
+
+    public override void Use(playerController caller)
+    {
+        base.Use(caller);
+        Debug.Log("Swing");
+    }
     public override ToolClass GetTool() { return this; }
-    public override MiscClass GetMisc() { return null; }
-    public override ConsumableClass GetConsumable() { return null; }
 }

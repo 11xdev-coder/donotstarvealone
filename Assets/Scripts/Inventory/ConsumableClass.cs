@@ -7,8 +7,11 @@ public class ConsumableClass : ItemClass
 {
     public float heals;
     
-    public override ItemClass GetItem() { return this; }
-    public override ToolClass GetTool() { return null; }
-    public override MiscClass GetMisc() { return null; }
     public override ConsumableClass GetConsumable() { return this; }
+    public override void Use(playerController caller)
+    {
+        base.Use(caller);
+        Debug.Log("Ate");
+        caller.inventory.UseSelected(this);
+    }
 }

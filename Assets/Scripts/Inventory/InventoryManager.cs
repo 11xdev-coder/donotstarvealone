@@ -11,6 +11,8 @@ public class InventoryManager : MonoBehaviour
 
     public GameObject[] slots;
 
+    public ItemClass selectedItem;
+
     [Header("Moving")] 
     public GameObject itemCursor;
     public SlotClass originalSlot;
@@ -59,6 +61,9 @@ public class InventoryManager : MonoBehaviour
             else
                 TakeHalf();
         }
+
+        if (FindClosestSlot() != null)
+            selectedItem = FindClosestSlot().GetItem();
     }
 
     #region Item Stuff
@@ -109,6 +114,12 @@ public class InventoryManager : MonoBehaviour
         
         Refresh();
         return true;
+    }
+
+    public void UseSelected(ItemClass item)
+    {
+        Remove(item);
+        Refresh();
     }
 
     public bool Remove(ItemClass item)
