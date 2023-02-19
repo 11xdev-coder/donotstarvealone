@@ -116,8 +116,8 @@ public class playerController : MonoBehaviour
         {
             // use selected item
             // TO-DO: MAKE TOOL-EQUIP SLOT
-            if(inventory.selectedItem != null)
-                inventory.selectedItem.Use(this);
+            if(inventory.equippedTool != null)
+                inventory.equippedTool.GetItem().Use(this);
         }
     }
 

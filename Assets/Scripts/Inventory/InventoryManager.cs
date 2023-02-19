@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
@@ -11,7 +12,8 @@ public class InventoryManager : MonoBehaviour
 
     public GameObject[] slots;
 
-    public ItemClass selectedItem;
+    public int equippedToolIndex;
+    public SlotClass equippedTool;
 
     [Header("Moving")] 
     public GameObject itemCursor;
@@ -34,7 +36,8 @@ public class InventoryManager : MonoBehaviour
 
         for (int i = 0; i < slotHolder.transform.childCount; i++)
             slots[i] = slotHolder.transform.GetChild(i).gameObject;
-        
+
+        equippedToolIndex = items.Length - 1;
         Refresh();
     }
 
@@ -45,13 +48,10 @@ public class InventoryManager : MonoBehaviour
         itemCursor.transform.position = Input.mousePosition;
         if (isMovingItem)
             itemCursor.GetComponent<Image>().sprite = movingSlot.GetItem().ItemSprite;
-        
-        if (Input.GetMouseButtonDown(0)) // left click
+
+        if (Input.GetMouseButtonDown(0))
         {
-            if (isMovingItem) // end item move
-                EndItemMove();
-            else
-                BeginItemMove();
+            ItemMoveOnLeftClick();
         }
         
         else if (Input.GetMouseButtonDown(1)) // right click
@@ -61,9 +61,27 @@ public class InventoryManager : MonoBehaviour
             else
                 TakeHalf();
         }
+        // if there is an item in tool slot
+        if (items[equippedToolIndex].GetItem() != null)
+        {
+            // check if it isnt a tool
+            if (items[equippedToolIndex].GetItem().GetTool() == null)
+            {
+                // start moving item so it wouldnt be put in to a slot
+                ItemMoveOnLeftClick();
+            }
+        }
 
-        if (FindClosestSlot() != null)
-            selectedItem = FindClosestSlot().GetItem();
+        if (items[equippedToolIndex].GetItem() != null)
+            equippedTool = items[equippedToolIndex];
+    }
+
+    public void ItemMoveOnLeftClick()
+    {
+        if (isMovingItem) // end item move
+            EndItemMove();
+        else
+            BeginItemMove();
     }
 
     #region Item Stuff
