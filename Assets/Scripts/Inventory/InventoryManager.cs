@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
+    public Object[] crafts;
+    
+    
     public GameObject slotHolder;
     
     public SlotClass[] startingItems;
@@ -24,6 +27,8 @@ public class InventoryManager : MonoBehaviour
 
     public void Start()
     {
+        crafts = Resources.LoadAll("Recipes", typeof(CraftingRecipeClass));
+        
         // set slots to amount of children that have "Inventory" panel
         slots = new GameObject[slotHolder.transform.childCount];
         items = new SlotClass[slots.Length];
@@ -41,8 +46,24 @@ public class InventoryManager : MonoBehaviour
         Refresh();
     }
 
+    public void Craft(CraftingRecipeClass craft)
+    {
+        if (craft.CanCraft(this))
+        {
+            craft.Craft(this);
+        }
+        else
+        {
+            Debug.Log("Cant craft lol adajsdjd");
+        }
+    }
+
     public void Update()
     {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Craft((CraftingRecipeClass)crafts[0]);
+        }
         // setting active item cursor if me moving item
         itemCursor.SetActive(isMovingItem);
         itemCursor.transform.position = Input.mousePosition;
@@ -136,17 +157,17 @@ public class InventoryManager : MonoBehaviour
 
     public void UseSelected(ItemClass item)
     {
-        Remove(item);
+        Remove(item, 1);
         Refresh();
     }
 
-    public bool Remove(ItemClass item)
+    public bool Remove(ItemClass item, int count)
     {
         SlotClass temp = Contains(item);
         if (temp != null)
         {
             if(temp.GetCount() > 1)
-                temp.SubCount(1);
+                temp.SubCount(count);
             else
             {
                 int removeSlotIndex = 0;
@@ -178,6 +199,17 @@ public class InventoryManager : MonoBehaviour
         }
 
         return null;
+    }
+    
+    public bool ContainsBool(ItemClass item, int count)
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i].GetItem() == item && items[i].GetCount() >= count)
+                return true;
+        }
+
+        return false;
     }
     
     #endregion

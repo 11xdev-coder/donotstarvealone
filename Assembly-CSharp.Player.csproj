@@ -48,6 +48,7 @@
      <Compile Include="Assets\Scripts\Inventory\FireInflictWeapon.cs" />
      <Compile Include="Assets\Scripts\worldgenerator.cs" />
      <Compile Include="Assets\Scripts\Inventory\ItemClass.cs" />
+     <Compile Include="Assets\Scripts\Inventory\CraftingRecipeClass.cs" />
      <Compile Include="Assets\Scripts\playerController.cs" />
      <Compile Include="Assets\Scripts\Inventory\ToolClass.cs" />
      <Compile Include="Assets\Scripts\Inventory\SlotClass.cs" />
@@ -113,6 +114,7 @@
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
      <Folder Include="Assets\TextMesh Pro\Resources" />
      <Folder Include="Library\PackageCache\com.unity.modules.screencapture@1.0.0" />
+     <Folder Include="Assets\Recipes" />
      <None Include="Library\PackageCache\com.unity.timeline@1.7.2\ValidationExceptions.json" />
      <None Include="Library\PackageCache\com.unity.collab-proxy@1.17.7\package.json" />
      <Folder Include="Library\PackageCache\com.unity.timeline@1.7.2" />
