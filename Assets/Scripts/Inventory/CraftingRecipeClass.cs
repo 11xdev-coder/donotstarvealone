@@ -11,7 +11,9 @@ public class CraftingRecipeClass : ScriptableObject
 
     public bool CanCraft(InventoryManager inv)
     {
-        for (int i = 0; i < inputItems.Length; i++)
+        if (inv.isInvFull()) return false;
+        
+            for (int i = 0; i < inputItems.Length; i++)
         {
             if (!inv.ContainsBool(inputItems[i].GetItem(), inputItems[i].GetCount()))
             {

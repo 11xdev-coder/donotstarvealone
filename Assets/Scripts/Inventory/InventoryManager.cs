@@ -97,6 +97,15 @@ public class InventoryManager : MonoBehaviour
             equippedTool = items[equippedToolIndex];
     }
 
+    public bool isInvFull()
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i].GetItem() == null) return false;
+        }
+        return true;
+    }
+
     public void ItemMoveOnLeftClick()
     {
         if (isMovingItem) // end item move
@@ -125,6 +134,11 @@ public class InventoryManager : MonoBehaviour
                 slots[i].transform.GetChild(0).GetComponent<Image>().enabled = false;
                 slots[i].transform.GetChild(0).GetComponent<Image>().sprite = null;
                 slots[i].transform.GetChild(1).GetComponent<Text>().text = "";
+            }
+
+            if (items[i].GetItem() != null)
+            {
+                if(items[i].GetCount() == 0) items[i].Clear();
             }
         }
     }
