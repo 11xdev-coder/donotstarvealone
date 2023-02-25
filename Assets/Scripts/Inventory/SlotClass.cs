@@ -5,8 +5,10 @@ using UnityEngine;
 [System.Serializable]
 public class SlotClass
 {
-    public ItemClass item;
-    public int count;
+    [field: SerializeField] public ItemClass item { get; private set;  } = null;
+    [field: SerializeField] public int count { get; private set; } = 0;
+
+    //public SlotType slotType;
     
     public SlotClass()
     {
@@ -22,20 +24,10 @@ public class SlotClass
 
     public SlotClass(SlotClass slot)
     {
-        item = slot.GetItem();
-        count = slot.GetCount();
+        item = slot.item;
+        count = slot.count;
     }
 
-    public ItemClass GetItem()
-    {
-        return item; 
-    }
-    
-    public int GetCount()
-    {
-        return count; 
-    }
-    
     public void AddCount(int add)
     {
         count += add; 

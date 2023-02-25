@@ -6,6 +6,7 @@ public abstract class ItemClass : ScriptableObject
     public string ItemName;
     public Sprite ItemSprite;
     public bool isStackable;
+    public int maxStack = 20;
 
     public virtual void Use(playerController caller)
     {

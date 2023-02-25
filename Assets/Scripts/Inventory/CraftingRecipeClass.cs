@@ -15,7 +15,7 @@ public class CraftingRecipeClass : ScriptableObject
         
             for (int i = 0; i < inputItems.Length; i++)
         {
-            if (!inv.ContainsBool(inputItems[i].GetItem(), inputItems[i].GetCount()))
+            if (!inv.ContainsBool(inputItems[i].item, inputItems[i].count))
             {
                 return false;
             }
@@ -27,9 +27,9 @@ public class CraftingRecipeClass : ScriptableObject
     {
         for (int i = 0; i < inputItems.Length; i++)
         {
-            inv.Remove(inputItems[i].GetItem(), inputItems[i].GetCount());
+            inv.Remove(inputItems[i].item, inputItems[i].count);
         }
 
-        inv.Add(outputItem.GetItem(), outputItem.GetCount());
+        inv.Add(outputItem.item, outputItem.count);
     }
 }

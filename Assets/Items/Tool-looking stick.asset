@@ -15,3 +15,4 @@ MonoBehaviour:
   ItemName: Tool-looking stick
   ItemSprite: {fileID: 21300000, guid: e47dcea722ad9ef49877b76618ff15d6, type: 3}
   isStackable: 1
+  maxStack: 10
