@@ -69,7 +69,11 @@ public class InventoryManager : MonoBehaviour
         itemCursor.SetActive(isMovingItem);
         itemCursor.transform.position = Input.mousePosition;
         if (isMovingItem)
-            itemCursor.GetComponent<Image>().sprite = movingSlot.item.ItemSprite;
+        {
+            itemCursor.GetComponentInChildren<Image>().sprite = movingSlot.item.ItemSprite;
+            itemCursor.GetComponentInChildren<Text>().text = movingSlot.count.ToString();
+        }
+            
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -331,8 +335,8 @@ public class InventoryManager : MonoBehaviour
         if (originalSlot == null)
             return false;
 
-        if (originalSlot.item != null && originalSlot.item != movingSlot.item ||
-            originalSlot.count >= originalSlot.item.maxStack)
+        if (originalSlot.item != null && 
+            (originalSlot.item != movingSlot.item || originalSlot.count >= originalSlot.item.maxStack))
             return false;
         
         movingSlot.SubCount(1);
