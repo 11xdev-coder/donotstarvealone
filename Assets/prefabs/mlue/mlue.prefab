@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6776549432209531629}
   - component: {fileID: 4730328541580573804}
   - component: {fileID: 6730677856030601245}
+  - component: {fileID: 9141836047373734915}
   - component: {fileID: 2953616171494367703}
   - component: {fileID: 4433990683640518281}
   - component: {fileID: 843045843684994102}
@@ -72,22 +73,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d9f23f469c8cb439d95e214382c14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  crafts: []
   slotHolder: {fileID: 0}
   startingItems: []
   items: []
   slots: []
-  selectedItem: {fileID: 0}
+  equippedToolIndex: 0
+  equippedTool:
+    <item>k__BackingField: {fileID: 0}
+    <count>k__BackingField: 0
   itemCursor: {fileID: 0}
   originalSlot:
-    item: {fileID: 0}
-    count: 0
+    <item>k__BackingField: {fileID: 0}
+    <count>k__BackingField: 0
   tempSlot:
-    item: {fileID: 0}
-    count: 0
+    <item>k__BackingField: {fileID: 0}
+    <count>k__BackingField: 0
   movingSlot:
-    item: {fileID: 0}
-    count: 0
+    <item>k__BackingField: {fileID: 0}
+    <count>k__BackingField: 0
   isMovingItem: 0
+  talker: {fileID: 0}
+--- !u!114 &9141836047373734915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722559217235082476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c38160adb4f87d4c882404bfba0403d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  talker: {fileID: 722559217235082476}
+  talkerText: {fileID: 0}
+  disappearDelay: 2
+  remainTime: 0
+  runTimer: 0
+  offset: {x: -100, y: 80, z: 1}
 --- !u!50 &2953616171494367703
 Rigidbody2D:
   serializedVersion: 4

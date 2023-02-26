@@ -24,6 +24,8 @@ public class InventoryManager : MonoBehaviour
     public SlotClass movingSlot;
     public bool isMovingItem;
 
+    public TalkerComponent talker;
+
     public void Start()
     {
         crafts = Resources.LoadAll("Recipes", typeof(CraftingRecipeClass));
@@ -55,7 +57,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Cant craft lol adajsdjd");
+            if (talker != null) talker.Say("Cant craft!");
         }
     }
 
@@ -71,21 +73,24 @@ public class InventoryManager : MonoBehaviour
         if (isMovingItem)
         {
             itemCursor.GetComponentInChildren<Image>().sprite = movingSlot.item.ItemSprite;
-            itemCursor.GetComponentInChildren<Text>().text = movingSlot.count.ToString();
+            if(movingSlot.item.isStackable)
+                itemCursor.GetComponentInChildren<Text>().text = movingSlot.count.ToString();
+            else
+                itemCursor.GetComponentInChildren<Text>().text = "";
         }
             
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            ItemMoveOnLeftClick();
-        }
         
-        else if (Input.GetMouseButtonDown(1)) // right click
+        if (Input.GetMouseButtonDown(0)) // left click
         {
-            if (isMovingItem)
-                PutSingle();
+            if (Input.GetKey(KeyCode.LeftControl)) // if we hold control
+            {
+                if (isMovingItem)
+                    PutSingle();
+                else
+                    TakeHalf();
+            }
             else
-                TakeHalf();
+                ItemMoveOnLeftClick();
         }
         // if there is an item in tool slot
         if (items[equippedToolIndex].item != null)
@@ -94,7 +99,6 @@ public class InventoryManager : MonoBehaviour
             if (items[equippedToolIndex].item.GetTool() == null)
             {
                 // start moving item so it wouldnt be put in to a slot
-                // fix a bug when you right click on tool slot the tool disappears
                 ItemMoveOnLeftClick();
             }
         }

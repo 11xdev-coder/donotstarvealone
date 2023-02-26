@@ -13,7 +13,7 @@ public class CraftingRecipeClass : ScriptableObject
     {
         if (inv.isInvFull()) return false;
         
-            for (int i = 0; i < inputItems.Length; i++)
+        for (int i = 0; i < inputItems.Length; i++)
         {
             if (!inv.ContainsBool(inputItems[i].item, inputItems[i].count))
             {

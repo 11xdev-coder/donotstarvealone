@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: PrimalPickaxe
   m_EditorClassIdentifier: 
   inputItems:
-  - item: {fileID: 11400000, guid: 6e5d279d405b1524dbd538987525c778, type: 2}
-    count: 2
-  - item: {fileID: 11400000, guid: 9e575718000f08b40829aff65d0e680d, type: 2}
-    count: 1
+  - <item>k__BackingField: {fileID: 11400000, guid: 6e5d279d405b1524dbd538987525c778, type: 2}
+    <count>k__BackingField: 2
+  - <item>k__BackingField: {fileID: 11400000, guid: 9e575718000f08b40829aff65d0e680d, type: 2}
+    <count>k__BackingField: 1
   outputItem:
-    item: {fileID: 11400000, guid: 45d4e04a77eff6747bf8e44ba31b4910, type: 2}
-    count: 1
+    <item>k__BackingField: {fileID: 11400000, guid: 45d4e04a77eff6747bf8e44ba31b4910, type: 2}
+    <count>k__BackingField: 1
