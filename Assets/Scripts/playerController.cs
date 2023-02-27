@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using Vector2 = UnityEngine.Vector2;
 
 public class playerController : MonoBehaviour
@@ -26,21 +26,33 @@ public class playerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
     }
 
+    private bool AnimationIsOver(Animator animator, int layer)
+    {
+        if (animator.GetCurrentAnimatorStateInfo(layer).normalizedTime > 1)
+        {
+            return true;
+        }
+        return false;
+    }
+    
     private void PlayAnimation()
     {
-        if (horizontal == 0 & vertical > 0)
-            if(!diagonal) animator.Play("walkbackward");
-        
-        if (horizontal == 0 & vertical < 0)
-            if(!diagonal) animator.Play("walkfront");
-        
-        if (vertical == 0 & horizontal > 0 || vertical != 0 & horizontal > 0) animator.Play("walkright");
-        if (vertical == 0 & horizontal < 0 || vertical != 0 & horizontal < 0) animator.Play("walkleft");
-
-        if (vertical == 0 & horizontal == 0)
+        if (AnimationIsOver(animator, 0))
         {
-            if (playsidewaysAnim) animator.Play("idlesideways");
-            else animator.Play("idle");
+            if (horizontal == 0 & vertical > 0)
+                if(!diagonal) animator.PlayInFixedTime("walkbackward");
+        
+            if (horizontal == 0 & vertical < 0)
+                if(!diagonal) animator.PlayInFixedTime("walkfront");
+        
+            if (vertical == 0 & horizontal > 0 || vertical != 0 & horizontal > 0) animator.PlayInFixedTime("walkright");
+            if (vertical == 0 & horizontal < 0 || vertical != 0 & horizontal < 0) animator.PlayInFixedTime("walkleft");
+
+            if (vertical == 0 & horizontal == 0)
+            {
+                if (playsidewaysAnim) animator.PlayInFixedTime("idlesideways");
+                else animator.PlayInFixedTime("idle");
+            }
         }
     }
 
@@ -82,7 +94,7 @@ public class playerController : MonoBehaviour
         // if left clicked pressed
         if (Input.GetMouseButton(0))
         {
-            //_moveToMouse = true;
+            _moveToMouse = true;
         }
         if (Input.GetMouseButtonUp(0))
         {
@@ -101,16 +113,14 @@ public class playerController : MonoBehaviour
                 diagonal = false;
             }
         }
-        movement = new Vector2(horizontal, vertical);
-        
+
         if (_moveToMouse)
         {
-            //MoveToMouse();
+            MoveToMouse();
         }
-        else
-        {
-            _rb.MovePosition(_rb.position + movement * moveSpeed * Time.deltaTime);
-        }
+        
+        movement = new Vector2(horizontal, vertical);
+        _rb.MovePosition(_rb.position + movement * moveSpeed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -122,9 +132,10 @@ public class playerController : MonoBehaviour
 
     public void MoveToMouse()
     {
-        targetPos = camera.ScreenToWorldPoint(Input.mousePosition);
-        direction = (targetPos - (Vector2)transform.position).normalized;
-        Debug.DrawLine(targetPos, (Vector2)transform.position, Color.gray, 2f);
-        _rb.MovePosition((Vector2)transform.position + direction * moveSpeed * Time.deltaTime);
+        targetPos = Input.mousePosition / 4;
+        direction = (targetPos - _rb.position).normalized;
+        horizontal = Math.Clamp(direction.x, -1, 1);
+        vertical = Math.Clamp(direction.y, -1, 1);
+        PlayAnimation();
     }
 }
