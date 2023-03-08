@@ -6,7 +6,6 @@ public class playerController : MonoBehaviour
 {
     public float moveSpeed = 1.5f;
     public Animator animator;
-    public Camera camera;
 
     private Rigidbody2D _rb;
     public Vector2 movement;
@@ -42,18 +41,18 @@ public class playerController : MonoBehaviour
             if (horizontal == 0 & vertical > 0)
                 if(!diagonal) animator.PlayInFixedTime("walkbackward");
         
-            if (horizontal == 0 & vertical < 0)
+            else if (horizontal == 0 & vertical < 0)
                 if(!diagonal) animator.PlayInFixedTime("walkfront");
         
-            if (vertical == 0 & horizontal > 0 || vertical != 0 & horizontal > 0) animator.PlayInFixedTime("walkright");
-            if (vertical == 0 & horizontal < 0 || vertical != 0 & horizontal < 0) animator.PlayInFixedTime("walkleft");
-
-            if (vertical == 0 & horizontal == 0)
-            {
-                if (playsidewaysAnim) animator.PlayInFixedTime("idlesideways");
-                else animator.PlayInFixedTime("idle");
-            }
+            if ((vertical == 0 & horizontal > 0) || (vertical != 0 & horizontal > 0)) animator.PlayInFixedTime("walkright");
+            else if ((vertical == 0 & horizontal < 0) || (vertical != 0 & horizontal < 0)) animator.PlayInFixedTime("walkleft");
         }
+    }
+
+    private void Idle()
+    {
+        if (playsidewaysAnim) animator.PlayInFixedTime("idlesideways");
+        else animator.PlayInFixedTime("idle");
     }
 
     private void Update()
@@ -102,10 +101,14 @@ public class playerController : MonoBehaviour
         }
         else
         {
-            // idle check
-            if (!Input.GetKey(KeyCode.A) | !Input.GetKey(KeyCode.W) | !Input.GetKey(KeyCode.S) | !Input.GetKey(KeyCode.D))
+            if (_moveToMouse)
             {
-                PlayAnimation();
+                MoveToMouse();
+            }
+            // idle check
+            if (horizontal <= 0 & vertical <= 0)
+            {
+                Idle();
             }
             // is s or d pressed
             if (Input.GetKeyUp(KeyCode.S) | Input.GetKeyUp(KeyCode.D))
@@ -114,10 +117,7 @@ public class playerController : MonoBehaviour
             }
         }
 
-        if (_moveToMouse)
-        {
-            MoveToMouse();
-        }
+        
         
         movement = new Vector2(horizontal, vertical);
         _rb.MovePosition(_rb.position + movement * moveSpeed * Time.deltaTime);
@@ -130,7 +130,7 @@ public class playerController : MonoBehaviour
         }
     }
 
-    public void MoveToMouse()
+    private void MoveToMouse()
     {
         targetPos = Input.mousePosition / 4;
         direction = (targetPos - _rb.position).normalized;

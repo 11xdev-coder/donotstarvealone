@@ -23,19 +23,22 @@ public class HoveringText : MonoBehaviour
         hoveringText.transform.position = Input.mousePosition + offset;
         if (inv.FindClosestSlot() != null && inv.FindClosestSlot().item != null)
         {
+            hoveringText.gameObject.SetActive(true);
             hoveringText.text = inv.FindClosestSlot().item.name;
         }
         else if (inv.isMovingItem && !IsPointerOverInvElement())
         {
+            hoveringText.gameObject.SetActive(true);
             hoveringText.text = "Drop";
         }
         else if(!IsPointerOverInvElement())
         {
+            hoveringText.gameObject.SetActive(true);
             hoveringText.text = "Walk";
         }
         else
         {
-            hoveringText.text = "";
+            hoveringText.gameObject.SetActive(false);
         }
     }
     
