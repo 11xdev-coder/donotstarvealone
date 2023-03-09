@@ -38,14 +38,16 @@ public class playerController : MonoBehaviour
     {
         if (AnimationIsOver(animator, 0))
         {
+            if (horizontal == 0 & vertical < 0)
+                if(!diagonal) animator.Play("walkfront");
+            
             if (horizontal == 0 & vertical > 0)
-                if(!diagonal) animator.PlayInFixedTime("walkbackward");
+                if(!diagonal) animator.Play("walkbackward");
         
-            else if (horizontal == 0 & vertical < 0)
-                if(!diagonal) animator.PlayInFixedTime("walkfront");
+            
         
-            if ((vertical == 0 & horizontal > 0) || (vertical != 0 & horizontal > 0)) animator.PlayInFixedTime("walkright");
-            else if ((vertical == 0 & horizontal < 0) || (vertical != 0 & horizontal < 0)) animator.PlayInFixedTime("walkleft");
+            if ((vertical == 0 & horizontal > 0) || (vertical != 0 & horizontal > 0)) animator.Play("walkright");
+            if ((vertical == 0 & horizontal < 0) || (vertical != 0 & horizontal < 0)) animator.PlayInFixedTime("walkleft");
         }
     }
 
@@ -64,7 +66,7 @@ public class playerController : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             playsidewaysAnim = false;
-            vertical = 1f;
+            vertical = 1;
             PlayAnimation();
         }
         // if a pressed
@@ -72,14 +74,7 @@ public class playerController : MonoBehaviour
         {
             playsidewaysAnim = true;
             diagonal = true;
-            horizontal = -1f;
-            PlayAnimation();
-        }
-        // if s pressed
-        if (Input.GetKey(KeyCode.S))
-        {
-            playsidewaysAnim = false;
-            vertical = -1f;
+            horizontal = -1;
             PlayAnimation();
         }
         // if d pressed
@@ -87,9 +82,18 @@ public class playerController : MonoBehaviour
         {
             playsidewaysAnim = true;
             diagonal = true;
-            horizontal = 1f;
+            horizontal = 1;
             PlayAnimation();
         }
+        // if s pressed
+        if (Input.GetKey(KeyCode.S))
+        {
+            playsidewaysAnim = false;
+            vertical = -1;
+            PlayAnimation();
+        }
+        
+        
         // if left clicked pressed
         if (Input.GetMouseButton(0))
         {
@@ -111,7 +115,7 @@ public class playerController : MonoBehaviour
                 Idle();
             }
             // is s or d pressed
-            if (Input.GetKeyUp(KeyCode.S) | Input.GetKeyUp(KeyCode.D))
+            if (Input.GetKeyUp(KeyCode.A) | Input.GetKeyUp(KeyCode.D))
             {
                 diagonal = false;
             }
