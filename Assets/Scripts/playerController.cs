@@ -47,7 +47,7 @@ public class playerController : MonoBehaviour
             
         
             if ((vertical == 0 & horizontal > 0) || (vertical != 0 & horizontal > 0)) animator.Play("walkright");
-            if ((vertical == 0 & horizontal < 0) || (vertical != 0 & horizontal < 0)) animator.PlayInFixedTime("walkleft");
+            if ((vertical == 0 & horizontal < 0) || (vertical != 0 & horizontal < 0)) animator.Play("walkleft");
         }
     }
 
@@ -110,7 +110,7 @@ public class playerController : MonoBehaviour
                 MoveToMouse();
             }
             // idle check
-            if (horizontal <= 0 & vertical <= 0)
+            if (horizontal == 0 & vertical == 0)
             {
                 Idle();
             }
@@ -136,7 +136,7 @@ public class playerController : MonoBehaviour
 
     private void MoveToMouse()
     {
-        targetPos = Input.mousePosition / 4;
+        targetPos = Input.mousePosition / 3;
         direction = (targetPos - _rb.position).normalized;
         horizontal = Math.Clamp(direction.x, -1, 1);
         vertical = Math.Clamp(direction.y, -1, 1);
