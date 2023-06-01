@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\playerController.cs" />
      <Compile Include="Assets\Scripts\Inventory\ToolClass.cs" />
      <Compile Include="Assets\Scripts\Inventory\SlotClass.cs" />
+     <Compile Include="Assets\Scripts\HealthComponent.cs" />
      <Compile Include="Assets\Scripts\Inventory\InventoryManager.cs" />
      <Compile Include="Assets\Scripts\Inventory\MiscClass.cs" />
      <Compile Include="Assets\Scripts\cameraFollow.cs" />

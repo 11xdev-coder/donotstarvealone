@@ -376,7 +376,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -646,6 +646,10 @@ PrefabInstance:
       propertyPath: m_CullingMode
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3417510395342704097, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 1495598887}
     - target: {fileID: 3417510395342704097, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
       propertyPath: hoveringText
       value: 
@@ -1131,6 +1135,7 @@ GameObject:
   - component: {fileID: 1343107854}
   - component: {fileID: 1343107853}
   - component: {fileID: 1343107852}
+  - component: {fileID: 1343107856}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1154,7 +1159,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!114 &1343107853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1223,6 +1228,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &1343107856
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343107851}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!224 &1347534119 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3800636725176523990, guid: a295d50b92edba54aa3bebad0e7ad9f0, type: 3}
@@ -1494,9 +1511,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1521,7 +1538,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884491784}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
 --- !u!1001 &1898845415
 PrefabInstance:
   m_ObjectHideFlags: 0

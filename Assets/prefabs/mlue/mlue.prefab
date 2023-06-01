@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4730328541580573804}
   - component: {fileID: 6730677856030601245}
   - component: {fileID: 9141836047373734915}
+  - component: {fileID: 2833940791527536960}
   - component: {fileID: 3417510395342704097}
   - component: {fileID: 2953616171494367703}
   - component: {fileID: 4433990683640518281}
@@ -53,7 +54,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 15
   animator: {fileID: 843045843684994102}
-  camera: {fileID: 0}
   movement: {x: 0, y: 0}
   targetPos: {x: 0, y: 0}
   direction: {x: 0, y: 0}
@@ -117,6 +117,20 @@ MonoBehaviour:
   remainTime: 0
   runTimer: 0
   offset: {x: -100, y: 80, z: 1}
+--- !u!114 &2833940791527536960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722559217235082476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37c615a5424d1ac4ebb122f0c13fbcf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 150
+  maxHealth: 150
 --- !u!114 &3417510395342704097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,7 +145,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoveringText: {fileID: 0}
   inv: {fileID: 6730677856030601245}
-  offset: {x: 0, y: 15, z: 0}
+  offset: {x: 0, y: 25, z: 0}
+  invLayer: 0
+  enemyLayer: 0
 --- !u!50 &2953616171494367703
 Rigidbody2D:
   serializedVersion: 4

@@ -192,10 +192,10 @@
      <Compile Include="Library\PackageCache\com.unity.timeline@1.7.2\Editor\Manipulators\Move\MoveItemModeMix.cs" />
      <Compile Include="Library\PackageCache\com.unity.timeline@1.7.2\Editor\Audio\AudioClipPropertiesDrawer.cs" />
      <Compile Include="Library\PackageCache\com.unity.timeline@1.7.2\Editor\treeview\AnimationTrackKeyDataSource.cs" />
-     <Compile Include="Library\PackageCache\com.unity.timeline@1.7.2\Editor\Window\Modes\TimelineDisabledMode.cs" />
      <Compile Include="Library\PackageCache\com.unity.timeline@1.7.2\Editor\Utilities\Scopes\LabelWidthScope.cs" />
      <Compile Include="Library\PackageCache\com.unity.timeline@1.7.2\Editor\treeview\PickerUtils.cs" />
      <Compile Include="Library\PackageCache\com.unity.timeline@1.7.2\Editor\Window\SequenceContext.cs" />
+     <Compile Include="Library\PackageCache\com.unity.timeline@1.7.2\Editor\Window\Modes\TimelineDisabledMode.cs" />
      <Compile Include="Library\PackageCache\com.unity.timeline@1.7.2\Editor\Audio\AudioPlayableAssetInspector.cs" />
      <Compile Include="Library\PackageCache\com.unity.timeline@1.7.2\Editor\TimelineSelection.cs" />
      <Compile Include="Library\PackageCache\com.unity.timeline@1.7.2\Editor\Utilities\Scopes\GUIMixedValueScope.cs" />
