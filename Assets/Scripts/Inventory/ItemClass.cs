@@ -8,7 +8,7 @@ public abstract class ItemClass : ScriptableObject
     public bool isStackable;
     public int maxStack = 20;
 
-    public virtual void Use(playerController caller)
+    public virtual void Use(PlayerController caller)
     {
         
     }

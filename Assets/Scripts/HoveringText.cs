@@ -11,8 +11,11 @@ public class HoveringText : MonoBehaviour
     public Vector3 offset;
     public Camera mainCamera;
     public GameObject marker;
+    public PlayerController player;
 
     public int invLayer;
+
+    public RaycastHit2D hit;
 
     public void Start()
     {
@@ -39,10 +42,17 @@ public class HoveringText : MonoBehaviour
         else if(!IsPointerOverInvElement())
         {
             hoveringText.gameObject.SetActive(true);
-            if(IsPointerOverComponent<HealthComponent>())
+            if (IsPointerOverComponent<HealthComponent>())
+            {
                 hoveringText.text = "Attack";
+                player.SetAttackTarget(hit.collider.gameObject);
+            }
             else
+            {
+                player.canMoveToMouse = true;
                 hoveringText.text = "Walk";
+            }
+                
         }
         else
         {
@@ -79,7 +89,7 @@ public class HoveringText : MonoBehaviour
 
         Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePos);
         
-        RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
+        hit = Physics2D.Raycast(worldPos, Vector2.zero);
         if (hit.collider != null)
         {
             if (hit.collider.gameObject.GetComponent<T>())

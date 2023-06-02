@@ -8,7 +8,7 @@ public class ConsumableClass : ItemClass
     public float heals;
     
     public override ConsumableClass GetConsumable() { return this; }
-    public override void Use(playerController caller)
+    public override void Use(PlayerController caller)
     {
         base.Use(caller);
         Debug.Log("Ate");
