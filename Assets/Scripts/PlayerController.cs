@@ -95,17 +95,43 @@ public class PlayerController : MonoBehaviour
             if (distance < 0.25f)
             {
                 ResetAttackTargetAndMoving();
+                
+                Vector3 toObjectVector = (target.transform.position - _rb.transform.position).normalized;
+    
+                // Since it's a 2D top-down view game, your forward vector will be along the Y axis
+                // Right vector will be along the X axis
+                Vector3 playerForward = _rb.transform.up;
+                Vector3 playerRight = _rb.transform.right;
+
+                float dotProductForward = Vector3.Dot(toObjectVector, playerForward);
+                float dotProductRight = Vector3.Dot(toObjectVector, playerRight);
+
+                if (dotProductForward > 0) {
+                    Debug.Log("front");
+                } else if (dotProductForward < 0) {
+                    Debug.Log("back");
+                } else {
+                    Debug.Log("not front or back");
+                }
+
+                if (dotProductRight > 0) {
+                    Debug.Log("right");
+                } else if (dotProductRight < 0) {
+                    Debug.Log("left");
+                } else {
+                    Debug.Log("not right or left");
+                }
             }
         }
     }
     
     public void SetAttackTarget(GameObject target)
     {
-        if (attackTarget == null)
-        {
+        // if (attackTarget == null)
+        // {
             attackTarget = target;
             canMoveToMouse = false;
-        }
+        // }
     }
 
     public void ResetAttackTargetAndMoving()
@@ -160,7 +186,11 @@ public class PlayerController : MonoBehaviour
             ResetAttackTargetAndMoving();
         }
         
-        
+        // if we want to move to target
+        if (_isMovingToTarget)
+        {
+            MoveTowardsTarget(attackTarget); // move
+        }
         
         // if left clicked pressed and we have an attacktarget
         if (Input.GetMouseButtonDown(0) && attackTarget != null)
@@ -170,7 +200,7 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetMouseButton(0))
         {
             _moveToMouse = true;
-            if(canMoveToMouse) MoveToMouse();
+            if(canMoveToMouse && !_isMovingToTarget) MoveToMouse();
         }
         else if (Input.GetMouseButtonUp(0))
         {
@@ -178,13 +208,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // if we want to move to target
-            if (_isMovingToTarget)
-            {
-                
-                MoveTowardsTarget(attackTarget); // move
-            }
-            
             // idle check
             if (horizontal == 0 & vertical == 0)
             {

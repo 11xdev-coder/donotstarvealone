@@ -45,7 +45,8 @@ public class HoveringText : MonoBehaviour
             if (IsPointerOverComponent<HealthComponent>())
             {
                 hoveringText.text = "Attack";
-                player.SetAttackTarget(hit.collider.gameObject);
+                if(Input.GetMouseButtonDown(0))
+                    player.SetAttackTarget(hit.collider.gameObject);
             }
             else
             {
