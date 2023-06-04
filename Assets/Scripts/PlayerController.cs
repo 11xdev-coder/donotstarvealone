@@ -96,31 +96,7 @@ public class PlayerController : MonoBehaviour
             {
                 ResetAttackTargetAndMoving();
                 
-                Vector3 toObjectVector = (target.transform.position - _rb.transform.position).normalized;
-    
-                // Since it's a 2D top-down view game, your forward vector will be along the Y axis
-                // Right vector will be along the X axis
-                Vector3 playerForward = _rb.transform.up;
-                Vector3 playerRight = _rb.transform.right;
-
-                float dotProductForward = Vector3.Dot(toObjectVector, playerForward);
-                float dotProductRight = Vector3.Dot(toObjectVector, playerRight);
-
-                if (dotProductForward > 0) {
-                    Debug.Log("front");
-                } else if (dotProductForward < 0) {
-                    Debug.Log("back");
-                } else {
-                    Debug.Log("not front or back");
-                }
-
-                if (dotProductRight > 0) {
-                    Debug.Log("right");
-                } else if (dotProductRight < 0) {
-                    Debug.Log("left");
-                } else {
-                    Debug.Log("not right or left");
-                }
+                Attack(target);
             }
         }
     }
@@ -140,6 +116,29 @@ public class PlayerController : MonoBehaviour
         canMoveToMouse = true;
         attackTarget = null;
         _isMovingToTarget = false;
+    }
+
+    public void Attack(GameObject target)
+    {
+        Transform rbTransform = _rb.transform;
+        Vector3 toObjectVector = (target.transform.position - rbTransform.position).normalized;
+    
+        // Since it's a 2D top-down view game, your forward vector will be along the Y axis
+        // Right vector will be along the X axis
+        Vector3 playerForward = rbTransform.up;
+        Vector3 playerRight = rbTransform.right;
+
+        float dotProductForward = Vector3.Dot(toObjectVector, playerForward);
+        float dotProductRight = Vector3.Dot(toObjectVector, playerRight);
+
+        if (dotProductForward > 0) Debug.Log("front");
+        else if (dotProductForward < 0) Debug.Log("back");
+        else Debug.Log("not front or back");
+        
+
+        if (dotProductRight > 0) Debug.Log("right");
+         else if (dotProductRight < 0) Debug.Log("left");
+        else Debug.Log("not right or left");
     }
 
     private void Update()
