@@ -143,6 +143,7 @@
      <None Include="Library\PackageCache\com.unity.ide.rider@3.0.16\package.json" />
      <Folder Include="Assets\prefabs\tiles" />
      <None Include="Library\PackageCache\com.unity.modules.video@1.0.0\package.json" />
+     <Folder Include="Assets\Animations\mlue\attack" />
      <Folder Include="Assets\prefabs\mlue" />
      <None Include="Library\PackageCache\com.unity.test-framework@1.1.33\package.json" />
      <Folder Include="Library\PackageCache\com.unity.modules.unityanalytics@1.0.0" />
@@ -197,6 +198,7 @@
      <Folder Include="Assets\Scripts\Inventory" />
      <Folder Include="Library\PackageCache\com.unity.toolchain.win-x86_64-linux-x86_64@2.0.4" />
      <Folder Include="Assets\TextMesh Pro\Resources\Style Sheets" />
+     <Folder Include="Assets\Animations\mlue\idle" />
      <Folder Include="Assets\TextMesh Pro\Fonts" />
      <None Include="Library\PackageCache\com.unity.modules.vehicles@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.ai.navigation@1.1.1\EditorResources\Overlay" />
@@ -262,6 +264,7 @@
      <None Include="Library\PackageCache\com.unity.modules.unitywebrequest@1.0.0\package.json" />
      <None Include="Library\PackageCache\com.unity.modules.uielements@1.0.0\package.json" />
      <None Include="Library\PackageCache\com.unity.burst@1.7.4\package.json" />
+     <Folder Include="Assets\Animations\mlue\walk" />
      <Folder Include="Library\PackageCache\com.unity.modules.unitywebrequesttexture@1.0.0" />
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne.json" />
      <Folder Include="Library\PackageCache\com.unity.ugui@1.0.0" />
