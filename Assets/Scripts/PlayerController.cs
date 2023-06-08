@@ -18,7 +18,9 @@ public class PlayerController : MonoBehaviour
     private bool _moveToMouse;
     public bool canMoveToMouse;
     private bool _isMovingToTarget;
-    public Camera mainCamera;
+    private bool _isAttacking;
+    private float dotProductForward;
+    private float dotProductRight;
     
     [Header("Animation")]
     public float horizontal;
@@ -39,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     private bool AnimationIsOver(Animator animatorParam, int layer)
     {
-        if (animatorParam.GetCurrentAnimatorStateInfo(layer).normalizedTime > 1)
+        if (animatorParam.GetCurrentAnimatorStateInfo(layer).normalizedTime >= 1)
         {
             return true;
         }
@@ -65,8 +67,11 @@ public class PlayerController : MonoBehaviour
 
     private void Idle()
     {
-        if (_playsidewaysIdleAnim) animator.PlayInFixedTime("idlesideways");
-        else animator.PlayInFixedTime("idle");
+        if (!_isAttacking) // no conflicts with attack animation
+        {
+            if (_playsidewaysIdleAnim) animator.PlayInFixedTime("idlesideways");
+            else animator.PlayInFixedTime("idle");
+        }
     }
 
     private void MoveTowardsTarget(GameObject target)
@@ -103,22 +108,20 @@ public class PlayerController : MonoBehaviour
     
     public void SetAttackTarget(GameObject target)
     {
-        // if (attackTarget == null)
-        // {
-            attackTarget = target;
-            canMoveToMouse = false;
-        // }
+        attackTarget = target;
+        canMoveToMouse = false;
     }
 
-    public void ResetAttackTargetAndMoving()
+    private void ResetAttackTargetAndMoving()
     {
         // reset attack target and set that we can move to mouse
         canMoveToMouse = true;
         attackTarget = null;
         _isMovingToTarget = false;
+        _isAttacking = false;
     }
 
-    public void Attack(GameObject target)
+    private void Attack(GameObject target)
     {
         Transform rbTransform = _rb.transform;
         Vector3 toObjectVector = (target.transform.position - rbTransform.position).normalized;
@@ -128,17 +131,38 @@ public class PlayerController : MonoBehaviour
         Vector3 playerForward = rbTransform.up;
         Vector3 playerRight = rbTransform.right;
 
-        float dotProductForward = Vector3.Dot(toObjectVector, playerForward);
-        float dotProductRight = Vector3.Dot(toObjectVector, playerRight);
+        dotProductForward = Vector3.Dot(toObjectVector, playerForward);
+        dotProductRight = Vector3.Dot(toObjectVector, playerRight);
 
-        if (dotProductForward > 0) Debug.Log("front");
-        else if (dotProductForward < 0) Debug.Log("back");
-        else Debug.Log("not front or back");
+        _isAttacking = true;
+    }
+
+    private void PlayAttackAnimation(float attackDotProductForward, float attackDotProductRight)
+    {
+        if (AnimationIsOver(animator, 0))
+        {
+            if (attackDotProductRight > 0)
+            {
+                print("abobu");
+                animator.Play("attackright");
+            }
+            else if (attackDotProductRight < 0)
+            {
+                print("abobu");
+                animator.Play("attackleft");
+            }
         
-
-        if (dotProductRight > 0) Debug.Log("right");
-         else if (dotProductRight < 0) Debug.Log("left");
-        else Debug.Log("not right or left");
+            if (attackDotProductForward > 0)
+            {
+                print("abobu");
+                animator.Play("attackfront");
+            }
+            else if (attackDotProductForward < 0 )
+            {
+                print("abobu");
+                animator.Play("attackbackward");
+            }
+        }
     }
 
     private void Update()
@@ -189,6 +213,11 @@ public class PlayerController : MonoBehaviour
         if (_isMovingToTarget)
         {
             MoveTowardsTarget(attackTarget); // move
+        }
+
+        if (_isAttacking)
+        {
+            PlayAttackAnimation(dotProductForward, dotProductRight);
         }
         
         // if left clicked pressed and we have an attacktarget
