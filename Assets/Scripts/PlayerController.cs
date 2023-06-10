@@ -135,6 +135,17 @@ public class PlayerController : MonoBehaviour
         dotProductRight = Vector3.Dot(toObjectVector, playerRight);
 
         _isAttacking = true;
+
+        try
+        {
+            // item in hand
+            target.GetComponent<HealthComponent>().TakeDamage(inventory.equippedTool.item.damage);
+        }
+        catch
+        {
+            // nothing in hand
+            target.GetComponent<HealthComponent>().TakeDamage(5);
+        }
     }
 
     private void PlayAttackAnimation(float attackDotProductForward, float attackDotProductRight)

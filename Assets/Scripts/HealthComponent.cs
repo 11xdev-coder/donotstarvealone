@@ -22,6 +22,7 @@ public class HealthComponent : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         Health -= dmg;
+        Console.WriteLine($"{gameObject.name} took {dmg} damage");
 
         if (Health <= 0)
         {
