@@ -833,7 +833,8 @@ PrefabInstance:
       propertyPath: talkerText
       value: 
       objectReference: {fileID: 1262873241}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1113132775396637576, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

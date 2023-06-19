@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Assertions.Must;
 using Vector2 = UnityEngine.Vector2;
 
 public class PlayerController : MonoBehaviour
@@ -19,14 +19,13 @@ public class PlayerController : MonoBehaviour
     public bool canMoveToMouse;
     private bool _isMovingToTarget;
     private bool _isAttacking;
-    private float dotProductForward;
-    private float dotProductRight;
+    private float _dotProductForward;
+    private float _dotProductRight;
     
     [Header("Animation")]
     public float horizontal;
     public float vertical;
-    private bool _diagonal;
-    private bool _playsidewaysIdleAnim;
+    public bool animLocked;
     
     [Header("Attacking thingies")]
     public GameObject attackTarget;
@@ -39,38 +38,18 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    private bool AnimationIsOver(Animator animatorParam, int layer)
+    private void UpdateWalkNIdleAnimation()
     {
-        if (animatorParam.GetCurrentAnimatorStateInfo(layer).normalizedTime >= 1)
+        if (!animLocked)
         {
-            return true;
-        }
-        return false;
-    }
-    
-    private void PlayAnimation()
-    {
-        if (AnimationIsOver(animator, 0))
-        {
-            if (horizontal == 0 & vertical < 0)
-                if(!_diagonal) animator.Play("walkfront");
-            
-            if (horizontal == 0 & vertical > 0)
-                if(!_diagonal) animator.Play("walkbackward");
-        
-            
-        
-            if ((vertical == 0 & horizontal > 0) || (vertical != 0 & horizontal > 0)) animator.Play("walkright");
-            if ((vertical == 0 & horizontal < 0) || (vertical != 0 & horizontal < 0)) animator.Play("walkleft");
-        }
-    }
-
-    private void Idle()
-    {
-        if (!_isAttacking) // no conflicts with attack animation
-        {
-            if (_playsidewaysIdleAnim) animator.PlayInFixedTime("idlesideways");
-            else animator.PlayInFixedTime("idle");
+            if (movement != Vector2.zero)
+            {
+                animator.Play("walk");
+            }
+            else
+            {
+                animator.Play("idle");
+            }
         }
     }
 
@@ -86,7 +65,7 @@ public class PlayerController : MonoBehaviour
             horizontal = direction.x;
             vertical = direction.y;
 
-            PlayAnimation();
+            UpdateWalkNIdleAnimation();
         }
         
         Collider2D targetCollider = target.GetComponent<Collider2D>();
@@ -131,9 +110,12 @@ public class PlayerController : MonoBehaviour
         Vector3 playerForward = rbTransform.up;
         Vector3 playerRight = rbTransform.right;
 
-        dotProductForward = Vector3.Dot(toObjectVector, playerForward);
-        dotProductRight = Vector3.Dot(toObjectVector, playerRight);
-
+        _dotProductForward = Vector3.Dot(toObjectVector, playerForward);
+        _dotProductRight = Vector3.Dot(toObjectVector, playerRight);
+        
+        animator.SetFloat("Attack X", _dotProductRight);
+        animator.SetFloat("Attack Y", _dotProductForward);
+        
         _isAttacking = true;
 
         try
@@ -150,30 +132,7 @@ public class PlayerController : MonoBehaviour
 
     private void PlayAttackAnimation(float attackDotProductForward, float attackDotProductRight)
     {
-        if (AnimationIsOver(animator, 0))
-        {
-            if (attackDotProductRight > 0)
-            {
-                print("abobu");
-                animator.Play("attackright");
-            }
-            else if (attackDotProductRight < 0)
-            {
-                print("abobu");
-                animator.Play("attackleft");
-            }
-        
-            if (attackDotProductForward > 0)
-            {
-                print("abobu");
-                animator.Play("attackfront");
-            }
-            else if (attackDotProductForward < 0 )
-            {
-                print("abobu");
-                animator.Play("attackbackward");
-            }
-        }
+        animator.Play("attack");
     }
 
     private void Update()
@@ -181,44 +140,30 @@ public class PlayerController : MonoBehaviour
         // Get input from the W, A, S, and D keys
         horizontal = 0f;
         vertical = 0f;
-        // if w pressed
+
         if (Input.GetKey(KeyCode.W))
         {
-            _playsidewaysIdleAnim = false;
             vertical = 1;
-            PlayAnimation();
-            
             ResetAttackTargetAndMoving();
         }
-        // if a pressed
-        if (Input.GetKey(KeyCode.A))
-        {
-            _playsidewaysIdleAnim = true;
-            _diagonal = true;
-            horizontal = -1;
-            PlayAnimation();
-            
-            ResetAttackTargetAndMoving();
-        }
-        // if d pressed
-        if (Input.GetKey(KeyCode.D))
-        {
-            _playsidewaysIdleAnim = true;
-            _diagonal = true;
-            horizontal = 1;
-            PlayAnimation();
-            
-            ResetAttackTargetAndMoving();
-        }
-        // if s pressed
         if (Input.GetKey(KeyCode.S))
         {
-            _playsidewaysIdleAnim = false;
             vertical = -1;
-            PlayAnimation();
-            
             ResetAttackTargetAndMoving();
         }
+        if (Input.GetKey(KeyCode.A))
+        {
+            horizontal = -1;
+            ResetAttackTargetAndMoving();
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            horizontal = 1;
+            ResetAttackTargetAndMoving();
+        }
+        
+
+        UpdateWalkNIdleAnimation();
         
         // if we want to move to target
         if (_isMovingToTarget)
@@ -228,7 +173,7 @@ public class PlayerController : MonoBehaviour
 
         if (_isAttacking)
         {
-            PlayAttackAnimation(dotProductForward, dotProductRight);
+            PlayAttackAnimation(_dotProductForward, _dotProductRight);
         }
         
         // if left clicked pressed and we have an attacktarget
@@ -245,25 +190,6 @@ public class PlayerController : MonoBehaviour
         {
             _moveToMouse = false;
         }
-        else
-        {
-            // idle check
-            if (horizontal == 0 & vertical == 0)
-            {
-                Idle();
-            }
-            // is s or d pressed
-            if (Input.GetKeyUp(KeyCode.A) | Input.GetKeyUp(KeyCode.D))
-            {
-                _diagonal = false;
-            }
-        }
-
-        // // if we can move to mouse and we are clicking then move
-        // if (_moveToMouse && _canMoveToMouse)
-        // {
-        //     MoveToMouse();
-        // }
         
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -271,11 +197,17 @@ public class PlayerController : MonoBehaviour
             if(inventory.equippedTool != null)
                 inventory.equippedTool.item.Use(this);
         }
-        
+
+        if (movement != Vector2.zero)
+        {
+            animator.SetFloat("Movement X", movement.x);
+            animator.SetFloat("Movement Y", movement.y);
+        }
         
         
         
         movement = new Vector2(horizontal, vertical);
+        
         _rb.MovePosition(_rb.position + movement * moveSpeed * Time.deltaTime);
     }
 
@@ -285,6 +217,6 @@ public class PlayerController : MonoBehaviour
         direction = (mousePos - (Vector3)_rb.position).normalized;
         horizontal = Math.Clamp(direction.x, -1, 1);
         vertical = Math.Clamp(direction.y, -1, 1);
-        PlayAnimation();
+        UpdateWalkNIdleAnimation();
     }
 }
