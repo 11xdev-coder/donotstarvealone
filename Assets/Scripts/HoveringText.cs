@@ -10,36 +10,37 @@ public class HoveringText : MonoBehaviour
     public InventoryManager inv;
     public Vector3 offset;
     public Camera mainCamera;
-    public GameObject marker;
     public PlayerController player;
 
-    public int invLayer;
+    public GraphicRaycaster m_Raycaster;
+    PointerEventData m_PointerEventData;
+    public EventSystem m_EventSystem;
 
     public RaycastHit2D hit;
-
-    public void Start()
-    {
-        invLayer = LayerMask.NameToLayer("inventory");
-        
-        marker = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        marker.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-    }
 
     // Update is called once per frame
     void Update()
     {
         hoveringText.transform.position = Input.mousePosition + offset;
+        // put checks without IsPoinerOverInvElement first
         if (inv.FindClosestSlot() != null && inv.FindClosestSlot().item != null)
         {
+            player.canMoveToMouse = false;
             hoveringText.gameObject.SetActive(true);
             hoveringText.text = inv.FindClosestSlot().item.name;
         }
-        else if (inv.isMovingItem && !IsPointerOverInvElement())
+        else if (inv.IsOverSlot())
+        {
+            player.canMoveToMouse = false;
+            hoveringText.gameObject.SetActive(true);
+            hoveringText.text = "";
+        }
+        else if (inv.isMovingItem && !inv.IsOverSlot())
         {
             hoveringText.gameObject.SetActive(true);
             hoveringText.text = "Drop";
         }
-        else if(!IsPointerOverInvElement())
+        else if(!inv.IsOverSlot())
         {
             hoveringText.gameObject.SetActive(true);
             if (IsPointerOverComponent<HealthComponent>())
@@ -61,29 +62,7 @@ public class HoveringText : MonoBehaviour
         }
     }
     
-    public bool IsPointerOverInvElement()
-    {
-        return IsPointerOverinvElementRayCast(GetEventSystemRaycastResults());
-    }
-    
-    public bool IsPointerOverComponent<T>() where T : Component
-    {
-        return IsPointerOverComponentRaycast<T>();
-    }
-    
-    //Returns 'true' if we touched or hovering on Unity UI element.
-    private bool IsPointerOverinvElementRayCast(List<RaycastResult> eventSystemRaycastResults)
-    {
-        for (int index = 0; index < eventSystemRaycastResults.Count; index++)
-        {
-            RaycastResult curRaycastResult = eventSystemRaycastResults[index];
-            if (curRaycastResult.gameObject.layer == invLayer)
-                return true;
-        }
-        return false;
-    }
-    
-    private bool IsPointerOverComponentRaycast<T>() where T : Component
+    private bool IsPointerOverComponent<T>() where T : Component
     {
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = -mainCamera.transform.position.z; // This value should be adjusted depending on the positions of your game objects
@@ -100,15 +79,5 @@ public class HoveringText : MonoBehaviour
         }
 
         return false;
-    }
-
-    //Gets all event system raycast results of current mouse or touch position.
-    static List<RaycastResult> GetEventSystemRaycastResults()
-    {
-        PointerEventData eventData = new PointerEventData(EventSystem.current);
-        eventData.position = Input.mousePosition;
-        List<RaycastResult> raycastResults = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventData, raycastResults);
-        return raycastResults;
     }
 }

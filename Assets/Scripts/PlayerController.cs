@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    private void UpdateWalkNIdleAnimation()
+    private void UpdateAnimations()
     {
         if (!animLocked)
         {
@@ -46,11 +46,20 @@ public class PlayerController : MonoBehaviour
             {
                 animator.Play("walk");
             }
+            else if (_isAttacking)
+            {
+                animator.Play("attack");
+            }
             else
             {
                 animator.Play("idle");
             }
         }
+    }
+
+    public void OnAttackEnd()
+    {
+        _isAttacking = false;
     }
 
     private void MoveTowardsTarget(GameObject target)
@@ -64,8 +73,8 @@ public class PlayerController : MonoBehaviour
             // moving
             horizontal = direction.x;
             vertical = direction.y;
-
-            UpdateWalkNIdleAnimation();
+            
+            UpdateAnimations();
         }
         
         Collider2D targetCollider = target.GetComponent<Collider2D>();
@@ -80,6 +89,7 @@ public class PlayerController : MonoBehaviour
             {
                 ResetAttackTargetAndMoving();
                 
+                _isAttacking = true;
                 Attack(target);
             }
         }
@@ -113,10 +123,8 @@ public class PlayerController : MonoBehaviour
         _dotProductForward = Vector3.Dot(toObjectVector, playerForward);
         _dotProductRight = Vector3.Dot(toObjectVector, playerRight);
         
-        animator.SetFloat("Attack X", _dotProductRight);
-        animator.SetFloat("Attack Y", _dotProductForward);
-        
-        _isAttacking = true;
+        animator.SetFloat("Attack X", Mathf.Sign(_dotProductRight));
+        animator.SetFloat("Attack Y", Mathf.Sign(_dotProductForward));
 
         try
         {
@@ -128,11 +136,6 @@ public class PlayerController : MonoBehaviour
             // nothing in hand
             target.GetComponent<HealthComponent>().TakeDamage(5);
         }
-    }
-
-    private void PlayAttackAnimation(float attackDotProductForward, float attackDotProductRight)
-    {
-        animator.Play("attack");
     }
 
     private void Update()
@@ -163,33 +166,20 @@ public class PlayerController : MonoBehaviour
         }
         
 
-        UpdateWalkNIdleAnimation();
+        UpdateAnimations();
         
         // if we want to move to target
-        if (_isMovingToTarget)
-        {
-            MoveTowardsTarget(attackTarget); // move
-        }
+        if (_isMovingToTarget) MoveTowardsTarget(attackTarget); // move
 
-        if (_isAttacking)
-        {
-            PlayAttackAnimation(_dotProductForward, _dotProductRight);
-        }
-        
         // if left clicked pressed and we have an attacktarget
-        if (Input.GetMouseButtonDown(0) && attackTarget != null)
-        {
-            _isMovingToTarget = true;
-        }
+        if (Input.GetMouseButtonDown(0) && attackTarget != null) _isMovingToTarget = true;
         else if (Input.GetMouseButton(0))
         {
             _moveToMouse = true;
             if(canMoveToMouse && !_isMovingToTarget) MoveToMouse();
         }
         else if (Input.GetMouseButtonUp(0))
-        {
             _moveToMouse = false;
-        }
         
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -198,10 +188,15 @@ public class PlayerController : MonoBehaviour
                 inventory.equippedTool.item.Use(this);
         }
 
-        if (movement != Vector2.zero)
+        if (movement != Vector2.zero && !_isMovingToTarget)
         {
             animator.SetFloat("Movement X", movement.x);
             animator.SetFloat("Movement Y", movement.y);
+        }
+        else if (_isMovingToTarget)
+        {
+            animator.SetFloat("Movement X", Mathf.Sign(movement.x)); // -1, 0 or 1
+            animator.SetFloat("Movement Y", Mathf.Sign(movement.y));
         }
         
         
@@ -217,6 +212,6 @@ public class PlayerController : MonoBehaviour
         direction = (mousePos - (Vector3)_rb.position).normalized;
         horizontal = Math.Clamp(direction.x, -1, 1);
         vertical = Math.Clamp(direction.y, -1, 1);
-        UpdateWalkNIdleAnimation();
+        UpdateAnimations();
     }
 }

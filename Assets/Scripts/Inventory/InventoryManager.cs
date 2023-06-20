@@ -372,5 +372,16 @@ public class InventoryManager : MonoBehaviour
         return null;
     }
     
+    public bool IsOverSlot()
+    {
+        for (int s = 0; s < slots.Length; s++)
+        {
+            if (Vector2.Distance(slots[s].transform.position, Input.mousePosition) <= 65)
+                return true;
+        }
+
+        return false;
+    }
+    
     #endregion
 }
