@@ -1477,8 +1477,9 @@ MonoBehaviour:
   player: {fileID: 522898210}
   birchnutTree: {fileID: 7750068207470972085, guid: 88a61fec119037543aff7174d3f5441c, type: 3}
   pineTree: {fileID: 5957941118420886137, guid: 381c69051f9e978449ab81a9277a67f4, type: 3}
-  miniBoulder: {fileID: 5387719478794832004, guid: a95354cc321f8c24a82c22e19b0d3ada, type: 3}
+  miniBoulder: {fileID: 5387719478794832004, guid: f07c15d2e4411e941b7c4e54ce50ab4b, type: 3}
   rockOcean: {fileID: 3760209886624295797, guid: 0cada2eee32f5f94d9c8810e5a53b9a8, type: 3}
+  boulder: {fileID: 5387719478794832004, guid: a95354cc321f8c24a82c22e19b0d3ada, type: 3}
 --- !u!4 &1607024656
 Transform:
   m_ObjectHideFlags: 0

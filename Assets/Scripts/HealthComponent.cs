@@ -22,16 +22,17 @@ public class HealthComponent : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         Health -= dmg;
-        Console.WriteLine($"{gameObject.name} took {dmg} damage");
-
+        print($"{gameObject.name} took {dmg} damage");
+        
         if (Health <= 0)
         {
             Dead();
         }
+
     }
 
-    public void Dead()
+    private void Dead()
     {
-        Console.WriteLine($"{gameObject.name} ded");
+        Destroy(gameObject);
     }
 }

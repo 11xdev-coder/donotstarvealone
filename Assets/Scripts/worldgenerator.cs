@@ -27,6 +27,7 @@ public class worldgenerator : MonoBehaviour
     public GameObject pineTree;
     public GameObject miniBoulder;
     public GameObject rockOcean;
+    public GameObject boulder;
 
     private Dictionary<string, GameObject[]> objectsByBiome;
     private float[,] noiseValues;
@@ -38,7 +39,7 @@ public class worldgenerator : MonoBehaviour
         {
             {"Grassland", new GameObject[] {birchnutTree}},
             {"Forest", new GameObject[] {pineTree, miniBoulder}},
-            {"Rockyland", new GameObject[] {miniBoulder}},
+            {"Rockyland", new GameObject[] {miniBoulder, boulder}},
             {"Ocean", new GameObject[] {rockOcean}}
         };
         objectSpawnChancesByBiome = new Dictionary<string, Dictionary<string, float>>()
@@ -62,7 +63,8 @@ public class worldgenerator : MonoBehaviour
                 "Rockyland",
                 new Dictionary<string, float>()
                 {
-                    {"miniBoulder", 0.075f}
+                    {"miniBoulder", 0.075f},
+                    {"boulder", 0.005f}
                 }
             },
             {
