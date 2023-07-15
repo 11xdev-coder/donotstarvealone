@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7101894984632383216}
   - component: {fileID: 986669643722978058}
   - component: {fileID: 9173378737785853775}
+  - component: {fileID: -7049850345123243236}
   m_Layer: 7
   m_Name: miniBoulder
   m_TagString: Untagged
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 72
+  m_SortingOrder: 164
   m_Sprite: {fileID: 21300000, guid: 45c488b72677984409aff153f8e767dc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -130,3 +131,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1988661, y: 0.054459035}
   m_EdgeRadius: 0
+--- !u!114 &-7049850345123243236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5387719478794832004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37c615a5424d1ac4ebb122f0c13fbcf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 15
+  maxHealth: 15
+  doDrops: 0
+  doEnemySpawn: 1
+  doDeathParticles: 0
+  enemiesToSpawn:
+  - {fileID: 5387719478794832004}
+  deathParticles: {fileID: 0}

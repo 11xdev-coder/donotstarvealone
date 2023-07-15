@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Vector2 = UnityEngine.Vector2;
 
 public class PlayerController : MonoBehaviour
@@ -12,10 +13,11 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rb;
     public Vector2 movement;
     public Vector3 mousePos;
-
+    
+    [Header("Attacking")]
     public Vector3 targetPos;
     public Vector3 direction;
-    private bool _moveToMouse;
+    public bool moveToMouse;
     public bool canMoveToMouse;
     private bool _isMovingToTarget;
     private bool _isAttacking;
@@ -27,10 +29,16 @@ public class PlayerController : MonoBehaviour
     public float vertical;
     public bool animLocked;
     
+    [Header("Hovering")]
+    public Text hoveringText;
+    public Vector3 offset;
+    private RaycastHit2D _hit;
+    
     [Header("Attacking thingies")]
     public GameObject attackTarget;
 
     public InventoryManager inventory;
+    [FormerlySerializedAs("camera")] public Camera mainCamera;
 
     private void Awake()
     {
@@ -175,11 +183,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && attackTarget != null) _isMovingToTarget = true;
         else if (Input.GetMouseButton(0))
         {
-            _moveToMouse = true;
+            moveToMouse = true;
             if(canMoveToMouse && !_isMovingToTarget) MoveToMouse();
         }
         else if (Input.GetMouseButtonUp(0))
-            _moveToMouse = false;
+            moveToMouse = false;
         
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -204,6 +212,68 @@ public class PlayerController : MonoBehaviour
         movement = new Vector2(horizontal, vertical);
         
         _rb.MovePosition(_rb.position + movement * moveSpeed * Time.deltaTime);
+        
+        #region Hovering
+        
+        hoveringText.transform.position = Input.mousePosition + offset;
+        // put checks without IsPoinerOverInvElement first
+        if (inventory.FindClosestSlot() != null && inventory.FindClosestSlot().item != null)
+        {
+            canMoveToMouse = false;
+            hoveringText.gameObject.SetActive(true);
+            hoveringText.text = inventory.FindClosestSlot().item.name;
+        }
+        else if (inventory.IsOverSlot())
+        {
+            canMoveToMouse = false;
+            hoveringText.gameObject.SetActive(true);
+            hoveringText.text = "";
+        }
+        else if (inventory.isMovingItem && !inventory.IsOverSlot())
+        {
+            hoveringText.gameObject.SetActive(true);
+            hoveringText.text = "Drop";
+        }
+        else if(!inventory.IsOverSlot())
+        {
+            hoveringText.gameObject.SetActive(true);
+            if (IsPointerOverComponent<HealthComponent>())
+            {
+                hoveringText.text = "Attack";
+                SetAttackTarget(_hit.collider.gameObject);
+            }
+            else
+            {
+                canMoveToMouse = true;
+                hoveringText.text = "Walk";
+            }
+                
+        }
+        else
+        {
+            hoveringText.gameObject.SetActive(false);
+        }
+        
+        #endregion
+    }
+    
+    private bool IsPointerOverComponent<T>() where T : Component
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = -mainCamera.transform.position.z; // This value should be adjusted depending on the positions of your game objects
+
+        Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePosition);
+        
+        _hit = Physics2D.Raycast(worldPos, Vector2.zero);
+        if (_hit.collider != null)
+        {
+            if (_hit.collider.gameObject.GetComponent<T>())
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void MoveToMouse()

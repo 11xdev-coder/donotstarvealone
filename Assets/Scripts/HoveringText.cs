@@ -12,10 +12,6 @@ public class HoveringText : MonoBehaviour
     public Camera mainCamera;
     public PlayerController player;
 
-    public GraphicRaycaster m_Raycaster;
-    PointerEventData m_PointerEventData;
-    public EventSystem m_EventSystem;
-
     public RaycastHit2D hit;
 
     // Update is called once per frame

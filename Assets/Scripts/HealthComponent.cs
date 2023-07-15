@@ -1,30 +1,37 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthComponent : MonoBehaviour
 {
-    public int Health;
+    public int health;
     
     public int maxHealth;
+    
+    [Header("Do's")]
+    public bool doDrops;
+    public bool doEnemySpawn;
+    public bool doDeathParticles;
+    
+    [Header("Assignable")]
+    public GameObject[] enemiesToSpawn;
+    public ParticleSystem deathParticles;
 
     public void Awake()
     {
-        Health = maxHealth;
+        health = maxHealth;
     }
 
     public void Update()
     {
-        Health = Math.Clamp(Health, 0, maxHealth);
+        health = Math.Clamp(health, 0, maxHealth);
     }
 
     public void TakeDamage(int dmg)
     {
-        Health -= dmg;
+        health -= dmg;
         print($"{gameObject.name} took {dmg} damage");
         
-        if (Health <= 0)
+        if (health <= 0)
         {
             Dead();
         }
@@ -33,6 +40,13 @@ public class HealthComponent : MonoBehaviour
 
     private void Dead()
     {
+        if (doEnemySpawn)
+        {
+            foreach (GameObject enemy in enemiesToSpawn)
+            {
+                Instantiate(enemy, transform.position, Quaternion.identity);
+            }
+        }
         Destroy(gameObject);
     }
 }

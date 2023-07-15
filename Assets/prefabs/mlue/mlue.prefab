@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 4730328541580573804}
   - component: {fileID: 6730677856030601245}
   - component: {fileID: 9141836047373734915}
-  - component: {fileID: 2833940791527536960}
-  - component: {fileID: 3417510395342704097}
   - component: {fileID: 2953616171494367703}
   - component: {fileID: 4433990683640518281}
   - component: {fileID: 843045843684994102}
@@ -58,11 +56,20 @@ MonoBehaviour:
   mousePos: {x: 0, y: 0, z: 0}
   targetPos: {x: 0, y: 0, z: 0}
   direction: {x: 0, y: 0, z: 0}
+  moveToMouse: 0
   canMoveToMouse: 0
   horizontal: 0
   vertical: 0
+  animLocked: 0
+  attackX: AttackX
+  attackY: AttackY
+  movementX: MovementX
+  movementY: MovementY
+  hoveringText: {fileID: 0}
+  offset: {x: 0, y: 25, z: 0}
   attackTarget: {fileID: 0}
   inventory: {fileID: 6730677856030601245}
+  mainCamera: {fileID: 0}
 --- !u!114 &6730677856030601245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,39 +125,6 @@ MonoBehaviour:
   remainTime: 0
   runTimer: 0
   offset: {x: -100, y: 80, z: 1}
---- !u!114 &2833940791527536960
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 722559217235082476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37c615a5424d1ac4ebb122f0c13fbcf9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Health: 150
-  maxHealth: 150
---- !u!114 &3417510395342704097
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 722559217235082476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ab2333f3db267846bc5b057a343fe93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hoveringText: {fileID: 0}
-  inv: {fileID: 6730677856030601245}
-  offset: {x: 0, y: 25, z: 0}
-  mainCamera: {fileID: 0}
-  marker: {fileID: 0}
-  player: {fileID: 0}
-  invLayer: 0
 --- !u!50 &2953616171494367703
 Rigidbody2D:
   serializedVersion: 4
@@ -234,8 +208,8 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: cffdf1a29ba908c4296ea7f3b93682a0, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 1
+  m_CullingMode: 2
+  m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
