@@ -436,8 +436,8 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 24590000
-      m_LastClickedID: 22820
+      m_SelectedIDs: 
+      m_LastClickedID: 0
       m_ExpandedIDs: 18fbffff56590000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -830,9 +830,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 150.70647, y: 138.33655, z: -0.16434637}
+    m_Target: {x: 119.373055, y: 85.03689, z: 4.923673}
     speed: 2
-    m_Value: {x: 150.70647, y: 138.33655, z: -0.16434637}
+    m_Value: {x: 119.373055, y: 85.03689, z: 4.923673}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -882,9 +882,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 28.46658
+    m_Target: 5.227181
     speed: 2
-    m_Value: 28.46658
+    m_Value: 5.227181
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -986,7 +986,7 @@ MonoBehaviour:
       y: 21
       width: 1258
       height: 688.2857
-    m_Scale: {x: 0.99999994, y: 0.99999994}
+    m_Scale: {x: 0.9999999, y: 0.99999994}
     m_Translation: {x: 629, y: 344.14285}
     m_MarginLeft: 0
     m_MarginRight: 0
@@ -1066,9 +1066,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 33.285706}
-    m_SelectedIDs: e65a0000
-    m_LastClickedID: 23270
-    m_ExpandedIDs: 00000000b45a0000b65a0000b85a000000ca9a3b
+    m_SelectedIDs: e25a0000
+    m_LastClickedID: 23266
+    m_ExpandedIDs: 00000000b05a0000b25a0000b45a0000f05a0000e078000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1096,7 +1096,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000b45a0000b65a0000b85a0000
+    m_ExpandedIDs: 00000000b05a0000b25a0000b45a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1124,7 +1124,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000de5a0000
+    m_ExpandedInstanceIDs: c6230000de5a000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1220,7 +1220,7 @@ MonoBehaviour:
     m_SaveData: []
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 22820
+  m_LastSelectedObjectID: -3298898
 --- !u!114 &19
 MonoBehaviour:
   m_ObjectHideFlags: 52

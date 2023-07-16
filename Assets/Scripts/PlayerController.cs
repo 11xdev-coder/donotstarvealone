@@ -113,9 +113,9 @@ public class PlayerController : MonoBehaviour
     {
         // reset attack target and set that we can move to mouse
         canMoveToMouse = true;
-        attackTarget = null;
         _isMovingToTarget = false;
         _isAttacking = false;
+        attackTarget = null;
     }
 
     private void Attack(GameObject target)
@@ -137,12 +137,17 @@ public class PlayerController : MonoBehaviour
         try
         {
             // item in hand
-            target.GetComponent<HealthComponent>().TakeDamage(inventory.equippedTool.item.damage);
+            if(target.GetComponent<HealthComponent>() != null)
+                target.GetComponent<HealthComponent>().TakeDamage(inventory.equippedTool.item.damage);
+            
+            if(target.GetComponent<MineableComponent>() != null)
+                target.GetComponent<MineableComponent>().TakeDamage(inventory.equippedTool.item.damage);
         }
         catch
         {
             // nothing in hand
-            target.GetComponent<HealthComponent>().TakeDamage(5);
+            if(target.GetComponent<HealthComponent>() != null)
+                target.GetComponent<HealthComponent>().TakeDamage(5);
         }
     }
 
@@ -242,10 +247,19 @@ public class PlayerController : MonoBehaviour
                 hoveringText.text = "Attack";
                 SetAttackTarget(_hit.collider.gameObject);
             }
+            else if (IsPointerOverComponent<MineableComponent>())
+            {
+                if (_hit.collider.GetComponent<MineableComponent>().DoCanMineCheck(inventory)) // if we can mine the object
+                {
+                    hoveringText.text = _hit.collider.GetComponent<MineableComponent>().onHoverText; // change the text to one that assigned
+                    SetAttackTarget(_hit.collider.gameObject); // set attack target and ready to attack
+                }
+            }
             else
             {
                 canMoveToMouse = true;
                 hoveringText.text = "Walk";
+                if(!_isMovingToTarget && !_isAttacking) ResetAttackTargetAndMoving();
             }
                 
         }
@@ -263,7 +277,7 @@ public class PlayerController : MonoBehaviour
         mousePosition.z = -mainCamera.transform.position.z; // This value should be adjusted depending on the positions of your game objects
 
         Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePosition);
-        
+
         _hit = Physics2D.Raycast(worldPos, Vector2.zero);
         if (_hit.collider != null)
         {
