@@ -52,15 +52,17 @@
      <Compile Include="Assets\Scripts\Inventory\MiscClass.cs" />
      <Compile Include="Assets\Scripts\cameraFollow.cs" />
      <Compile Include="Assets\Scripts\TalkerComponent.cs" />
+     <Compile Include="Assets\Scripts\AI\TreeNutterAI.cs" />
      <Compile Include="Assets\Scripts\Inventory\ConsumableClass.cs" />
      <Compile Include="Assets\Scripts\Inventory\FireInflictWeapon.cs" />
-     <Compile Include="Assets\Scripts\worldgenerator.cs" />
      <Compile Include="Assets\Scripts\Inventory\ItemClass.cs" />
      <Compile Include="Assets\Scripts\Inventory\ToolClass.cs" />
      <Compile Include="Assets\Scripts\HealthComponent.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\WorldGenerator.cs" />
      <Compile Include="Assets\Scripts\HoveringText.cs" />
      <Folder Include="Assets" />
+     <Folder Include="Assets\Sprites\objects\miniBoulder" />
      <None Include="Library\PackageCache\com.unity.modules.subsystems@1.0.0\package.json" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Library\PackageCache\com.unity.modules.jsonserialize@1.0.0\package.json" />
@@ -73,6 +75,7 @@
      <Folder Include="Assets\Sprites\tiles" />
      <Folder Include="Assets\TextMesh Pro\Sprites" />
      <None Include="Library\PackageCache\com.unity.modules.unitywebrequesttexture@1.0.0\package.json" />
+     <Folder Include="Assets\Sprites\Entities" />
      <None Include="Library\PackageCache\com.unity.inputsystem@1.4.4\package.json" />
      <None Include="Library\PackageCache\com.unity.modules.ai@1.0.0\package.json" />
      <None Include="Library\PackageCache\com.unity.collections@1.2.4\Unity.Collections.LowLevel.ILSupport\README.txt" />
@@ -89,6 +92,7 @@
      <Folder Include="Library\PackageCache\com.unity.2d.pixel-perfect@5.0.2\Tests" />
      <None Include="Library\PackageCache\com.unity.2d.pixel-perfect@5.0.2\package.json" />
      <Folder Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Editor Resources" />
+     <Folder Include="Assets\Scripts\AI" />
      <Folder Include="Assets\prefabs\objects" />
      <Folder Include="Library\PackageCache\com.unity.2d.common@8.0.1\Tests" />
      <None Include="Library\PackageCache\com.unity.modules.assetbundle@1.0.0\package.json" />
@@ -105,6 +109,7 @@
      <None Include="Library\PackageCache\com.unity.timeline@1.7.2\package.json" />
      <Folder Include="Assets\Scenes" />
      <Folder Include="Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom" />
+     <Folder Include="Assets\Animations\TreeNutter" />
      <None Include="Library\PackageCache\com.unity.toolchain.win-x86_64-linux-x86_64@2.0.4\package.json" />
      <Folder Include="Library\PackageCache\com.unity.collections@1.2.4\Unity.Collections.LowLevel.ILSupport" />
      <Folder Include="Assets\TextMesh Pro\Resources\Fonts &amp; Materials" />
@@ -141,6 +146,7 @@
      <Folder Include="Library\PackageCache\com.unity.modules.unitywebrequest@1.0.0" />
      <None Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\ValidationExceptions.json" />
      <Folder Include="Library\PackageCache\com.unity.modules.unitywebrequestassetbundle@1.0.0" />
+     <Folder Include="Assets\prefabs\Particles" />
      <Folder Include="Assets\TextMesh Pro" />
      <None Include="Library\PackageCache\com.unity.modules.unityanalytics@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.modules.subsystems@1.0.0" />
@@ -163,6 +169,7 @@
      <Folder Include="Library\PackageCache\com.unity.ai.navigation@1.1.1" />
      <None Include="Library\PackageCache\com.unity.modules.particlesystem@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.modules.wind@1.0.0" />
+     <Folder Include="Assets\SFX\miniBoulder" />
      <None Include="Library\PackageCache\com.unity.modules.physics2d@1.0.0\package.json" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
      <None Include="Library\PackageCache\com.unity.modules.vr@1.0.0\package.json" />
@@ -199,6 +206,7 @@
      <Folder Include="Assets\TextMesh Pro\Shaders" />
      <Folder Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Editor Resources\Gizmos" />
      <None Include="Library\PackageCache\com.unity.modules.audio@1.0.0\package.json" />
+     <Folder Include="Assets\Animations\TreeNutter\Walk" />
      <None Include="Library\PackageCache\com.unity.modules.physics@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.collab-proxy@1.17.7" />
      <Folder Include="Assets\Scripts\Inventory" />
@@ -244,6 +252,7 @@
      <Folder Include="Assets\Sprites\mlue" />
      <Folder Include="Library\PackageCache\com.unity.ide.visualstudio@2.0.16" />
      <None Include="Library\PackageCache\com.unity.collections@1.2.4\package.json" />
+     <Folder Include="Assets\prefabs\Entities" />
      <None Include="Library\PackageCache\com.unity.modules.androidjni@1.0.0\package.json" />
      <Folder Include="Assets\Sprites\items" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
@@ -251,6 +260,7 @@
      <Folder Include="Library\PackageCache\com.unity.modules.ai@1.0.0" />
      <None Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\PackageConversionData_Assets.json" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
+     <Folder Include="Assets\SFX" />
      <Folder Include="Library\PackageCache\com.unity.2d.tilemap@1.0.0" />
      <None Include="Library\PackageCache\com.unity.2d.spriteshape@9.0.1\package.json" />
      <None Include="Library\PackageCache\com.unity.mathematics@1.2.6\ValidationExceptions.json" />

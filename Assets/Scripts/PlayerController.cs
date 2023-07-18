@@ -72,11 +72,14 @@ public class PlayerController : MonoBehaviour
 
     private void MoveTowardsTarget(GameObject target)
     {
+        Collider2D targetCollider = target.GetComponent<Collider2D>();
+        Collider2D selfCollider = GetComponent<Collider2D>();
+        
         if (_isMovingToTarget)
         {
             // calculating direction
             canMoveToMouse = false;
-            targetPos = target.transform.position;
+            targetPos = targetCollider.bounds.center + target.GetComponent<MineableComponent>().mineOffset; // getting center of the collider and adding offset
             direction = (targetPos - (Vector3)_rb.position).normalized;
             // moving
             horizontal = direction.x;
@@ -84,9 +87,6 @@ public class PlayerController : MonoBehaviour
             
             UpdateAnimations();
         }
-        
-        Collider2D targetCollider = target.GetComponent<Collider2D>();
-        Collider2D selfCollider = GetComponent<Collider2D>();
         
         // calculating distance between target's center and self's collider's closest bound
         if (targetCollider != null && selfCollider != null)

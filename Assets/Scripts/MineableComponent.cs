@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MineableComponent : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class MineableComponent : MonoBehaviour
     public ParticleSystem deathParticles;
     public Sprite[] damagedSprites;
     public AudioClip hitSound;
+    public Vector3 mineOffset;
 
 
     private AudioSource _audioSource;
@@ -54,8 +56,11 @@ public class MineableComponent : MonoBehaviour
     {
         if (doEnemySpawn)
         {
+            float spawnRadius = 1f; // Adjust this value to the desired spawn radius around the original position
             foreach (GameObject enemy in enemiesToSpawn)
             {
+                //Vector2 randomPosition2D = Random.insideUnitCircle * spawnRadius;
+               // Vector3 spawnPosition = transform.position + new Vector3(randomPosition2D.x, randomPosition2D.y, 0);
                 Instantiate(enemy, transform.position, Quaternion.identity);
             }
         }

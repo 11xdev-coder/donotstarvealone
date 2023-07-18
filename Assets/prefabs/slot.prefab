@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -37.362183, y: 35.5838}
+  m_AnchoredPosition: {x: -37.362244, y: 35.5838}
   m_SizeDelta: {x: 74.7246, y: 71.1676}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &487323878497530342
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 3800636725176523990}
   - component: {fileID: 5615345673846651177}
   - component: {fileID: 6111077244657306563}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: slot
   m_TagString: Inventory
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5003926655512927475}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -117,8 +117,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -281, y: 0}
-  m_SizeDelta: {x: -643.448, y: -58.495}
+  m_AnchoredPosition: {x: -372.757, y: 8.5292}
+  m_SizeDelta: {x: -826.9617, y: -76.4798}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5615345673846651177
 CanvasRenderer:
