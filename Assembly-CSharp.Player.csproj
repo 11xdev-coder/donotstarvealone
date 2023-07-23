@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\Inventory\ConsumableClass.cs" />
      <Compile Include="Assets\Scripts\Inventory\FireInflictWeapon.cs" />
      <Compile Include="Assets\Scripts\Inventory\ItemClass.cs" />
+     <Compile Include="Assets\Scripts\AttackableComponent.cs" />
      <Compile Include="Assets\Scripts\Inventory\ToolClass.cs" />
      <Compile Include="Assets\Scripts\HealthComponent.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
@@ -207,6 +208,7 @@
      <Folder Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Editor Resources\Gizmos" />
      <None Include="Library\PackageCache\com.unity.modules.audio@1.0.0\package.json" />
      <Folder Include="Assets\Animations\TreeNutter\Walk" />
+     <Folder Include="Assets\Animations\TreeNutter\Attack" />
      <None Include="Library\PackageCache\com.unity.modules.physics@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.collab-proxy@1.17.7" />
      <Folder Include="Assets\Scripts\Inventory" />
@@ -244,6 +246,7 @@
      <None Include="Library\PackageCache\com.unity.modules.director@1.0.0\package.json" />
      <None Include="Library\PackageCache\com.unity.ide.vscode@1.2.5\ValidationExceptions.json" />
      <Folder Include="Library\PackageCache\com.unity.modules.jsonserialize@1.0.0" />
+     <Folder Include="Assets\Animations\mlue\hit" />
      <Folder Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Editor Resources\Shaders" />
      <Folder Include="Library\PackageCache\com.unity.modules.director@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.modules.audio@1.0.0" />
@@ -285,6 +288,7 @@
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne.json" />
      <Folder Include="Library\PackageCache\com.unity.ugui@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.2d.spriteshape@9.0.1" />
+     <Folder Include="Assets\Animations\mlue\death" />
      <Folder Include="Assets\Animations\mlue" />
      <None Include="Library\PackageCache\com.unity.modules.ui@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.2d.spriteshape@9.0.1\Tests" />

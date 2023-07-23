@@ -35,10 +35,10 @@ public class WorldGenerator : MonoBehaviour
     {
         _objectsByBiome = new Dictionary<string, GameObject[]>
         {
-            {"Grassland", new GameObject[] {birchnutTree}},
-            {"Forest", new GameObject[] {pineTree, miniBoulder}},
-            {"Rockyland", new GameObject[] {miniBoulder, boulder}},
-            {"Ocean", new GameObject[] {rockOcean}}
+            {"Grassland", new [] {birchnutTree}},
+            {"Forest", new [] {pineTree, miniBoulder}},
+            {"Rockyland", new [] {miniBoulder, boulder}},
+            {"Ocean", new [] {rockOcean}}
         };
         _objectSpawnChancesByBiome = new Dictionary<string, Dictionary<string, float>>()
         {

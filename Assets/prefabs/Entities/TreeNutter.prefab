@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5476590454390555332}
   - component: {fileID: 3795179176963162762}
   - component: {fileID: 6857736215480084981}
+  - component: {fileID: -754133044224938199}
   m_Layer: 0
   m_Name: TreeNutter
   m_TagString: Untagged
@@ -158,8 +159,8 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 1
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.046777368, y: -0.15185691}
   m_SpriteTilingProperty:
@@ -186,12 +187,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbabbf8fd3a7d704daec2c5b69ad09fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewDistance: 10
+  player: {fileID: 0}
   speed: 15
   newTargetFreq: 2
   movement: {x: 0, y: 0}
+  attackCooldown: 5
+  damage: 75
+  attackDistance: 0.5
+  isAttacking: 0
+  _dotProductForward: 0
+  _dotProductRight: 0
   animLocked: 0
-  worldGenerator: {fileID: 0}
+  attackX: Attack X
+  attackY: Attack Y
+  attackAnimationDuration: 1.15
+  movementX: Movement X
+  movementY: Movement Y
   worldBounds: {x: 1000, y: 1000}
+--- !u!114 &-754133044224938199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2875021884302096533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 902fcd3a5630ccc46aebb7f76ea3f1f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 30
+  maxHealth: 30
+  onDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  doDrops: 0
+  doEnemySpawn: 0
+  doDeathParticles: 0
+  onHoverText: Attack
+  hasHitSound: 0
+  isMineable: 0
+  changeSpriteDependingOnHealth: 0
+  destroyOnDeath: 0
+  tool: {fileID: 0}
+  enemiesToSpawn: []
+  deathParticles: {fileID: 0}
+  damagedSprites: []
+  hitSound: {fileID: 0}
+  mineOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &3476153592961385808
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +264,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3476153592961385808}
   m_LocalRotation: {x: -0, y: -0, z: -0.115260884, w: 0.9933353}
-  m_LocalPosition: {x: -0.0032186508, y: -0.25251046, z: 0.014202324}
+  m_LocalPosition: {x: -0.051000178, y: -0.16600004, z: 0.01420232}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -301,7 +348,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4691009393126767297}
   m_LocalRotation: {x: -0, y: -0, z: 0.4953707, w: 0.8686817}
-  m_LocalPosition: {x: 0.19552952, y: -0.10253438, z: 0.014202324}
+  m_LocalPosition: {x: 0.147748, y: -0.016023964, z: 0.01420232}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -385,7 +432,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4774976313255321381}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0535295, y: -0.07253438, z: 0.014202324}
+  m_LocalPosition: {x: 0.005747974, y: 0.0139760375, z: 0.01420232}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -469,7 +516,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4820658689474720187}
   m_LocalRotation: {x: -0, y: -0, z: 0.17365319, w: 0.9848069}
-  m_LocalPosition: {x: 0.11052948, y: -0.2595344, z: 0.014202324}
+  m_LocalPosition: {x: 0.062747955, y: -0.17302397, z: 0.01420232}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -552,7 +599,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6598738433994936037}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.048, y: -0.073, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -589,7 +636,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8478552786641812690}
   m_LocalRotation: {x: -0, y: -0, z: 0.4953707, w: 0.8686817}
-  m_LocalPosition: {x: 0.17878151, y: -0.13251042, z: 0.014202324}
+  m_LocalPosition: {x: 0.131, y: -0.046, z: 0.01420232}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

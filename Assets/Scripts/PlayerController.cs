@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Vector2 = UnityEngine.Vector2;
 
@@ -9,41 +8,56 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 1.5f;
     public Animator animator;
     
+    [Header("Assignable - Important")]
+    public Camera mainCamera;
+    public AttackableComponent healthComponent;
+    public Text hoveringText;
+    public GameObject hud;
+    
     [Header("Movement")]
-    private Rigidbody2D _rb;
     public Vector2 movement;
     public Vector3 mousePos;
-    
+    public bool isHit;
+    private Rigidbody2D m_Rb;
+
     [Header("Attacking")]
     public Vector3 targetPos;
     public Vector3 direction;
     public bool moveToMouse;
     public bool canMoveToMouse;
-    private bool _isMovingToTarget;
-    private bool _isAttacking;
-    private float _dotProductForward;
-    private float _dotProductRight;
+    private bool m_IsMovingToTarget;
+    private bool m_IsAttacking;
+    private float m_DotProductForward;
+    private float m_DotProductRight;
     
     [Header("Animation")]
     public float horizontal;
     public float vertical;
     public bool animLocked;
+    public string movementXString;
+    public string movementYString;
+    public string attackXString;
+    public string attackYString;
     
     [Header("Hovering")]
-    public Text hoveringText;
     public Vector3 offset;
-    private RaycastHit2D _hit;
+    private RaycastHit2D m_Hit;
     
     [Header("Attacking thingies")]
     public GameObject attackTarget;
-
+    
+    [Header("Components")]
     public InventoryManager inventory;
-    [FormerlySerializedAs("camera")] public Camera mainCamera;
+    
 
     private void Awake()
     {
+        hud.SetActive(true);
         canMoveToMouse = true;
-        _rb = GetComponent<Rigidbody2D>();
+        m_Rb = GetComponent<Rigidbody2D>();
+
+        if (healthComponent.onDamageTaken != null) healthComponent.onDamageTaken.AddListener(HandleDamage);
+        if (healthComponent.onDeath != null) healthComponent.onDeath.AddListener(HandleDeath);
     }
 
     private void UpdateAnimations()
@@ -54,7 +68,7 @@ public class PlayerController : MonoBehaviour
             {
                 animator.Play("walk");
             }
-            else if (_isAttacking)
+            else if (m_IsAttacking)
             {
                 animator.Play("attack");
             }
@@ -65,22 +79,66 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    #region Animations
+    
+    public void EndHit() // calls at the end of hit animation
+    {
+        DisableAnimLock();
+        isHit = false;
+    }
+
+    public void StopAnimator() // use this func when you want to stop your animation on last frame
+    {
+        animator.speed = 0f;
+    }
+
+    public void DisableAnimLock()
+    {
+        // disables animLocked bool, use with animations which are not in UpdateAnimations
+        animLocked = false;
+    }
+
+    public void HandleDamage()
+    {
+        animator.Play("hit");
+        isHit = true;
+        animLocked = true;
+    }
+
+    public void HandleDeath()
+    {
+        animator.Play("death");
+        animLocked = true;
+        hud.SetActive(false);
+        RemoveListeners();
+        // call everything before we disable controller script
+        GetComponent<PlayerController>().enabled = false;
+    }
+
+    private void RemoveListeners() // important to call this func when player will be inactive
+    {
+        if (healthComponent.onDamageTaken != null) healthComponent.onDamageTaken.RemoveListener(HandleDamage);
+        if (healthComponent.onDeath != null) healthComponent.onDeath.RemoveListener(HandleDeath);
+    }
+
     public void OnAttackEnd()
     {
-        _isAttacking = false;
+        m_IsAttacking = false;
     }
+    
+    #endregion
 
     private void MoveTowardsTarget(GameObject target)
     {
         Collider2D targetCollider = target.GetComponent<Collider2D>();
         Collider2D selfCollider = GetComponent<Collider2D>();
         
-        if (_isMovingToTarget)
+        if (m_IsMovingToTarget)
         {
             // calculating direction
             canMoveToMouse = false;
-            targetPos = targetCollider.bounds.center + target.GetComponent<MineableComponent>().mineOffset; // getting center of the collider and adding offset
-            direction = (targetPos - (Vector3)_rb.position).normalized;
+            targetPos = targetCollider.bounds.center + target.GetComponent<AttackableComponent>().mineOffset; // getting center of the collider and adding offset
+            direction = (targetPos - (Vector3)m_Rb.position).normalized;
             // moving
             horizontal = direction.x;
             vertical = direction.y;
@@ -97,7 +155,7 @@ public class PlayerController : MonoBehaviour
             {
                 ResetAttackTargetAndMoving();
                 
-                _isAttacking = true;
+                m_IsAttacking = true;
                 Attack(target);
             }
         }
@@ -113,14 +171,14 @@ public class PlayerController : MonoBehaviour
     {
         // reset attack target and set that we can move to mouse
         canMoveToMouse = true;
-        _isMovingToTarget = false;
-        _isAttacking = false;
+        m_IsMovingToTarget = false;
+        m_IsAttacking = false;
         attackTarget = null;
     }
 
     private void Attack(GameObject target)
     {
-        Transform rbTransform = _rb.transform;
+        Transform rbTransform = m_Rb.transform;
         Vector3 toObjectVector = (target.transform.position - rbTransform.position).normalized;
     
         // Since it's a 2D top-down view game, your forward vector will be along the Y axis
@@ -128,26 +186,25 @@ public class PlayerController : MonoBehaviour
         Vector3 playerForward = rbTransform.up;
         Vector3 playerRight = rbTransform.right;
 
-        _dotProductForward = Vector3.Dot(toObjectVector, playerForward);
-        _dotProductRight = Vector3.Dot(toObjectVector, playerRight);
+        m_DotProductForward = Vector3.Dot(toObjectVector, playerForward);
+        m_DotProductRight = Vector3.Dot(toObjectVector, playerRight);
         
-        animator.SetFloat("Attack X", Mathf.Sign(_dotProductRight));
-        animator.SetFloat("Attack Y", Mathf.Sign(_dotProductForward));
+        animator.SetFloat(attackXString, Mathf.Sign(m_DotProductRight));
+        animator.SetFloat(attackYString, Mathf.Sign(m_DotProductForward));
+
+        AttackableComponent attackableComponent = target.GetComponent<AttackableComponent>();
 
         try
         {
             // item in hand
-            if(target.GetComponent<HealthComponent>() != null)
-                target.GetComponent<HealthComponent>().TakeDamage(inventory.equippedTool.item.damage);
-            
-            if(target.GetComponent<MineableComponent>() != null)
-                target.GetComponent<MineableComponent>().TakeDamage(inventory.equippedTool.item.damage);
+            if(attackableComponent != null)
+                attackableComponent.TakeDamage(inventory.equippedTool.item.damage);
         }
         catch
         {
             // nothing in hand
-            if(target.GetComponent<HealthComponent>() != null)
-                target.GetComponent<HealthComponent>().TakeDamage(5);
+            if(attackableComponent != null && !attackableComponent.isMineable)
+                attackableComponent.TakeDamage(5);
         }
     }
 
@@ -182,14 +239,14 @@ public class PlayerController : MonoBehaviour
         UpdateAnimations();
         
         // if we want to move to target
-        if (_isMovingToTarget) MoveTowardsTarget(attackTarget); // move
+        if (m_IsMovingToTarget) MoveTowardsTarget(attackTarget); // move
 
         // if left clicked pressed and we have an attacktarget
-        if (Input.GetMouseButtonDown(0) && attackTarget != null) _isMovingToTarget = true;
+        if (Input.GetMouseButtonDown(0) && attackTarget != null) m_IsMovingToTarget = true;
         else if (Input.GetMouseButton(0))
         {
             moveToMouse = true;
-            if(canMoveToMouse && !_isMovingToTarget) MoveToMouse();
+            if(canMoveToMouse && !m_IsMovingToTarget) MoveToMouse();
         }
         else if (Input.GetMouseButtonUp(0))
             moveToMouse = false;
@@ -201,27 +258,34 @@ public class PlayerController : MonoBehaviour
                 inventory.equippedTool.item.Use(this);
         }
 
-        if (movement != Vector2.zero && !_isMovingToTarget)
+        if (movement != Vector2.zero && !m_IsMovingToTarget)
         {
-            animator.SetFloat("Movement X", movement.x);
-            animator.SetFloat("Movement Y", movement.y);
+            animator.SetFloat(movementXString, movement.x);
+            animator.SetFloat(movementYString, movement.y);
         }
-        else if (_isMovingToTarget)
+        else if (m_IsMovingToTarget)
         {
-            animator.SetFloat("Movement X", Mathf.Sign(movement.x)); // -1, 0 or 1
-            animator.SetFloat("Movement Y", Mathf.Sign(movement.y));
+            animator.SetFloat(movementXString, Mathf.Sign(movement.x)); // -1, 0 or 1
+            animator.SetFloat(movementYString, Mathf.Sign(movement.y));
         }
         
         
         
         movement = new Vector2(horizontal, vertical);
         
-        _rb.MovePosition(_rb.position + movement * moveSpeed * Time.deltaTime);
+        if (!isHit)
+        {
+            m_Rb.MovePosition(m_Rb.position + movement * moveSpeed * Time.deltaTime); // if not hit - move
+        }
+        else
+        {
+            m_Rb.velocity = Vector2.zero; // if hit - stop
+        } 
         
         #region Hovering
         
         hoveringText.transform.position = Input.mousePosition + offset;
-        // put checks without IsPoinerOverInvElement first
+        // put checks without IsPointerOverInvElement first
         if (inventory.FindClosestSlot() != null && inventory.FindClosestSlot().item != null)
         {
             canMoveToMouse = false;
@@ -242,24 +306,19 @@ public class PlayerController : MonoBehaviour
         else if(!inventory.IsOverSlot())
         {
             hoveringText.gameObject.SetActive(true);
-            if (IsPointerOverComponent<HealthComponent>())
+            if (IsPointerOverComponent<AttackableComponent>())
             {
-                hoveringText.text = "Attack";
-                SetAttackTarget(_hit.collider.gameObject);
-            }
-            else if (IsPointerOverComponent<MineableComponent>())
-            {
-                if (_hit.collider.GetComponent<MineableComponent>().DoCanMineCheck(inventory)) // if we can mine the object
+                if (m_Hit.collider.GetComponent<AttackableComponent>().DoCanAttackCheck(inventory)) // if we can mine the object
                 {
-                    hoveringText.text = _hit.collider.GetComponent<MineableComponent>().onHoverText; // change the text to one that assigned
-                    SetAttackTarget(_hit.collider.gameObject); // set attack target and ready to attack
+                    hoveringText.text = m_Hit.collider.GetComponent<AttackableComponent>().onHoverText; // change the text to one that assigned
+                    SetAttackTarget(m_Hit.collider.gameObject); // set attack target and ready to attack
                 }
             }
             else
             {
                 canMoveToMouse = true;
                 hoveringText.text = "Walk";
-                if(!_isMovingToTarget && !_isAttacking) ResetAttackTargetAndMoving();
+                if(!m_IsMovingToTarget && !m_IsAttacking) ResetAttackTargetAndMoving();
             }
                 
         }
@@ -278,10 +337,10 @@ public class PlayerController : MonoBehaviour
 
         Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePosition);
 
-        _hit = Physics2D.Raycast(worldPos, Vector2.zero);
-        if (_hit.collider != null)
+        m_Hit = Physics2D.Raycast(worldPos, Vector2.zero);
+        if (m_Hit.collider != null)
         {
-            if (_hit.collider.gameObject.GetComponent<T>())
+            if (m_Hit.collider.gameObject.GetComponent<T>())
             {
                 return true;
             }
@@ -293,7 +352,7 @@ public class PlayerController : MonoBehaviour
     private void MoveToMouse()
     {
         mousePos = Input.mousePosition / 3;
-        direction = (mousePos - (Vector3)_rb.position).normalized;
+        direction = (mousePos - (Vector3)m_Rb.position).normalized;
         horizontal = Math.Clamp(direction.x, -1, 1);
         vertical = Math.Clamp(direction.y, -1, 1);
         UpdateAnimations();

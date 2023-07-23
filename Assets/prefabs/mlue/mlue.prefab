@@ -16,9 +16,10 @@ GameObject:
   - component: {fileID: 4433990683640518281}
   - component: {fileID: 1804968387437683842}
   - component: {fileID: 843045843684994102}
+  - component: {fileID: 7775177542568461067}
   m_Layer: 0
   m_Name: mlue
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 722559217235082476}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 101, y: 101, z: -1}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -53,8 +54,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 15
   animator: {fileID: 843045843684994102}
+  mainCamera: {fileID: 0}
+  healthComponent: {fileID: 7775177542568461067}
+  hoveringText: {fileID: 0}
   movement: {x: 0, y: 0}
   mousePos: {x: 0, y: 0, z: 0}
+  isHit: 0
   targetPos: {x: 0, y: 0, z: 0}
   direction: {x: 0, y: 0, z: 0}
   moveToMouse: 0
@@ -62,11 +67,14 @@ MonoBehaviour:
   horizontal: 0
   vertical: 0
   animLocked: 0
-  hoveringText: {fileID: 0}
+  movementXString: Movement X
+  movementYString: Movement Y
+  attackXString: Attack X
+  attackYString: Attack Y
   offset: {x: 0, y: 25, z: 0}
   attackTarget: {fileID: 0}
   inventory: {fileID: 6730677856030601245}
-  mainCamera: {fileID: 0}
+  hud: {fileID: 0}
 --- !u!114 &6730677856030601245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +267,64 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &7775177542568461067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722559217235082476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 902fcd3a5630ccc46aebb7f76ea3f1f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 150
+  maxHealth: 150
+  onDamageTaken:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4730328541580573804}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: HandleDamage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 0
+  onDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4730328541580573804}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: HandleDeath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 0
+  doDrops: 0
+  doEnemySpawn: 0
+  doDeathParticles: 0
+  onHoverText: 
+  hasHitSound: 0
+  isMineable: 0
+  changeSpriteDependingOnHealth: 0
+  destroyOnDeath: 0
+  tool: {fileID: 0}
+  enemiesToSpawn: []
+  deathParticles: {fileID: 0}
+  damagedSprites: []
+  hitSound: {fileID: 0}
+  mineOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &1242480962830802973
 GameObject:
   m_ObjectHideFlags: 0

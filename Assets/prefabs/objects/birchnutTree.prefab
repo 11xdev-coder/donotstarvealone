@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5187762457124479126}
   - component: {fileID: 6720362363943621275}
   - component: {fileID: 4627739561583008124}
-  - component: {fileID: 2211083383331172143}
+  - component: {fileID: -2052297418213198220}
   m_Layer: 9
   m_Name: birchnutTree
   m_TagString: Untagged
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 93
+  m_SortingOrder: 45
   m_Sprite: {fileID: 21300000, guid: 1588eca5fa9bc4f40bd5deeddfdb9f8f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -177,7 +177,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.22826818, y: 0.412575}
   m_EdgeRadius: 0
---- !u!114 &2211083383331172143
+--- !u!114 &-2052297418213198220
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -186,19 +186,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 7750068207470972085}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51c2387f9945f30449498ba819c9a739, type: 3}
+  m_Script: {fileID: 11500000, guid: 902fcd3a5630ccc46aebb7f76ea3f1f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   health: 125
+  maxHealth: 125
+  onDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
   doDrops: 0
   doEnemySpawn: 1
   doDeathParticles: 0
   onHoverText: Chop
   hasHitSound: 0
+  isMineable: 1
+  changeSpriteDependingOnHealth: 1
+  destroyOnDeath: 1
   tool: {fileID: 11400000, guid: a74cf0ae01c62e2488a10b5a861267ab, type: 2}
   enemiesToSpawn:
-  - {fileID: 2875021884302096533, guid: 9a006642f140a454385faf4d6073b34f, type: 3}
-  - {fileID: 2875021884302096533, guid: 9a006642f140a454385faf4d6073b34f, type: 3}
   - {fileID: 2875021884302096533, guid: 9a006642f140a454385faf4d6073b34f, type: 3}
   deathParticles: {fileID: 0}
   damagedSprites:
