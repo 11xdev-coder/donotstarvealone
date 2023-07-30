@@ -52,11 +52,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e283ab90baf95742b914b9bdd3e4716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 15
+  moveSpeed: 2
   animator: {fileID: 843045843684994102}
+  attackTarget: {fileID: 0}
   mainCamera: {fileID: 0}
-  healthComponent: {fileID: 7775177542568461067}
   hoveringText: {fileID: 0}
+  hud: {fileID: 0}
+  healthComponent: {fileID: 7775177542568461067}
+  healthFillableImage: {fileID: 0}
+  healthAmountText: {fileID: 0}
+  maxHealthAmountText: {fileID: 0}
+  heartImage: {fileID: 0}
+  heartImageFull: {fileID: 21300000, guid: 8dd42f91b924e7347a3e8451c1b91cf8, type: 3}
+  heartImageCracked: {fileID: 21300000, guid: afce5c5e43338bb47ba62de485b9f7a2, type: 3}
   movement: {x: 0, y: 0}
   mousePos: {x: 0, y: 0, z: 0}
   isHit: 0
@@ -72,9 +80,7 @@ MonoBehaviour:
   attackXString: Attack X
   attackYString: Attack Y
   offset: {x: 0, y: 25, z: 0}
-  attackTarget: {fileID: 0}
   inventory: {fileID: 6730677856030601245}
-  hud: {fileID: 0}
 --- !u!114 &6730677856030601245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,6 +287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 150
   maxHealth: 150
+  self: {fileID: 722559217235082476}
   onDamageTaken:
     m_PersistentCalls:
       m_Calls:
@@ -324,7 +331,7 @@ MonoBehaviour:
   deathParticles: {fileID: 0}
   damagedSprites: []
   hitSound: {fileID: 0}
-  mineOffset: {x: 0, y: 0, z: 0}
+  attackOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &1242480962830802973
 GameObject:
   m_ObjectHideFlags: 0

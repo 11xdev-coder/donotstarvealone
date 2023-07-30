@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class TreeNutterAI : MonoBehaviour
@@ -18,8 +19,8 @@ public class TreeNutterAI : MonoBehaviour
     public int damage = 5;
     public float attackDistance = 0.5f;
     public bool isAttacking;
-    public float _dotProductForward;
-    public float _dotProductRight;
+    public float dotProductForward;
+    public float dotProductRight;
     private float m_LastAttackTime;
 
     [Header("Animations")] 
@@ -39,6 +40,8 @@ public class TreeNutterAI : MonoBehaviour
     private float m_TimeSinceLastTarget;
     private Transform m_Transform;
     private Rigidbody2D m_Rb;
+    private AttackableComponent m_Health;
+    private HealthBarComponent m_HealthBarComponent;
     
     private enum State
     {
@@ -53,8 +56,13 @@ public class TreeNutterAI : MonoBehaviour
         m_Transform = transform;
         m_Rb = GetComponent<Rigidbody2D>();
         m_Animator = GetComponent<Animator>();
+        m_Health = GetComponent<AttackableComponent>();
+        m_HealthBarComponent = GetComponent<HealthBarComponent>();
+        AddListeners();
+        
+        m_HealthBarComponent.SetMaxHealth(m_Health.maxHealth);
     }
-    
+
     private void UpdateAnimations()
     {
         if (!animLocked)
@@ -67,8 +75,8 @@ public class TreeNutterAI : MonoBehaviour
             }
             else if (m_CurrentState == State.Attacking)
             {
-                m_Animator.SetFloat(attackX, Mathf.Sign(_dotProductRight));
-                m_Animator.SetFloat(attackY, Mathf.Sign(_dotProductForward));
+                m_Animator.SetFloat(attackX, Mathf.Sign(dotProductRight));
+                m_Animator.SetFloat(attackY, Mathf.Sign(dotProductForward));
                 m_Animator.Play("Attack");
             }
             else
@@ -76,6 +84,29 @@ public class TreeNutterAI : MonoBehaviour
                 // idle here
             }
         }
+    }
+
+    private void AddListeners()
+    {
+        if (m_Health.onDeath != null) m_Health.onDeath.AddListener(HandleDeath);
+        if (m_Health.onDamageTaken != null) m_Health.onDamageTaken.AddListener(HandleDamage);
+    }
+    
+    private void RemoveListeners()
+    {
+        if (m_Health.onDeath != null) m_Health.onDeath.RemoveListener(HandleDeath);
+        if (m_Health.onDamageTaken != null) m_Health.onDamageTaken.RemoveListener(HandleDamage);
+    }
+
+    private void HandleDeath()
+    {
+        Destroy(m_HealthBarComponent.healthBarInstance); // destroy the healthbar because HealthBarComponent doesn't
+        RemoveListeners();
+    }
+
+    private void HandleDamage()
+    {
+        m_HealthBarComponent.SetHealth(m_Health.health); // setting the health becuase component doesnt
     }
 
     public void Update()
@@ -130,8 +161,8 @@ public class TreeNutterAI : MonoBehaviour
         vertical = Mathf.Clamp(vertical, -1, 1);
     
         movement = new Vector2(horizontal, vertical) * speed * Time.deltaTime;
-        Vector2 nextPosition = m_Transform.position + directionToTarget * speed * Time.deltaTime;
-        m_Rb.MovePosition(nextPosition);
+        Vector2 velocity = directionToTarget * speed;
+        m_Rb.velocity = velocity;
     }
     
     private void Wandering()
@@ -251,8 +282,8 @@ public class TreeNutterAI : MonoBehaviour
             Vector3 playerForward = rbTransform.up;
             Vector3 playerRight = rbTransform.right;
             
-            _dotProductForward = Vector3.Dot(toObjectVector, playerForward);
-            _dotProductRight = Vector3.Dot(toObjectVector, playerRight);
+            dotProductForward = Vector3.Dot(toObjectVector, playerForward);
+            dotProductRight = Vector3.Dot(toObjectVector, playerRight);
         }
         
         

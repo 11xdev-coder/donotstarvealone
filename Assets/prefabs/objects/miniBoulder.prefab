@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 167
+  m_SortingOrder: 172
   m_Sprite: {fileID: 21300000, guid: 45c488b72677984409aff153f8e767dc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -288,6 +288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 60
   maxHealth: 60
+  self: {fileID: 0}
   onDamageTaken:
     m_PersistentCalls:
       m_Calls: []
@@ -310,4 +311,4 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e8648ee8938d275479f271911cc98bdd, type: 3}
   - {fileID: 21300000, guid: 45c488b72677984409aff153f8e767dc, type: 3}
   hitSound: {fileID: 8300000, guid: faf490900c881224f997cff321e981b7, type: 3}
-  mineOffset: {x: 0, y: 0.3, z: 0}
+  attackOffset: {x: 0, y: 0, z: 0}

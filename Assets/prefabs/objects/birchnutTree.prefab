@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 45
+  m_SortingOrder: 93
   m_Sprite: {fileID: 21300000, guid: 1588eca5fa9bc4f40bd5deeddfdb9f8f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -191,6 +191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 125
   maxHealth: 125
+  self: {fileID: 0}
   onDamageTaken:
     m_PersistentCalls:
       m_Calls: []
@@ -212,4 +213,4 @@ MonoBehaviour:
   damagedSprites:
   - {fileID: 21300000, guid: 1588eca5fa9bc4f40bd5deeddfdb9f8f, type: 3}
   hitSound: {fileID: 0}
-  mineOffset: {x: 0, y: 0.2, z: 0}
+  attackOffset: {x: 0, y: 0.3, z: 0}

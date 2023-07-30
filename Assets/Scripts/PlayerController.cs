@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Vector2 = UnityEngine.Vector2;
@@ -8,12 +9,24 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 1.5f;
     public Animator animator;
     
-    [Header("Assignable - Important")]
+    [Header("-- Debug --")]
+    public GameObject attackTarget;
+    public RaycastHit2D Hit;
+    
+    [Header("-- Assignable - Important --")]
     public Camera mainCamera;
-    public AttackableComponent healthComponent;
     public Text hoveringText;
     public GameObject hud;
     
+    [Header("-- Health - Important --")]
+    public AttackableComponent healthComponent;
+    public Image healthFillableImage;
+    public TMP_Text healthAmountText;
+    public TMP_Text maxHealthAmountText;
+    public Image heartImage;
+    public Sprite heartImageFull;
+    public Sprite heartImageCracked;
+
     [Header("Movement")]
     public Vector2 movement;
     public Vector3 mousePos;
@@ -41,11 +54,7 @@ public class PlayerController : MonoBehaviour
     
     [Header("Hovering")]
     public Vector3 offset;
-    private RaycastHit2D m_Hit;
-    
-    [Header("Attacking thingies")]
-    public GameObject attackTarget;
-    
+
     [Header("Components")]
     public InventoryManager inventory;
     
@@ -55,9 +64,9 @@ public class PlayerController : MonoBehaviour
         hud.SetActive(true);
         canMoveToMouse = true;
         m_Rb = GetComponent<Rigidbody2D>();
+        healthFillableImage.fillAmount = 1f;
 
-        if (healthComponent.onDamageTaken != null) healthComponent.onDamageTaken.AddListener(HandleDamage);
-        if (healthComponent.onDeath != null) healthComponent.onDeath.AddListener(HandleDeath);
+        AddListeners();
     }
 
     private void UpdateAnimations()
@@ -66,10 +75,14 @@ public class PlayerController : MonoBehaviour
         {
             if (movement != Vector2.zero)
             {
+                animator.SetFloat(movementXString, Mathf.Sign(movement.x)); // -1, 0 or 1
+                animator.SetFloat(movementYString, Mathf.Sign(movement.y));
                 animator.Play("walk");
             }
             else if (m_IsAttacking)
             {
+                animator.SetFloat(attackXString, Mathf.Sign(m_DotProductRight));
+                animator.SetFloat(attackYString, Mathf.Sign(m_DotProductForward));
                 animator.Play("attack");
             }
             else
@@ -115,6 +128,12 @@ public class PlayerController : MonoBehaviour
         GetComponent<PlayerController>().enabled = false;
     }
 
+    private void AddListeners()
+    {
+        if (healthComponent.onDamageTaken != null) healthComponent.onDamageTaken.AddListener(HandleDamage);
+        if (healthComponent.onDeath != null) healthComponent.onDeath.AddListener(HandleDeath);
+    }
+
     private void RemoveListeners() // important to call this func when player will be inactive
     {
         if (healthComponent.onDamageTaken != null) healthComponent.onDamageTaken.RemoveListener(HandleDamage);
@@ -137,7 +156,7 @@ public class PlayerController : MonoBehaviour
         {
             // calculating direction
             canMoveToMouse = false;
-            targetPos = targetCollider.bounds.center + target.GetComponent<AttackableComponent>().mineOffset; // getting center of the collider and adding offset
+            targetPos = targetCollider.bounds.center + target.GetComponent<AttackableComponent>().attackOffset; // getting center of the collider and adding offset
             direction = (targetPos - (Vector3)m_Rb.position).normalized;
             // moving
             horizontal = direction.x;
@@ -189,23 +208,34 @@ public class PlayerController : MonoBehaviour
         m_DotProductForward = Vector3.Dot(toObjectVector, playerForward);
         m_DotProductRight = Vector3.Dot(toObjectVector, playerRight);
         
-        animator.SetFloat(attackXString, Mathf.Sign(m_DotProductRight));
-        animator.SetFloat(attackYString, Mathf.Sign(m_DotProductForward));
+        
 
         AttackableComponent attackableComponent = target.GetComponent<AttackableComponent>();
 
         try
         {
             // item in hand
-            if(attackableComponent != null)
+            if(attackableComponent != null && target != healthComponent.self)
                 attackableComponent.TakeDamage(inventory.equippedTool.item.damage);
         }
         catch
         {
             // nothing in hand
-            if(attackableComponent != null && !attackableComponent.isMineable)
+            if(attackableComponent != null && !attackableComponent.isMineable && target != healthComponent.self)
                 attackableComponent.TakeDamage(5);
         }
+    }
+
+    private void HealthChanges()
+    {
+        healthFillableImage.fillAmount = (float) healthComponent.health / healthComponent.maxHealth; // fill health sprite depending on health
+        healthAmountText.text = Convert.ToString(healthComponent.health); // change text to our hp
+        maxHealthAmountText.text = "Max:\n " + Convert.ToString(healthComponent.maxHealth);
+        if (healthComponent.health <= healthComponent.maxHealth / 2)
+        {
+            heartImage.sprite = heartImageCracked;
+        }
+        else heartImage.sprite = heartImageFull;
     }
 
     private void Update()
@@ -213,6 +243,8 @@ public class PlayerController : MonoBehaviour
         // Get input from the W, A, S, and D keys
         horizontal = 0f;
         vertical = 0f;
+        
+        HealthChanges();
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -235,47 +267,27 @@ public class PlayerController : MonoBehaviour
             ResetAttackTargetAndMoving();
         }
         
-
         UpdateAnimations();
         
         // if we want to move to target
         if (m_IsMovingToTarget) MoveTowardsTarget(attackTarget); // move
 
-        // if left clicked pressed and we have an attacktarget
+        // if left clicked and we have an attack target - move to target
         if (Input.GetMouseButtonDown(0) && attackTarget != null) m_IsMovingToTarget = true;
-        else if (Input.GetMouseButton(0))
+        else if (Input.GetMouseButton(0)) // if we left clicked and no target - move to mouse
         {
             moveToMouse = true;
             if(canMoveToMouse && !m_IsMovingToTarget) MoveToMouse();
         }
         else if (Input.GetMouseButtonUp(0))
             moveToMouse = false;
-        
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            // use selected item
-            if(inventory.equippedTool != null)
-                inventory.equippedTool.item.Use(this);
-        }
 
-        if (movement != Vector2.zero && !m_IsMovingToTarget)
-        {
-            animator.SetFloat(movementXString, movement.x);
-            animator.SetFloat(movementYString, movement.y);
-        }
-        else if (m_IsMovingToTarget)
-        {
-            animator.SetFloat(movementXString, Mathf.Sign(movement.x)); // -1, 0 or 1
-            animator.SetFloat(movementYString, Mathf.Sign(movement.y));
-        }
-        
-        
         
         movement = new Vector2(horizontal, vertical);
         
         if (!isHit)
         {
-            m_Rb.MovePosition(m_Rb.position + movement * moveSpeed * Time.deltaTime); // if not hit - move
+            m_Rb.velocity = movement * moveSpeed; // if not hit - move
         }
         else
         {
@@ -308,10 +320,10 @@ public class PlayerController : MonoBehaviour
             hoveringText.gameObject.SetActive(true);
             if (IsPointerOverComponent<AttackableComponent>())
             {
-                if (m_Hit.collider.GetComponent<AttackableComponent>().DoCanAttackCheck(inventory)) // if we can mine the object
+                if (Hit.collider.GetComponent<AttackableComponent>().DoCanAttackCheck(inventory)) // if we can mine the object
                 {
-                    hoveringText.text = m_Hit.collider.GetComponent<AttackableComponent>().onHoverText; // change the text to one that assigned
-                    SetAttackTarget(m_Hit.collider.gameObject); // set attack target and ready to attack
+                    hoveringText.text = Hit.collider.GetComponent<AttackableComponent>().onHoverText; // change the text to one that assigned
+                    SetAttackTarget(Hit.collider.gameObject); // set attack target and ready to attack
                 }
             }
             else
@@ -337,10 +349,10 @@ public class PlayerController : MonoBehaviour
 
         Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePosition);
 
-        m_Hit = Physics2D.Raycast(worldPos, Vector2.zero);
-        if (m_Hit.collider != null)
+        Hit = Physics2D.Raycast(worldPos, Vector2.zero);
+        if (Hit.collider != null)
         {
-            if (m_Hit.collider.gameObject.GetComponent<T>())
+            if (Hit.collider.gameObject.GetComponent<T>())
             {
                 return true;
             }

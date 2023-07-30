@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3795179176963162762}
   - component: {fileID: 6857736215480084981}
   - component: {fileID: -754133044224938199}
+  - component: {fileID: -3257205477607423845}
   m_Layer: 0
   m_Name: TreeNutter
   m_TagString: Untagged
@@ -189,15 +190,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewDistance: 10
   player: {fileID: 0}
-  speed: 15
+  speed: 2
   newTargetFreq: 2
   movement: {x: 0, y: 0}
   attackCooldown: 5
-  damage: 75
+  damage: 15
   attackDistance: 0.5
   isAttacking: 0
-  _dotProductForward: 0
-  _dotProductRight: 0
+  dotProductForward: 0
+  dotProductRight: 0
   animLocked: 0
   attackX: Attack X
   attackY: Attack Y
@@ -219,6 +220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 30
   maxHealth: 30
+  self: {fileID: 2875021884302096533}
   onDamageTaken:
     m_PersistentCalls:
       m_Calls: []
@@ -232,13 +234,62 @@ MonoBehaviour:
   hasHitSound: 0
   isMineable: 0
   changeSpriteDependingOnHealth: 0
-  destroyOnDeath: 0
+  destroyOnDeath: 1
   tool: {fileID: 0}
   enemiesToSpawn: []
   deathParticles: {fileID: 0}
   damagedSprites: []
   hitSound: {fileID: 0}
-  mineOffset: {x: 0, y: 0, z: 0}
+  attackOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &-3257205477607423845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2875021884302096533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7802f36ae128f9c4994b7da61a60ab4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarPrefab: {fileID: 7741844817095887890, guid: f52a833fa2bfccb468958d50ecbc8f70, type: 3}
+  thisObject: {fileID: 2875021884302096533}
+  yOffset: 0.5
+  gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0.098039225, b: 0.09411766, a: 1}
+    key1: {r: 0.8396226, g: 0.79951406, b: 0.18746284, a: 1}
+    key2: {r: 0.28235295, g: 0.8000001, b: 0.25490198, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 771
+    ctime1: 32768
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
+  healthBarInstance: {fileID: 0}
+  healthBarText: {fileID: 0}
+  slider: {fileID: 0}
+  fill: {fileID: 0}
 --- !u!1 &3476153592961385808
 GameObject:
   m_ObjectHideFlags: 0

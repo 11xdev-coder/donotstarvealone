@@ -7,6 +7,7 @@ public class AttackableComponent : MonoBehaviour
 {
     public int health;
     public int maxHealth;
+    public GameObject self;
     
     [Header("Events")]
     [CanBeNull] public UnityEvent onDamageTaken;
@@ -28,18 +29,18 @@ public class AttackableComponent : MonoBehaviour
     public ParticleSystem deathParticles;
     public Sprite[] damagedSprites;
     public AudioClip hitSound;
-    public Vector3 mineOffset;
+    public Vector3 attackOffset;
 
 
-    private AudioSource _audioSource;
-    private SpriteRenderer _spriteRenderer;
+    private AudioSource m_AudioSource;
+    private SpriteRenderer m_SpriteRenderer;
 
     public void Start()
     {
         if (doDeathParticles) deathParticles = deathParticles.GetComponent<ParticleSystem>();
-        if(hasHitSound) _audioSource = GetComponent<AudioSource>();
+        if(hasHitSound) m_AudioSource = GetComponent<AudioSource>();
         
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        m_SpriteRenderer = GetComponent<SpriteRenderer>();
         UpdateSpriteBasedOnHealth();
     }
     
@@ -50,22 +51,20 @@ public class AttackableComponent : MonoBehaviour
 
     public void TakeDamage(int dmg)
     {
-        onDamageTaken?.Invoke();
-        
         health -= dmg;
+        onDamageTaken?.Invoke(); // invoke the event after taking damage because some scripts depend on it
         print($"{gameObject.name} took {dmg} damage");
         
         UpdateSpriteBasedOnHealth();
         if (hasHitSound)
         {
-            _audioSource.PlayOneShot(hitSound);
+            m_AudioSource.PlayOneShot(hitSound);
         }
-        
+    
         if (health <= 0)
         {
             Dead();
         }
-
     }
 
     private void Dead()
@@ -103,7 +102,7 @@ public class AttackableComponent : MonoBehaviour
         return false;
     }
 
-    public void UpdateSpriteBasedOnHealth()
+    private void UpdateSpriteBasedOnHealth()
     {
         if (changeSpriteDependingOnHealth)
         {
@@ -115,7 +114,7 @@ public class AttackableComponent : MonoBehaviour
             spriteIndex = Mathf.Clamp(spriteIndex, 0, damagedSprites.Length - 1);
         
             // Change the sprite
-            _spriteRenderer.sprite = damagedSprites[spriteIndex];
+            m_SpriteRenderer.sprite = damagedSprites[spriteIndex];
         }
     }
 }
