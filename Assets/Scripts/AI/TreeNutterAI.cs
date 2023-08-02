@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class TreeNutterAI : MonoBehaviour
@@ -160,7 +159,11 @@ public class TreeNutterAI : MonoBehaviour
         horizontal = Mathf.Clamp(horizontal, -1, 1);
         vertical = Mathf.Clamp(vertical, -1, 1);
     
-        movement = new Vector2(horizontal, vertical) * speed * Time.deltaTime;
+        movement = new Vector2(horizontal, vertical) * (speed * Time.deltaTime);
+        if (movement.sqrMagnitude > 1)
+        {
+            movement.Normalize();
+        }
         Vector2 velocity = directionToTarget * speed;
         m_Rb.velocity = velocity;
     }
@@ -229,7 +232,7 @@ public class TreeNutterAI : MonoBehaviour
                 player = null; // Forget about the player
             }
         
-            if(Vector2.Distance(m_Transform.position, player.position) <= attackDistance)
+            if(player != null && Vector2.Distance(m_Transform.position, player.position) <= attackDistance)
             {
                 m_CurrentState = State.Attacking;
             }

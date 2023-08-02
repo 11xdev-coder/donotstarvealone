@@ -40,8 +40,8 @@ public class SlotClass
 
     public void Clear()
     {
-        this.item = null;
-        this.count = 0;
+        item = null;
+        count = 0;
     }
 
     public void AddItem(ItemClass item, int count)

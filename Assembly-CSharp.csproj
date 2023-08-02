@@ -140,6 +140,7 @@
      <None Include="Library\PackageCache\com.unity.modules.unitywebrequestassetbundle@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.ext.nunit@1.0.6" />
      <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK" />
+     <Folder Include="Assets\Sprites\items\OLD" />
      <Folder Include="Library\PackageCache\com.unity.burst@1.7.4" />
      <None Include="Library\PackageCache\com.unity.ide.visualstudio@2.0.16\package.json" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />

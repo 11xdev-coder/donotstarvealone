@@ -58,6 +58,7 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   hoveringText: {fileID: 0}
   hud: {fileID: 0}
+  inventory: {fileID: 6730677856030601245}
   healthComponent: {fileID: 7775177542568461067}
   healthFillableImage: {fileID: 0}
   healthAmountText: {fileID: 0}
@@ -65,22 +66,23 @@ MonoBehaviour:
   heartImage: {fileID: 0}
   heartImageFull: {fileID: 21300000, guid: 8dd42f91b924e7347a3e8451c1b91cf8, type: 3}
   heartImageCracked: {fileID: 21300000, guid: afce5c5e43338bb47ba62de485b9f7a2, type: 3}
+  horizontal: 0
+  vertical: 0
   movement: {x: 0, y: 0}
   mousePos: {x: 0, y: 0, z: 0}
   isHit: 0
-  targetPos: {x: 0, y: 0, z: 0}
   direction: {x: 0, y: 0, z: 0}
   moveToMouse: 0
   canMoveToMouse: 0
-  horizontal: 0
-  vertical: 0
+  minCursorDistance: 0.1
+  bufferCursorDistance: 0.15
+  targetPos: {x: 0, y: 0, z: 0}
   animLocked: 0
   movementXString: Movement X
   movementYString: Movement Y
   attackXString: Attack X
   attackYString: Attack Y
   offset: {x: 0, y: 25, z: 0}
-  inventory: {fileID: 6730677856030601245}
 --- !u!114 &6730677856030601245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,9 +105,11 @@ MonoBehaviour:
   items: []
   slots: []
   equippedToolIndex: 0
+  isEquippedTool: 0
   equippedTool:
     <item>k__BackingField: {fileID: 0}
     <count>k__BackingField: 0
+  previouslyEquippedTool: {fileID: 0}
   itemCursor: {fileID: 0}
   originalSlot:
     <item>k__BackingField: {fileID: 0}

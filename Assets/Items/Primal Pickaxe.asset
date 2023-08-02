@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Primal Pickaxe
   m_EditorClassIdentifier: 
   ItemName: Primal Pickaxe
-  ItemSprite: {fileID: 21300000, guid: 9e6c8f3760e7b0c46b8690b5698e04d3, type: 3}
+  ItemSprite: {fileID: 21300000, guid: 86af70a1ba004e142a3293a1d7c3344e, type: 3}
   isStackable: 0
   maxStack: 1
   damage: 13

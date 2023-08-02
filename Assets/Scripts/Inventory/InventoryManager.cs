@@ -14,8 +14,15 @@ public class InventoryManager : MonoBehaviour
 
     public GameObject[] slots;
 
+    
+    public delegate void ToolChangedAction(ItemClass newTool);
+    public event ToolChangedAction OnToolChanged;
+    
+    [Header("Tool")]
     public int equippedToolIndex;
+    public bool isEquippedTool;
     public SlotClass equippedTool;
+    public ItemClass previouslyEquippedTool;
 
     [Header("Moving")] 
     public GameObject itemCursor;
@@ -42,14 +49,14 @@ public class InventoryManager : MonoBehaviour
             slots[i] = slotHolder.transform.GetChild(i).gameObject;
         
         // add all starting items
-        for (int s = 0; s < startingItems.Length; s++)
-            Add(startingItems[s].item, startingItems[s].count);
+        foreach (var startingItem in startingItems)
+            Add(startingItem.item, startingItem.count);
 
         equippedToolIndex = items.Length - 1;
         Refresh();
     }
 
-    public void Craft(CraftingRecipeClass craft)
+    private void Craft(CraftingRecipeClass craft)
     {
         if (craft.CanCraft(this))
         {
@@ -73,10 +80,7 @@ public class InventoryManager : MonoBehaviour
         if (isMovingItem)
         {
             itemCursor.GetComponentInChildren<Image>().sprite = movingSlot.item.ItemSprite;
-            if(movingSlot.item.isStackable)
-                itemCursor.GetComponentInChildren<Text>().text = movingSlot.count.ToString();
-            else
-                itemCursor.GetComponentInChildren<Text>().text = "";
+            itemCursor.GetComponentInChildren<Text>().text = movingSlot.item.isStackable ? movingSlot.count.ToString() : "";
         }
             
         
@@ -103,20 +107,36 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
+        // TOOL SWAP CHECKS
+        
+        // If the currently equipped tool is different from the previously equipped one
+        if (items[equippedToolIndex].item != previouslyEquippedTool)
+        {
+            // Update the previously equipped tool
+            previouslyEquippedTool = items[equippedToolIndex].item;
+
+            // Check if there is a tool equipped and set the flag accordingly
+            isEquippedTool = items[equippedToolIndex].item != null;
+
+            // Trigger the OnToolChanged event
+            OnToolChanged?.Invoke(isEquippedTool ? items[equippedToolIndex].item : null);
+        }
+        
         if (items[equippedToolIndex].item != null)
             equippedTool = items[equippedToolIndex];
     }
 
-    public bool isInvFull()
+    public bool IsInventoryFull()
     {
-        for (int i = 0; i < items.Length; i++)
+        foreach (var item in items)
         {
-            if (items[i].item == null) return false;
+            if (item.item == null) return false;
         }
+
         return true;
     }
 
-    public void ItemMoveOnLeftClick()
+    private void ItemMoveOnLeftClick()
     {
         if (isMovingItem) // end item move
             EndItemMove();
@@ -126,7 +146,7 @@ public class InventoryManager : MonoBehaviour
 
     #region Item Stuff
 
-    public void Refresh()
+    private void Refresh()
     {
         for (int i = 0; i < slots.Length; i++)
         {
@@ -134,10 +154,7 @@ public class InventoryManager : MonoBehaviour
             {
                 slots[i].transform.GetChild(0).GetComponent<Image>().enabled = true;
                 slots[i].transform.GetChild(0).GetComponent<Image>().sprite = items[i].item.ItemSprite;
-                if(items[i].item.isStackable)
-                    slots[i].transform.GetChild(1).GetComponent<Text>().text = items[i].count.ToString();
-                else
-                    slots[i].transform.GetChild(1).GetComponent<Text>().text = "";
+                slots[i].transform.GetChild(1).GetComponent<Text>().text = items[i].item.isStackable ? items[i].count.ToString() : "";
             }
             catch
             {
