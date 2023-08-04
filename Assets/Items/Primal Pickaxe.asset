@@ -16,5 +16,5 @@ MonoBehaviour:
   ItemSprite: {fileID: 21300000, guid: 86af70a1ba004e142a3293a1d7c3344e, type: 3}
   isStackable: 0
   maxStack: 1
-  damage: 13
+  damage: 5
   toolType: 1

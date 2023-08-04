@@ -89,6 +89,7 @@
      <Folder Include="Library\PackageCache\com.unity.modules.xr@1.0.0" />
      <None Include="Library\PackageCache\com.unity.2d.tilemap@1.0.0\package.json" />
      <Folder Include="Assets\TextMesh Pro\Resources\Sprite Assets" />
+     <Folder Include="Assets\Sprites\objects\old" />
      <None Include="Library\PackageCache\com.unity.ext.nunit@1.0.6\package.json" />
      <Folder Include="Library\PackageCache\com.unity.ide.rider@3.0.16\Rider" />
      <Folder Include="Library\PackageCache\com.unity.2d.pixel-perfect@5.0.2" />
@@ -206,6 +207,7 @@
      <Folder Include="Library\PackageCache\com.unity.services.core@1.6.0\Runtime" />
      <Folder Include="Library\PackageCache\com.unity.mathematics@1.2.6" />
      <Folder Include="Assets\Items" />
+     <Folder Include="Assets\Sprites\tiles\old" />
      <Folder Include="Library\PackageCache\com.unity.2d.psdimporter@8.0.1" />
      <Folder Include="Library\PackageCache\com.unity.modules.androidjni@1.0.0" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />

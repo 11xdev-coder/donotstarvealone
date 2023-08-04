@@ -337,7 +337,7 @@ public class PlayerController : MonoBehaviour
                 if (m_Hit.collider.GetComponent<AttackableComponent>().DoCanAttackCheck(inventory)) // if we can mine the object
                 {
                     hoveringText.text = m_Hit.collider.GetComponent<AttackableComponent>().onHoverText; // change the text to one that assigned
-                    if(Input.GetMouseButtonDown(0)) SetAttackTarget(m_Hit.collider.gameObject); // set attack target and ready to attack
+                    if(Input.GetMouseButtonDown(0) && !m_IsAttacking) SetAttackTarget(m_Hit.collider.gameObject); // set attack target and ready to attack
                 }
             }
             else
