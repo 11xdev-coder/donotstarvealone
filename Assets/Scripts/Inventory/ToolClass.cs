@@ -14,7 +14,7 @@ public class ToolClass : ItemClass
         Hammer
     }
 
-    public override void Use(PlayerController caller)
+    protected override void Use(PlayerController caller)
     {
         base.Use(caller);
         Debug.Log("Swing");

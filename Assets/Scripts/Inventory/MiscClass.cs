@@ -6,5 +6,5 @@ using UnityEngine;
 public class MiscClass : ItemClass
 {
     public override MiscClass GetMisc() { return this; }
-    public override void Use(PlayerController caller) { }
+    protected override void Use(PlayerController caller) { }
 }

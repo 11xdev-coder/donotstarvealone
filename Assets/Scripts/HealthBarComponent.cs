@@ -19,11 +19,14 @@ public class HealthBarComponent : MonoBehaviour
     private Camera m_Camera;
     private Canvas m_Canvas;
     private AttackableComponent m_ThisObjectHealth;
-    
     // important to make this awake and in HealthBarComponent holder set this up in Start, otherwise it will give an error
     private void Awake()
     {
-        m_Canvas = FindObjectOfType<Canvas>();
+        GameObject canvasGameObject = GameObject.FindGameObjectWithTag("MainCanvas");
+        if (canvasGameObject != null)
+        {
+            m_Canvas = canvasGameObject.GetComponent<Canvas>();
+        }
         m_Camera = FindObjectOfType<Camera>();
         
         // Instantiate a new health bar from the prefab

@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6776549432209531629}
+  - component: {fileID: 9194768682743830173}
   - component: {fileID: 4730328541580573804}
   - component: {fileID: 6730677856030601245}
   - component: {fileID: 9141836047373734915}
@@ -40,6 +41,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9194768682743830173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722559217235082476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d740244625ec70e439b9275622c157c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugMode: 0
+  attackDetectionRadiusRenderer: {fileID: 0}
+  searchRadiusRenderer: {fileID: 0}
+  segments: 50
+  pc: {fileID: 4730328541580573804}
+  lrPrefab: {fileID: 1611928862431324166, guid: a9403ef4ffad78843b20d0b82814ef12, type: 3}
 --- !u!114 &4730328541580573804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55,10 +74,13 @@ MonoBehaviour:
   moveSpeed: 2
   animator: {fileID: 843045843684994102}
   attackTarget: {fileID: 0}
+  currentAttackableTarget: {fileID: 0}
+  currentInteractableSlot: {fileID: 0}
   mainCamera: {fileID: 0}
   hoveringText: {fileID: 0}
   hud: {fileID: 0}
   inventory: {fileID: 6730677856030601245}
+  handToolSpriteRenderer: {fileID: 3164058945470142409}
   healthComponent: {fileID: 7775177542568461067}
   healthFillableImage: {fileID: 0}
   healthAmountText: {fileID: 0}
@@ -70,13 +92,19 @@ MonoBehaviour:
   vertical: 0
   movement: {x: 0, y: 0}
   mousePos: {x: 0, y: 0, z: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
   isHit: 0
+  directionDifference: {x: 0, y: 0}
+  isDropping: 0
+  dropStopThreshold: 0.2
   direction: {x: 0, y: 0, z: 0}
-  moveToMouse: 0
+  isMovingToMouse: 0
   canMoveToMouse: 0
   minCursorDistance: 0.1
   bufferCursorDistance: 0.15
-  targetPos: {x: 0, y: 0, z: 0}
+  searchRadius: 4
+  playerAttackDetectionRadius: 0.3
+  attackDetectionOffset: {x: 0, y: -0.3, z: 0}
   animLocked: 0
   movementXString: Movement X
   movementYString: Movement Y
@@ -323,19 +351,20 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 0
   doDrops: 0
+  drops: []
   doEnemySpawn: 0
+  enemiesToSpawn: []
   doDeathParticles: 0
-  onHoverText: 
+  deathParticles: {fileID: 0}
   hasHitSound: 0
+  hitSound: {fileID: 0}
+  tool: {fileID: 0}
   isMineable: 0
+  attackOffset: {x: 0, y: 0, z: 0}
+  onHoverText: 
   changeSpriteDependingOnHealth: 0
   destroyOnDeath: 0
-  tool: {fileID: 0}
-  enemiesToSpawn: []
-  deathParticles: {fileID: 0}
   damagedSprites: []
-  hitSound: {fileID: 0}
-  attackOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &1242480962830802973
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +393,8 @@ Transform:
   m_LocalPosition: {x: -0.075, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4181973620320809074}
   m_Father: {fileID: 8305044307075458397}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -415,6 +445,90 @@ SpriteRenderer:
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.04, y: 0.06}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!1 &3164058945470142409
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4181973620320809074}
+  - component: {fileID: 348603147596043637}
+  m_Layer: 0
+  m_Name: HandSprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4181973620320809074
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3164058945470142409}
+  m_LocalRotation: {x: 0, y: 0, z: 0.5735764, w: 0.8191521}
+  m_LocalPosition: {x: -0.04, y: -0.03, z: 0}
+  m_LocalScale: {x: -0.3, y: 0.3, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2540577310447290970}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 80}
+--- !u!212 &348603147596043637
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3164058945470142409}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 86af70a1ba004e142a3293a1d7c3344e, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

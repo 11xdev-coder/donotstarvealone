@@ -19,11 +19,11 @@ public class HoveringText : MonoBehaviour
     {
         hoveringText.transform.position = Input.mousePosition + offset;
         // put checks without IsPoinerOverInvElement first
-        if (inv.FindClosestSlot() != null && inv.FindClosestSlot().item != null)
+        if (inv.FindClosestSlotItem() != null && inv.FindClosestSlotItem().item != null)
         {
             player.canMoveToMouse = false;
             hoveringText.gameObject.SetActive(true);
-            hoveringText.text = inv.FindClosestSlot().item.name;
+            hoveringText.text = inv.FindClosestSlotItem().item.name;
         }
         else if (inv.IsOverSlot())
         {

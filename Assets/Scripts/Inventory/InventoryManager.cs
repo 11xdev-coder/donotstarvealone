@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -79,7 +81,7 @@ public class InventoryManager : MonoBehaviour
         itemCursor.transform.position = Input.mousePosition;
         if (isMovingItem)
         {
-            itemCursor.GetComponentInChildren<Image>().sprite = movingSlot.item.ItemSprite;
+            itemCursor.GetComponentInChildren<Image>().sprite = movingSlot.item.itemSprite;
             itemCursor.GetComponentInChildren<Text>().text = movingSlot.item.isStackable ? movingSlot.count.ToString() : "";
         }
             
@@ -105,6 +107,11 @@ public class InventoryManager : MonoBehaviour
                 // start moving item so it wouldnt be put in to a slot
                 ItemMoveOnLeftClick();
             }
+        }
+        
+        if (Input.GetMouseButtonDown(1)) // Right click
+        {
+            HandleItemRightClick();
         }
 
         // TOOL SWAP CHECKS
@@ -153,7 +160,7 @@ public class InventoryManager : MonoBehaviour
             try
             {
                 slots[i].transform.GetChild(0).GetComponent<Image>().enabled = true;
-                slots[i].transform.GetChild(0).GetComponent<Image>().sprite = items[i].item.ItemSprite;
+                slots[i].transform.GetChild(0).GetComponent<Image>().sprite = items[i].item.itemSprite;
                 slots[i].transform.GetChild(1).GetComponent<Text>().text = items[i].item.isStackable ? items[i].count.ToString() : "";
             }
             catch
@@ -270,9 +277,64 @@ public class InventoryManager : MonoBehaviour
 
     #region Moving Stuff
 
+    private void HandleItemRightClick()
+    {
+        SlotClass clickedSlot = FindClosestSlotItem();
+        if (clickedSlot == null || clickedSlot.item == null) 
+            return; // No item to interact with.
+
+        int clickedIndex = Array.IndexOf(items, clickedSlot);
+
+        // If we right-clicked the equipped tool.
+        if(clickedIndex == equippedToolIndex)
+        {
+            UnequipTool();
+            return;
+        }
+    
+        ToolClass clickedTool = clickedSlot.item.GetTool();
+        if (clickedTool != null) // We right-clicked on a tool in the inventory.
+        {
+            // If there's already a tool equipped.
+            if (items[equippedToolIndex].item != null)
+            {
+                // Swap tools.
+                SlotClass temp = new SlotClass(items[equippedToolIndex]);
+                items[equippedToolIndex].AddItem(clickedSlot.item, clickedSlot.count);
+                clickedSlot.AddItem(temp.item, temp.count);
+            }
+            else
+            {
+                // Equip the tool.
+                items[equippedToolIndex].AddItem(clickedSlot.item, clickedSlot.count);
+                clickedSlot.Clear();
+            }
+            Refresh();
+        }
+    }
+    
+    private void UnequipTool()
+    {
+        // If the inventory is full, do nothing for now.
+        if (IsInventoryFull()) 
+            return;
+
+        // Find the first available slot.
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i].item == null)
+            {
+                items[i].AddItem(items[equippedToolIndex].item, items[equippedToolIndex].count);
+                items[equippedToolIndex].Clear();
+                break;
+            }
+        }
+        Refresh();
+    }
+    
     public bool BeginItemMove()
     {
-        originalSlot = FindClosestSlot();
+        originalSlot = FindClosestSlotItem();
         if (originalSlot == null || originalSlot.item == null)
             return false; // no item to move
 
@@ -285,7 +347,7 @@ public class InventoryManager : MonoBehaviour
     
     public bool TakeHalf()
     {
-        originalSlot = FindClosestSlot();
+        originalSlot = FindClosestSlotItem();
         if (originalSlot == null || originalSlot.item == null)
             return false; // no item to take half from
 
@@ -301,11 +363,11 @@ public class InventoryManager : MonoBehaviour
 
     public bool EndItemMove()
     {
-        originalSlot = FindClosestSlot();
+        originalSlot = FindClosestSlotItem();
         if (originalSlot == null)
         {
-            Add(movingSlot.item, movingSlot.count);
-            movingSlot.Clear();
+            // for now do nothing
+            return false;
         }
         else // clicked on slot
         {
@@ -351,7 +413,7 @@ public class InventoryManager : MonoBehaviour
     
     public bool PutSingle()
     {
-        originalSlot = FindClosestSlot();
+        originalSlot = FindClosestSlotItem();
         
         if (originalSlot == null)
             return false;
@@ -378,12 +440,23 @@ public class InventoryManager : MonoBehaviour
         return true;
     }
     
-    public SlotClass FindClosestSlot()
+    public SlotClass FindClosestSlotItem()
     {
         for (int s = 0; s < slots.Length; s++)
         {
             if (Vector2.Distance(slots[s].transform.position, Input.mousePosition) <= 65)
                 return items[s];
+        }
+
+        return null;
+    }
+    
+    public GameObject FindClosestSlotObject()
+    {
+        for (int s = 0; s < slots.Length; s++)
+        {
+            if (Vector2.Distance(slots[s].transform.position, Input.mousePosition) <= 65)
+                return slots[s];
         }
 
         return null;

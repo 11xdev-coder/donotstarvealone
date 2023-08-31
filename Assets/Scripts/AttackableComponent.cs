@@ -13,25 +13,33 @@ public class AttackableComponent : MonoBehaviour
     [CanBeNull] public UnityEvent onDamageTaken;
     [CanBeNull] public UnityEvent onDeath;
     
-    [Header("Bools")]
+    [Header("Drops")]
     public bool doDrops;
+    public ItemClass[] drops;
+    
+    [Header("Enemy spawn")]
     public bool doEnemySpawn;
+    public GameObject[] enemiesToSpawn;
+    
+    [Header("Particles")]
     public bool doDeathParticles;
-    public string onHoverText;
+    public ParticleSystem deathParticles;
+    
+    [Header("Sounds")]
     public bool hasHitSound;
+    public AudioClip hitSound;
+
+    [Header("Mining")]
+    public ToolClass tool;
     public bool isMineable;
+    public Vector3 attackOffset;
+    
+    [Header("Other")]
+    public string onHoverText;
     public bool changeSpriteDependingOnHealth;
     public bool destroyOnDeath;
-
-    [Header("Assignable")] 
-    public ToolClass tool;
-    public GameObject[] enemiesToSpawn;
-    public ParticleSystem deathParticles;
     public Sprite[] damagedSprites;
-    public AudioClip hitSound;
-    public Vector3 attackOffset;
-
-
+    
     private AudioSource m_AudioSource;
     private SpriteRenderer m_SpriteRenderer;
 
@@ -76,6 +84,16 @@ public class AttackableComponent : MonoBehaviour
             foreach (GameObject enemy in enemiesToSpawn)
             {
                 Instantiate(enemy, transform.position, Quaternion.identity);
+            }
+        }
+
+        if (doDrops)
+        {
+            foreach (ItemClass item in drops)
+            {
+                SlotClass slot = new SlotClass(item, 1);
+                
+                item.SpawnItemAsDropped(slot, transform);
             }
         }
 

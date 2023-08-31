@@ -26,7 +26,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\Bin\Debug\Assembly-CSharp\</OutputPath>
-    <DefineConstants>UNITY_2022_2_1;UNITY_2022_2;UNITY_2022;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_2021_1_OR_NEWER;UNITY_2021_2_OR_NEWER;UNITY_2021_3_OR_NEWER;UNITY_2022_1_OR_NEWER;UNITY_2022_2_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;USE_SEARCH_ENGINE_API;USE_SEARCH_TABLE;USE_SEARCH_MODULE;USE_PROPERTY_DATABASE;USE_QUERY_BUILDER;USE_SEARCH_EXTENSION_API;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_EDITOR_GAME_SERVICES;ENABLE_UNITY_GAME_SERVICES_ANALYTICS_SUPPORT;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_GENERATE_NATIVE_PLUGINS_FOR_ASSEMBLIES_API;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;ENABLE_ACCELERATOR_CLIENT_DEBUGGING;ENABLE_NAVIGATION_PACKAGE_DEBUG_VISUALIZATION;ENABLE_NAVIGATION_HEIGHTMESH_RUNTIME_SUPPORT;ENABLE_NAVIGATION_UI_REQUIRES_PACKAGE;PLATFORM_STANDALONE;TEXTCORE_1_0_OR_NEWER;PLATFORM_STANDALONE_LINUX;UNITY_STANDALONE_LINUX;UNITY_STANDALONE;UNITY_STANDALONE_LINUX_API;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;ENABLE_SPATIALTRACKING;ENABLE_MODULAR_UNITYENGINE_ASSEMBLIES;ENABLE_MONO;NET_STANDARD_2_0;NET_STANDARD;NET_STANDARD_2_1;NETSTANDARD;NETSTANDARD2_1;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_INPUT_SYSTEM;ENABLE_LEGACY_INPUT_MANAGER;TEXTCORE_FONT_ENGINE_1_5_OR_NEWER;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
+    <DefineConstants>UNITY_2022_2_1;UNITY_2022_2;UNITY_2022;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_2021_1_OR_NEWER;UNITY_2021_2_OR_NEWER;UNITY_2021_3_OR_NEWER;UNITY_2022_1_OR_NEWER;UNITY_2022_2_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;USE_SEARCH_ENGINE_API;USE_SEARCH_TABLE;USE_SEARCH_MODULE;USE_PROPERTY_DATABASE;USE_QUERY_BUILDER;USE_SEARCH_EXTENSION_API;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_EDITOR_GAME_SERVICES;ENABLE_UNITY_GAME_SERVICES_ANALYTICS_SUPPORT;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_GENERATE_NATIVE_PLUGINS_FOR_ASSEMBLIES_API;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;ENABLE_ACCELERATOR_CLIENT_DEBUGGING;ENABLE_NAVIGATION_PACKAGE_DEBUG_VISUALIZATION;ENABLE_NAVIGATION_HEIGHTMESH_RUNTIME_SUPPORT;ENABLE_NAVIGATION_UI_REQUIRES_PACKAGE;PLATFORM_STANDALONE;TEXTCORE_1_0_OR_NEWER;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_NVIDIA;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;GFXDEVICE_WAITFOREVENT_MESSAGEPUMP;PLATFORM_INITIALIZES_MEMORY_MANAGER_EXPLICITLY;ENABLE_MONO;NET_STANDARD_2_0;NET_STANDARD;NET_STANDARD_2_1;NETSTANDARD;NETSTANDARD2_1;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_INPUT_SYSTEM;ENABLE_LEGACY_INPUT_MANAGER;TEXTCORE_FONT_ENGINE_1_5_OR_NEWER;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169,0649</NoWarn>
@@ -41,11 +41,44 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\cs\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\pt-BR\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\tr\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\ja\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\ru\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\zh-Hant\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\ja\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\zh-Hans\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\es\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\fr\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\ru\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\de\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\ko\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\fr\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\pl\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\zh-Hant\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\it\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\cs\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\pl\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\pt-BR\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\Microsoft.CodeAnalysis.VisualBasic.Analyzers.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\it\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\es\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\ko\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\zh-Hans\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\tr\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
+    <Analyzer Include="D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\de\Microsoft.CodeAnalysis.Analyzers.resources.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.2.1f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.2.1f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Controls\ControlsBinding.cs" />
      <Compile Include="Assets\Scripts\Inventory\CraftingRecipeClass.cs" />
+     <Compile Include="Assets\Scripts\ColorPicker.cs" />
+     <Compile Include="Assets\Scripts\DebugMode.cs" />
      <Compile Include="Assets\Scripts\ShowUIText.cs" />
      <Compile Include="Assets\Scripts\HealthBarComponent.cs" />
      <Compile Include="Assets\Scripts\Inventory\SlotClass.cs" />
@@ -54,30 +87,41 @@
      <Compile Include="Assets\Scripts\Inventory\MiscClass.cs" />
      <Compile Include="Assets\Scripts\cameraFollow.cs" />
      <Compile Include="Assets\Scripts\TalkerComponent.cs" />
+     <Compile Include="Assets\Scripts\ScriptHost.cs" />
      <Compile Include="Assets\Scripts\AI\TreeNutterAI.cs" />
      <Compile Include="Assets\Scripts\Inventory\ConsumableClass.cs" />
      <Compile Include="Assets\Scripts\Inventory\FireInflictWeapon.cs" />
      <Compile Include="Assets\Scripts\Inventory\ItemClass.cs" />
      <Compile Include="Assets\Scripts\AttackableComponent.cs" />
      <Compile Include="Assets\Scripts\Inventory\ToolClass.cs" />
+     <Compile Include="Assets\Scripts\ConsoleManager.cs" />
      <Compile Include="Assets\Scripts\HealthComponent.cs" />
+     <Compile Include="Assets\Scripts\Inventory\DroppedItem.cs" />
+     <Compile Include="Assets\Scripts\Controls\KeyBindingManager.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\UIElement.cs" />
      <Compile Include="Assets\Scripts\WorldGenerator.cs" />
      <Compile Include="Assets\Scripts\HoveringText.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Sprites\objects\miniBoulder" />
      <None Include="Library\PackageCache\com.unity.modules.subsystems@1.0.0\package.json" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
+     <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0\buildTransitive\net462" />
      <None Include="Library\PackageCache\com.unity.modules.jsonserialize@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.test-framework@1.1.33" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisDesignRulesEnabled" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\fr" />
      <Folder Include="Library\PackageCache\com.unity.sysroot@2.0.5" />
      <None Include="Library\PackageCache\com.unity.modules.screencapture@1.0.0\package.json" />
      <None Include="Library\PackageCache\com.unity.modules.cloth@1.0.0\package.json" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\zh-Hant" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisCorrectnessRulesDefault" />
      <Folder Include="Library\PackageCache\com.unity.modules.imgui@1.0.0" />
      <Folder Include="Assets\Sprites\tiles" />
      <Folder Include="Assets\TextMesh Pro\Sprites" />
      <None Include="Library\PackageCache\com.unity.modules.unitywebrequesttexture@1.0.0\package.json" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Common.4.7.0\lib" />
      <Folder Include="Assets\Sprites\Entities" />
      <None Include="Library\PackageCache\com.unity.inputsystem@1.4.4\package.json" />
      <None Include="Library\PackageCache\com.unity.modules.ai@1.0.0\package.json" />
@@ -86,10 +130,13 @@
      <None Include="Library\PackageCache\com.unity.inputsystem@1.4.4\ValidationConfig.json" />
      <Folder Include="Library\PackageCache\com.unity.sysroot@2.0.5\Tests" />
      <None Include="Library\PackageCache\com.unity.ugui@1.0.0\package.json" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.CSharp.4.7.0\lib\netstandard2.0" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers" />
      <Folder Include="Library\PackageCache\com.unity.modules.xr@1.0.0" />
      <None Include="Library\PackageCache\com.unity.2d.tilemap@1.0.0\package.json" />
      <Folder Include="Assets\TextMesh Pro\Resources\Sprite Assets" />
      <Folder Include="Assets\Sprites\objects\old" />
+     <Folder Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0" />
      <None Include="Library\PackageCache\com.unity.ext.nunit@1.0.6\package.json" />
      <Folder Include="Library\PackageCache\com.unity.ide.rider@3.0.16\Rider" />
      <Folder Include="Library\PackageCache\com.unity.2d.pixel-perfect@5.0.2" />
@@ -97,29 +144,51 @@
      <None Include="Library\PackageCache\com.unity.2d.pixel-perfect@5.0.2\package.json" />
      <Folder Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Editor Resources" />
      <Folder Include="Assets\Scripts\AI" />
-     <Folder Include="Assets\prefabs\objects" />
+     <Folder Include="Assets\Resources\Prefabs\objects" />
      <Folder Include="Library\PackageCache\com.unity.2d.common@8.0.1\Tests" />
+     <Folder Include="Assets\Sprites\objects\miniBoulder\old" />
      <None Include="Library\PackageCache\com.unity.modules.assetbundle@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.inputsystem@1.4.4\Tests" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\documentation" />
+     <Folder Include="Assets\Animations\mlue\drop" />
+     <Folder Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0\buildTransitive" />
+     <Folder Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.6.0.0\buildTransitive" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisDocumentationRulesDefault" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
      <None Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\package.json" />
      <None Include="Library\PackageCache\com.unity.modules.imgui@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.sysroot.linux-x86_64@2.0.4" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\pt-BR" />
      <None Include="Library\PackageCache\com.unity.collab-proxy@1.17.7\ValidationExceptions.json" />
      <None Include="Library\PackageCache\com.unity.sysroot.linux-x86_64@2.0.4\package.json" />
      <None Include="Library\PackageCache\com.unity.modules.tilemap@1.0.0\package.json" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\tr" />
      <Folder Include="Library\PackageCache\com.unity.modules.assetbundle@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.burst@1.7.4\Tests" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\zh-Hans" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\PortedFromFxCopRulesEnabled" />
+     <Folder Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.6.0.0\buildTransitive\netcoreapp2.0" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\cs" />
+     <None Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0\lib\netstandard2.0\System.Text.Encoding.CodePages.xml" />
      <None Include="Assets\Fonts\UFL.txt" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\tr" />
      <None Include="Library\PackageCache\com.unity.timeline@1.7.2\package.json" />
      <Folder Include="Assets\Scenes" />
      <Folder Include="Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\CorrectnessRulesEnabled" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\ru" />
+     <Folder Include="Assets\Prefabs\Other" />
      <Folder Include="Assets\Animations\TreeNutter" />
      <None Include="Library\PackageCache\com.unity.toolchain.win-x86_64-linux-x86_64@2.0.4\package.json" />
+     <None Include="Assets\Packages\Microsoft.CodeAnalysis.Scripting.Common.4.7.0\lib\netstandard2.0\Microsoft.CodeAnalysis.Scripting.xml" />
      <Folder Include="Library\PackageCache\com.unity.collections@1.2.4\Unity.Collections.LowLevel.ILSupport" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisReleaseTrackingRulesEnabled" />
+     <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\buildTransitive\net461" />
      <Folder Include="Assets\TextMesh Pro\Resources\Fonts &amp; Materials" />
      <Folder Include="Library\PackageCache\com.unity.collections@1.2.4" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\AllRulesDefault" />
      <Folder Include="Library\PackageCache\com.unity.ai.navigation@1.1.1\Gizmos" />
+     <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0" />
      <None Include="Library\PackageCache\com.unity.ide.visualstudio@2.0.16\ValidationConfig.json" />
      <Folder Include="Library\PackageCache\com.unity.ext.nunit@1.0.6\net35" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
@@ -129,21 +198,38 @@
      <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.1\Tests" />
      <Folder Include="Library\PackageCache\com.unity.nuget.newtonsoft-json@3.0.2\Runtime\AOT" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\ru" />
+     <Folder Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0\lib\netstandard2.0" />
      <Folder Include="Assets\TextMesh Pro\Resources" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\ja" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisDocumentationRulesEnabled" />
      <Folder Include="Library\PackageCache\com.unity.modules.screencapture@1.0.0" />
+     <Folder Include="Assets\Scripts\Controls" />
      <Folder Include="Assets\Resources\Recipes" />
      <None Include="Library\PackageCache\com.unity.timeline@1.7.2\ValidationExceptions.json" />
      <None Include="Library\PackageCache\com.unity.collab-proxy@1.17.7\package.json" />
+     <None Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.6.0.0\useSharedDesignerContext.txt" />
+     <Folder Include="Library\PackageCache\com.github-glitchenzo.nugetforunity@25d19abe5a\Resources" />
      <Folder Include="Library\PackageCache\com.unity.timeline@1.7.2" />
+     <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\buildTransitive" />
      <Folder Include="Library\PackageCache\com.unity.ai.navigation@1.1.1\Tests" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\AllRulesEnabled" />
+     <None Include="Assets\Packages\Microsoft.CodeAnalysis.CSharp.4.7.0\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.xml" />
      <Folder Include="Library\PackageCache\com.unity.modules.cloth@1.0.0" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Scripting.Common.4.7.0" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\de" />
      <None Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\PackageConversionData.json" />
      <None Include="Library\PackageCache\com.unity.modules.unitywebrequestassetbundle@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.ext.nunit@1.0.6" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\ko" />
      <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK" />
      <Folder Include="Assets\Sprites\items\OLD" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\DataflowRulesDefault" />
+     <Folder Include="Assets\Physics2D" />
      <Folder Include="Library\PackageCache\com.unity.burst@1.7.4" />
      <None Include="Library\PackageCache\com.unity.ide.visualstudio@2.0.16\package.json" />
+     <None Include="Assets\Packages\Microsoft.CodeAnalysis.Common.4.7.0\lib\netstandard2.0\Microsoft.CodeAnalysis.xml" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.CSharp.Scripting.4.7.0" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <Folder Include="Library\PackageCache\com.unity.modules.imageconversion@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.modules.terrainphysics@1.0.0" />
@@ -152,34 +238,47 @@
      <Folder Include="Library\PackageCache\com.unity.modules.unitywebrequest@1.0.0" />
      <None Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\ValidationExceptions.json" />
      <Folder Include="Library\PackageCache\com.unity.modules.unitywebrequestassetbundle@1.0.0" />
-     <Folder Include="Assets\prefabs\Particles" />
+     <Folder Include="Assets\Resources\Prefabs\Particles" />
      <Folder Include="Assets\TextMesh Pro" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.CSharp.Scripting.4.7.0\lib\netstandard2.0" />
      <None Include="Library\PackageCache\com.unity.modules.unityanalytics@1.0.0\package.json" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisReleaseTrackingRulesDefault" />
      <Folder Include="Library\PackageCache\com.unity.modules.subsystems@1.0.0" />
+     <None Include="Assets\Packages\System.Collections.Immutable.7.0.0\useSharedDesignerContext.txt" />
      <None Include="Library\PackageCache\com.unity.ide.rider@3.0.16\package.json" />
-     <Folder Include="Assets\prefabs\tiles" />
+     <Folder Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib" />
+     <Folder Include="Assets\Prefabs\tiles" />
      <None Include="Library\PackageCache\com.unity.modules.video@1.0.0\package.json" />
      <Folder Include="Assets\Animations\mlue\attack" />
+     <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\buildTransitive\net6.0" />
      <Folder Include="Assets\Sprites\hud\health" />
-     <Folder Include="Assets\prefabs\mlue" />
+     <Folder Include="Assets\Prefabs\mlue" />
      <None Include="Library\PackageCache\com.unity.test-framework@1.1.33\package.json" />
      <Folder Include="Library\PackageCache\com.unity.modules.unityanalytics@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.modules.physics@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Scripts" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\it" />
      <Folder Include="Library\PackageCache\com.unity.modules.vr@1.0.0" />
+     <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\buildTransitive\netcoreapp2.0" />
      <Folder Include="Assets\Sprites\objects" />
      <Folder Include="Library\PackageCache\com.unity.sysroot.linux-x86_64@2.0.4\Tests" />
      <Folder Include="Library\PackageCache\com.unity.modules.physics2d@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.2d.common@8.0.1\Path" />
      <Folder Include="Library\PackageCache\com.unity.toolchain.win-x86_64-linux-x86_64@2.0.4\Tests" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Common.4.7.0" />
      <Folder Include="Library\PackageCache\com.unity.inputsystem@1.4.4" />
      <Folder Include="Library\PackageCache\com.unity.ai.navigation@1.1.1" />
      <None Include="Library\PackageCache\com.unity.modules.particlesystem@1.0.0\package.json" />
+     <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0\buildTransitive\net6.0" />
      <Folder Include="Library\PackageCache\com.unity.modules.wind@1.0.0" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisPerformanceRulesEnabled" />
      <Folder Include="Assets\SFX\miniBoulder" />
+     <Folder Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0\lib" />
      <None Include="Library\PackageCache\com.unity.modules.physics2d@1.0.0\package.json" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
      <None Include="Library\PackageCache\com.unity.modules.vr@1.0.0\package.json" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\es" />
+     <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0\buildTransitive\netcoreapp2.0" />
      <None Include="Library\PackageCache\com.unity.services.core@1.6.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.modules.uielements@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.modules.unitywebrequestaudio@1.0.0" />
@@ -189,11 +288,15 @@
      <None Include="Library\PackageCache\com.unity.2d.common@8.0.1\package.json" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
      <None Include="Library\PackageCache\com.unity.toolchain.win-x86_64-linux-x86_64@2.0.4\ValidationConfig.json" />
+     <None Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.xml" />
      <None Include="Library\PackageCache\com.unity.ide.visualstudio@2.0.16\ValidationExceptions.json" />
      <Folder Include="Assets\Animations" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisLocalizationRulesDefault" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisLocalizationRulesEnabled" />
      <None Include="Library\PackageCache\com.unity.nuget.newtonsoft-json@3.0.2\link.xml" />
      <None Include="Library\PackageCache\com.unity.modules.wind@1.0.0\package.json" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisCompatibilityRulesEnabled" />
      <Folder Include="Library\PackageCache\com.unity.ugui@1.0.0\Tests" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Library\PackageCache\com.unity.modules.umbra@1.0.0\package.json" />
@@ -202,54 +305,96 @@
      <Folder Include="Library\PackageCache\com.unity.2d.sprite@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.modules.tilemap@1.0.0" />
      <Folder Include="Assets\Sprites\hud" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\pl" />
      <Folder Include="Library\PackageCache\com.unity.modules.ui@1.0.0" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
+     <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0\buildTransitive\net461" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisCompatibilityRulesDefault" />
      <Folder Include="Library\PackageCache\com.unity.services.core@1.6.0\Runtime" />
+     <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\lib\netstandard2.0" />
+     <Folder Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.6.0.0" />
+     <None Include="Assets\Packages\System.Reflection.Metadata.7.0.0\lib\netstandard2.0\System.Reflection.Metadata.xml" />
      <Folder Include="Library\PackageCache\com.unity.mathematics@1.2.6" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\es" />
      <Folder Include="Assets\Items" />
      <Folder Include="Assets\Sprites\tiles\old" />
      <Folder Include="Library\PackageCache\com.unity.2d.psdimporter@8.0.1" />
      <Folder Include="Library\PackageCache\com.unity.modules.androidjni@1.0.0" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
      <Folder Include="Assets\Fonts" />
      <None Include="Library\PackageCache\com.unity.inputsystem@1.4.4\ValidationExceptions.json" />
      <Folder Include="Assets\TextMesh Pro\Shaders" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\fr" />
+     <None Include="Assets\Packages\System.Collections.Immutable.7.0.0\lib\netstandard2.0\System.Collections.Immutable.xml" />
      <Folder Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Editor Resources\Gizmos" />
      <None Include="Library\PackageCache\com.unity.modules.audio@1.0.0\package.json" />
+     <Folder Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\netstandard2.0" />
      <Folder Include="Assets\Animations\TreeNutter\Walk" />
      <Folder Include="Assets\Animations\TreeNutter\Attack" />
      <None Include="Library\PackageCache\com.unity.modules.physics@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.collab-proxy@1.17.7" />
+     <Folder Include="Assets\Resources\DroppedItems" />
      <Folder Include="Assets\Scripts\Inventory" />
      <Folder Include="Library\PackageCache\com.unity.toolchain.win-x86_64-linux-x86_64@2.0.4" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\pt-BR" />
      <Folder Include="Assets\TextMesh Pro\Resources\Style Sheets" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.CSharp.Scripting.4.7.0\lib" />
      <Folder Include="Assets\Animations\mlue\idle" />
      <Folder Include="Assets\TextMesh Pro\Fonts" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Scripting.Common.4.7.0\lib" />
      <None Include="Library\PackageCache\com.unity.modules.vehicles@1.0.0\package.json" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\LibraryRulesEnabled" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisPerformanceRulesDefault" />
      <Folder Include="Library\PackageCache\com.unity.ai.navigation@1.1.1\EditorResources\Overlay" />
+     <Folder Include="Assets\Resources\Prefabs" />
+     <None Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\ThirdPartyNotices.txt" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\de" />
+     <Folder Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0\buildTransitive\net6.0" />
      <Folder Include="Library\PackageCache\com.unity.textmeshpro@3.0.6" />
-     <Folder Include="Assets\prefabs" />
+     <Folder Include="Assets\Prefabs" />
      <Folder Include="Library\PackageCache\com.unity.ide.rider@3.0.16" />
      <None Include="Library\PackageCache\com.unity.modules.unitywebrequestwww@1.0.0\package.json" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Scripting.Common.4.7.0\lib\netstandard2.0" />
+     <Folder Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.6.0.0\buildTransitive\netcoreapp3.1" />
      <Folder Include="Library\PackageCache\com.unity.2d.tilemap@1.0.0\Tests" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\PortedFromFxCopRulesDefault" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\AllRulesDisabled" />
+     <None Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0\useSharedDesignerContext.txt" />
      <None Include="Library\PackageCache\com.unity.modules.unitywebrequestaudio@1.0.0\package.json" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\cs" />
      <Folder Include="Assets\Resources" />
+     <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\lib" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\rulesets" />
      <None Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Editor Resources\Shaders\TMP_SDF_SSD.cginc" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\DataflowRulesEnabled" />
      <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.1" />
      <None Include="Library\PackageCache\com.unity.collab-proxy@1.17.7\ValidationConfig.json" />
      <Folder Include="Assets\Scripts" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\pl" />
      <None Include="Library\PackageCache\com.unity.ai.navigation@1.1.1\package.json" />
      <Folder Include="Library\PackageCache\com.unity.ide.vscode@1.2.5" />
      <Folder Include="Library\PackageCache\com.unity.modules.vehicles@1.0.0" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Scripting.4.7.0" />
      <None Include="Library\PackageCache\com.unity.modules.xr@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Tests" />
+     <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\buildTransitive\net462" />
      <Folder Include="Library\PackageCache\com.unity.services.core@1.6.0" />
      <None Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Editor Resources\Shaders\TMP_Properties.cginc" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\LibraryRulesDefault" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\buildTransitive\config" />
+     <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0\lib\netstandard2.0" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\ko" />
      <None Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Editor Resources\Shaders\TMP_SDF Internal Editor.shader" />
      <Folder Include="Library\PackageCache\com.unity.modules.umbra@1.0.0" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\it" />
      <Folder Include="Library\PackageCache\com.unity.ai.navigation@1.1.1\EditorResources" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+     <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0\buildTransitive" />
      <Folder Include="Library\PackageCache\com.unity.modules.unitywebrequestwww@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.collab-proxy@1.17.7\Lib" />
      <None Include="Library\PackageCache\com.unity.modules.director@1.0.0\package.json" />
@@ -259,21 +404,28 @@
      <Folder Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Editor Resources\Shaders" />
      <Folder Include="Library\PackageCache\com.unity.modules.director@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.modules.audio@1.0.0" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\buildTransitive" />
+     <None Include="Library\PackageCache\com.github-glitchenzo.nugetforunity@25d19abe5a\package.json" />
      <None Include="Library\PackageCache\com.unity.modules.terrain@1.0.0\package.json" />
      <None Include="Library\PackageCache\com.unity.2d.sprite@1.0.0\package.json" />
      <Folder Include="Assets\Sprites\mlue" />
+     <Folder Include="Assets\Packages" />
      <Folder Include="Library\PackageCache\com.unity.ide.visualstudio@2.0.16" />
+     <Folder Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0\buildTransitive\netcoreapp2.0" />
+     <Folder Include="Library\PackageCache\com.github-glitchenzo.nugetforunity@25d19abe5a" />
      <None Include="Library\PackageCache\com.unity.collections@1.2.4\package.json" />
-     <Folder Include="Assets\prefabs\Entities" />
+     <Folder Include="Assets\Resources\Prefabs\Entities" />
      <None Include="Library\PackageCache\com.unity.modules.androidjni@1.0.0\package.json" />
      <Folder Include="Assets\Sprites\items" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
      <Folder Include="Library\PackageCache\com.unity.modules.video@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.modules.ai@1.0.0" />
      <None Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\PackageConversionData_Assets.json" />
+     <None Include="Assets\Packages\System.Reflection.Metadata.7.0.0\useSharedDesignerContext.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
      <Folder Include="Assets\SFX" />
      <Folder Include="Library\PackageCache\com.unity.2d.tilemap@1.0.0" />
+     <None Include="Assets\Packages\Microsoft.CodeAnalysis.CSharp.Scripting.4.7.0\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Scripting.xml" />
      <None Include="Library\PackageCache\com.unity.2d.spriteshape@9.0.1\package.json" />
      <None Include="Library\PackageCache\com.unity.mathematics@1.2.6\ValidationExceptions.json" />
      <Folder Include="Library\PackageCache\com.unity.textmeshpro@3.0.6\Package Resources" />
@@ -281,19 +433,30 @@
      <Folder Include="Library\PackageCache\com.unity.modules.terrain@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.2d.sprite@1.0.0\Tests" />
      <None Include="Library\PackageCache\com.unity.modules.animation@1.0.0\package.json" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Common.4.7.0\lib\netstandard2.0" />
      <Folder Include="Library\PackageCache\com.unity.nuget.newtonsoft-json@3.0.2" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\zh-Hant" />
      <Folder Include="Assets\TextMesh Pro\Documentation" />
      <None Include="Library\PackageCache\com.unity.2d.animation@9.0.1\package.json" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\CorrectnessRulesDefault" />
+     <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\zh-Hans" />
      <Folder Include="Library\PackageCache\com.unity.nuget.newtonsoft-json@3.0.2\Runtime" />
      <None Include="Library\PackageCache\com.unity.collections@1.2.4\ValidationExceptions.json" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisCorrectnessRulesEnabled" />
      <None Include="Library\PackageCache\com.unity.burst@1.7.4\Unity.Burst.Unsafe.xml" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.CSharp.4.7.0\lib" />
      <None Include="Library\PackageCache\com.unity.2d.psdimporter@8.0.1\package.json" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisDesignRulesDefault" />
+     <Folder Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0\buildTransitive\net462" />
      <None Include="Library\PackageCache\com.unity.modules.unitywebrequest@1.0.0\package.json" />
      <None Include="Library\PackageCache\com.unity.modules.uielements@1.0.0\package.json" />
      <None Include="Library\PackageCache\com.unity.burst@1.7.4\package.json" />
      <Folder Include="Assets\Animations\mlue\walk" />
+     <Folder Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0\buildTransitive\net461" />
      <Folder Include="Library\PackageCache\com.unity.modules.unitywebrequesttexture@1.0.0" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.CSharp.4.7.0" />
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne.json" />
      <Folder Include="Library\PackageCache\com.unity.ugui@1.0.0" />
      <Folder Include="Library\PackageCache\com.unity.2d.spriteshape@9.0.1" />
@@ -302,14 +465,20 @@
      <None Include="Library\PackageCache\com.unity.modules.ui@1.0.0\package.json" />
      <Folder Include="Library\PackageCache\com.unity.2d.spriteshape@9.0.1\Tests" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\ja" />
      <Folder Include="Assets\Sprites" />
      <Folder Include="Library\PackageCache\com.unity.2d.psdimporter@8.0.1\Tests" />
      <None Include="Library\PackageCache\com.unity.ide.vscode@1.2.5\package.json" />
+     <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0\lib" />
+     <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.2.1f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.AIModule">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.2.1f1\Editor\Data\Managed\UnityEngine\UnityEngine.AIModule.dll</HintPath>
+     </Reference>
+     <Reference Include="UnityEngine.ARModule">
+     <HintPath>C:\Program Files\Unity\Hub\Editor\2022.2.1f1\Editor\Data\Managed\UnityEngine\UnityEngine.ARModule.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.AccessibilityModule">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.2.1f1\Editor\Data\Managed\UnityEngine\UnityEngine.AccessibilityModule.dll</HintPath>
@@ -551,17 +720,38 @@
      <Reference Include="UnityEditor.UnityConnectModule">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.2.1f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
      </Reference>
+     <Reference Include="System.Reflection.Metadata">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Packages\System.Reflection.Metadata.7.0.0\lib\netstandard2.0\System.Reflection.Metadata.dll</HintPath>
+     </Reference>
+     <Reference Include="System.Collections.Immutable">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Packages\System.Collections.Immutable.7.0.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.Burst.Cecil.Pdb">
      <HintPath>D:\Projects\donotstarvealone\Library\PackageCache\com.unity.burst@1.7.4\Unity.Burst.CodeGen\Unity.Burst.Cecil.Pdb.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Collections.LowLevel.ILSupport">
      <HintPath>D:\Projects\donotstarvealone\Library\PackageCache\com.unity.collections@1.2.4\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
      </Reference>
+     <Reference Include="Microsoft.CodeAnalysis">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Common.4.7.0\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.Burst.Cecil.Mdb">
      <HintPath>D:\Projects\donotstarvealone\Library\PackageCache\com.unity.burst@1.7.4\Unity.Burst.CodeGen\Unity.Burst.Cecil.Mdb.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Burst.Cecil">
      <HintPath>D:\Projects\donotstarvealone\Library\PackageCache\com.unity.burst@1.7.4\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll</HintPath>
+     </Reference>
+     <Reference Include="Microsoft.CodeAnalysis.Scripting">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Scripting.Common.4.7.0\lib\netstandard2.0\Microsoft.CodeAnalysis.Scripting.dll</HintPath>
+     </Reference>
+     <Reference Include="System.Runtime.CompilerServices.Unsafe">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+     </Reference>
+     <Reference Include="System.Text.Encoding.CodePages">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Packages\System.Text.Encoding.CodePages.7.0.0\lib\netstandard2.0\System.Text.Encoding.CodePages.dll</HintPath>
+     </Reference>
+     <Reference Include="Microsoft.CodeAnalysis.CSharp">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.CSharp.4.7.0\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Burst.Unsafe">
      <HintPath>D:\Projects\donotstarvealone\Library\PackageCache\com.unity.burst@1.7.4\Unity.Burst.Unsafe.dll</HintPath>
@@ -571,6 +761,9 @@
      </Reference>
      <Reference Include="Unity.Burst.Cecil.Rocks">
      <HintPath>D:\Projects\donotstarvealone\Library\PackageCache\com.unity.burst@1.7.4\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll</HintPath>
+     </Reference>
+     <Reference Include="Microsoft.CodeAnalysis.CSharp.Scripting">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.CSharp.Scripting.4.7.0\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Scripting.dll</HintPath>
      </Reference>
      <Reference Include="netstandard">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.2.1f1\Editor\Data\NetStandard\ref\2.1.0\netstandard.dll</HintPath>
@@ -971,6 +1164,10 @@
     <ProjectReference Include="Unity.2D.Sprite.Editor.csproj">
       <Project>{b73299b8-267f-53d8-d0c3-217ec4c84d4f}</Project>
       <Name>Unity.2D.Sprite.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="NuGetForUnity.csproj">
+      <Project>{0bd9a66b-d04b-2a35-7001-e95dc40bc856}</Project>
+      <Name>NuGetForUnity</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Mathematics.Editor.csproj">
       <Project>{16b366e4-47c2-ab8f-ff2b-dc3674a777ae}</Project>
