@@ -19,6 +19,8 @@ MonoBehaviour:
   maxStack: 1
   damage: 5
   handScale: {x: -0.3, y: 0.3, z: 1}
+  pickaxePower: 15
+  axePower: 0
   displayTextEntries:
   - enabled: 1
     label: Damage

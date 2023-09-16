@@ -11,6 +11,10 @@ public abstract class ItemClass : ScriptableObject
     public int maxStack = 20;
     public int damage;
     public Vector3 handScale;
+
+    [Header("Mining")] 
+    public int pickaxePower;
+    public int axePower;
     
     [Header("Display Info")]
     public List<DisplayTextEntry> displayTextEntries = new List<DisplayTextEntry>();

@@ -308,7 +308,7 @@ namespace UnityEditor.U2D.Sprites
             {
                 if (hasSelected)
                 {
-                    pivotUnitMode = (PivotUnitMode)evt.newValue;
+                    m_PivotUnitMode = (PivotUnitMode)evt.newValue;
 
                     Vector2 pivot = selectedSpritePivotInCurUnitMode;
                     m_CustomPivotFieldX.SetValueWithoutNotify(pivot.x);
@@ -324,7 +324,7 @@ namespace UnityEditor.U2D.Sprites
                 if (hasSelected)
                 {
                     float newValue = (float)evt.newValue;
-                    float pivotX = pivotUnitMode == PivotUnitMode.Pixels
+                    float pivotX = m_PivotUnitMode == PivotUnitMode.Pixels
                         ? ConvertFromRectToNormalizedSpace(new Vector2(newValue, 0.0f), selectedSpriteRect).x
                         : newValue;
 
@@ -340,7 +340,7 @@ namespace UnityEditor.U2D.Sprites
                 if (hasSelected)
                 {
                     float newValue = (float)evt.newValue;
-                    float pivotY = pivotUnitMode == PivotUnitMode.Pixels
+                    float pivotY = m_PivotUnitMode == PivotUnitMode.Pixels
                         ? ConvertFromRectToNormalizedSpace(new Vector2(0.0f, newValue), selectedSpriteRect).y
                         : newValue;
 
@@ -394,7 +394,7 @@ namespace UnityEditor.U2D.Sprites
             m_BorderFieldR.SetValueWithoutNotify(Mathf.RoundToInt(spriteBorder.z));
             m_BorderFieldB.SetValueWithoutNotify(Mathf.RoundToInt(spriteBorder.y));
             m_PivotField.SetValueWithoutNotify(selectedSpriteAlignment);
-            m_PivotUnitModeField.SetValueWithoutNotify(pivotUnitMode);
+            m_PivotUnitModeField.SetValueWithoutNotify(m_PivotUnitMode);
             Vector2 pivot = selectedSpritePivotInCurUnitMode;
             m_CustomPivotFieldX.SetValueWithoutNotify(pivot.x);
             m_CustomPivotFieldY.SetValueWithoutNotify(pivot.y);
@@ -502,7 +502,7 @@ namespace UnityEditor.U2D.Sprites
                 // Pivot snapping only happen when ctrl is press. Same as scene view snapping move
                 if (eventSystem.current.control)
                     SnapPivotToSnapPoints(pivotHandlePosition, out pivot, out alignment);
-                else if (pivotUnitMode == PivotUnitMode.Pixels)
+                else if (m_PivotUnitMode == PivotUnitMode.Pixels)
                     SnapPivotToPixels(pivotHandlePosition, out pivot, out alignment);
                 else
                 {

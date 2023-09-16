@@ -11,8 +11,6 @@ namespace UnityEditor.Tilemaps
         static class Styles
         {
             public static readonly GUIContent gridSelectionLabel = EditorGUIUtility.TrTextContent("Grid Selection");
-
-            public static readonly string iconPath = "Packages/com.unity.2d.tilemap/Editor/Icons/GridSelection.png";
         }
 
         private void OnValidate()
@@ -41,17 +39,13 @@ namespace UnityEditor.Tilemaps
                     GridPaintingState.UnlockGridPaintPaletteClipboardForEditing();
                     GridPaintingState.RepaintGridPaintPaletteWindow();
                 }
-                else
-                {
-                    GridSelection.SaveStandalone();
-                }
             }
         }
 
         protected override void OnHeaderGUI()
         {
             EditorGUILayout.BeginHorizontal(EditorStyles.inspectorBig);
-            Texture2D icon = EditorGUIUtility.LoadIcon(Styles.iconPath);
+            Texture2D icon = AssetPreview.GetMiniTypeThumbnail(typeof(Grid));
             GUILayout.Label(icon, GUILayout.Width(iconSize), GUILayout.Height(iconSize));
             EditorGUILayout.BeginVertical();
             GUILayout.Label(Styles.gridSelectionLabel);

@@ -75,15 +75,9 @@ namespace UnityEditor.U2D.Sprites
 
             public readonly GUIContent[] slicingMethodOptions =
             {
-                EditorGUIUtility.TrTextContent("Delete Existing"),
-                EditorGUIUtility.TrTextContent("Smart"),
-                EditorGUIUtility.TrTextContent("Safe")
-            };
-            public readonly string[] slicingMethodInfoText =
-            {
-                L10n.Tr("Delete Existing removes all existing Sprites and recreates them from scratch."),
-                L10n.Tr("Smart attempts to create new Sprites while retaining or adjusting existing ones. This slicing method does not remove any existing Sprites."),
-                L10n.Tr("Safe adds new Sprites without changing anything already in place. This slicing method does not remove any existing Sprites.")
+                EditorGUIUtility.TrTextContent("Delete Existing", "Delete all existing sprite assets before the slicing operation"),
+                EditorGUIUtility.TrTextContent("Smart", "Try to match existing sprite rects to sliced rects from the slicing operation"),
+                EditorGUIUtility.TrTextContent("Safe", "Keep existing sprite rects intact")
             };
 
             public readonly GUIContent methodLabel = EditorGUIUtility.TrTextContent("Method");
@@ -103,10 +97,7 @@ namespace UnityEditor.U2D.Sprites
             public readonly GUIContent keepEmptyRectsLabel = EditorGUIUtility.TrTextContent("Keep Empty Rects");
             public readonly GUIContent isAlternateLabel = EditorGUIUtility.TrTextContent("Is Alternate");
 
-            public readonly string deleteExistingTitle = L10n.Tr("Potential loss of Sprite data");
-            public readonly string deleteExistingMessage = L10n.Tr("The Delete Existing slicing method recreates all Sprites with their default names. Renamed Sprites will lose their data in the process, and references to these Sprites will be lost. \n\nDo you wish you continue?");
-            public readonly string yes = L10n.Tr("Yes");
-            public readonly string no = L10n.Tr("No");
+            public readonly string deleteExistingMessage = L10n.Tr("The Delete Existing slicing method will destroy the current Sprites and recreate them from scratch, once you select Apply. This operation could cause the Sprite references to get lost. Consider using Smart or Safe slicing methods instead.");
         }
 
         internal List<Rect> GetPotentialRects()
@@ -153,7 +144,7 @@ namespace UnityEditor.U2D.Sprites
             m_TextureDataProvider = dataProvider;
 
             buttonRect = GUIUtility.GUIToScreenRect(buttonRect);
-            const float windowHeight = 235f;
+            const float windowHeight = 255;
             var windowSize = new Vector2(300, windowHeight);
             ShowAsDropDown(buttonRect, windowSize);
 
@@ -245,7 +236,7 @@ namespace UnityEditor.U2D.Sprites
             DoPivotGUI();
             GUILayout.Space(2f);
             EditorGUI.BeginChangeCheck();
-            var slicingMethod = s_Setting.autoSlicingMethod;
+            int slicingMethod = s_Setting.autoSlicingMethod;
             slicingMethod = EditorGUILayout.Popup(s_Styles.methodLabel, slicingMethod, s_Styles.slicingMethodOptions);
             if (EditorGUI.EndChangeCheck())
             {
@@ -253,28 +244,16 @@ namespace UnityEditor.U2D.Sprites
                 s_Setting.autoSlicingMethod = slicingMethod;
             }
 
-            EditorGUILayout.HelpBox(s_Styles.slicingMethodInfoText[slicingMethod], MessageType.Info);
+            if (s_Setting.autoSlicingMethod == (int)SpriteFrameModule.AutoSlicingMethod.DeleteAll)
+                EditorGUILayout.HelpBox(s_Styles.deleteExistingMessage, MessageType.Warning);
 
             GUILayout.FlexibleSpace();
             GUILayout.BeginHorizontal();
             GUILayout.Space(EditorGUIUtility.labelWidth + 4);
             if (GUILayout.Button(s_Styles.sliceButtonLabel))
-            {
-                if (DoesNotNeedWarning() || EditorUtility.DisplayDialog(s_Styles.deleteExistingTitle, s_Styles.deleteExistingMessage, s_Styles.yes, s_Styles.no))
-                    DoSlicing();
-            }
+                DoSlicing();
+
             GUILayout.EndHorizontal();
-        }
-
-        private bool DoesNotNeedWarning()
-        {
-            var hasNoData = m_SpriteFrameModule.spriteCount == 0;
-            var isNotUsingDeleteAll = s_Setting.autoSlicingMethod != (int)SpriteFrameModule.AutoSlicingMethod.DeleteAll;
-            if (hasNoData || isNotUsingDeleteAll)
-                return true;
-
-            var onlyUsingDefaultName = m_SpriteFrameModule.IsOnlyUsingDefaultNamedSpriteRects();
-            return onlyUsingDefaultName;
         }
 
         private static void UpdateToDefaultAutoSliceMethod()

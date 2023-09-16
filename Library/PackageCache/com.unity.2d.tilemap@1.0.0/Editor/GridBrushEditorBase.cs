@@ -1,4 +1,3 @@
-using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 using UnityEngine.Tilemaps;
@@ -14,18 +13,6 @@ namespace UnityEditor.Tilemaps
         {
             public static readonly Color activeColor = new Color(1f, .5f, 0f);
             public static readonly Color executingColor = new Color(1f, .75f, 0.25f);
-        }
-
-        /// <summary>Returns a tooltip describing the usage of the brush and other helpful information.</summary>
-        public virtual string tooltip
-        {
-            get { return null; }
-        }
-
-        /// <summary>Returns a texture used as an icon to identify this brush.</summary>
-        public virtual Texture2D icon
-        {
-            get { return null; }
         }
 
         /// <summary>Checks if the Brush allows the changing of Z Position.</summary>
@@ -127,9 +114,8 @@ namespace UnityEditor.Tilemaps
             if (Event.current.type != EventType.Repaint)
                 return;
 
-            if (tool == GridBrushBase.Tool.Select
-                || tool == GridBrushBase.Tool.Move
-                || GridSelectionTool.IsActive())
+            if (tool == GridBrushBase.Tool.Select ||
+                tool == GridBrushBase.Tool.Move)
             {
                 if (GridSelection.active && !executing)
                 {
@@ -150,9 +136,8 @@ namespace UnityEditor.Tilemaps
             if (tool == GridBrushBase.Tool.Paint && executing)
                 color = Color.yellow;
 
-            if (tool == GridBrushBase.Tool.Select
-                || tool == GridBrushBase.Tool.Move
-                || GridSelectionTool.IsActive())
+            if (tool == GridBrushBase.Tool.Select ||
+                tool == GridBrushBase.Tool.Move)
             {
                 if (executing)
                     color = Styles.executingColor;

@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 167
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 237766cc01ba03943ba4eaccbb1ef36e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -304,7 +304,8 @@ MonoBehaviour:
   deathParticles: {fileID: 1231736053040336201, guid: 3f6ca38d19d179d4eb39b82139a0f7a0, type: 3}
   hasHitSound: 1
   hitSound: {fileID: 8300000, guid: faf490900c881224f997cff321e981b7, type: 3}
-  tool: {fileID: 11400000, guid: 45d4e04a77eff6747bf8e44ba31b4910, type: 2}
+  pickaxePower: 15
+  axePower: 0
   isMineable: 1
   attackOffset: {x: 0, y: 0.2, z: 0}
   onHoverText: Mine

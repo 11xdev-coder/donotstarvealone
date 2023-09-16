@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 public class WorldGenerator : MonoBehaviour
@@ -10,14 +11,16 @@ public class WorldGenerator : MonoBehaviour
     public int freq = 2;
     public int partToSpawnPlayer = 2;
     public bool havePlayerSpawned;
-    public Vector3 treeOffset = new Vector3(0, 0.7f, 0);
     
     
-    [Header("tile prefabs")]
-    public GameObject grassTurf;
-    public GameObject forestTurf;
-    public GameObject rockylandTurf;
-    public GameObject ocean;
+    [Header("Tilemaps")]
+    public Tilemap terrainTilemap;
+
+    [Header("Tiles")]
+    public Tile grassTile;
+    public Tile forestTile;
+    public Tile rockylandTile;
+    public Tile oceanTile;
 
     [Header("objects")] 
     public GameObject player;
@@ -46,7 +49,7 @@ public class WorldGenerator : MonoBehaviour
                 "Grassland",
                 new Dictionary<string, float>()
                 {
-                    {"birchnutTree", 0.07f}
+                    {"BirchNutTree", 0.07f}
                 }
             },
             {
@@ -93,7 +96,7 @@ public class WorldGenerator : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 float noiseValue = _noiseValues[x, y];
-                GameObject terrain;
+                Tile terrain;
                 GameObject[] objects;
                 string biome;
 
@@ -103,13 +106,13 @@ public class WorldGenerator : MonoBehaviour
                     {
                         if (noiseValue >= 0.7f)
                         {
-                            terrain = rockylandTurf;
+                            terrain = rockylandTile;
                             objects = _objectsByBiome["Rockyland"];
                             biome = "Rockyland";
                         }
                         else
                         {
-                            terrain = forestTurf;
+                            terrain = forestTile;
                             objects = _objectsByBiome["Forest"];
                             biome = "Forest";
                         }
@@ -122,20 +125,21 @@ public class WorldGenerator : MonoBehaviour
                             havePlayerSpawned = true;
                         }
                             
-                        terrain = grassTurf;
+                        terrain = grassTile;
                         objects = _objectsByBiome["Grassland"];
                         biome = "Grassland";
                     }
                 }
                 else
                 {
-                    terrain = ocean;
+                    terrain = oceanTile;
                     objects = _objectsByBiome["Ocean"];
                     biome = "Ocean";
                 }
 
-                Vector3 position = new Vector3(x, y, 0);
-                Instantiate(terrain, position, Quaternion.identity);
+                Vector3Int tilePosition = new Vector3Int(x, y, 0);
+                terrainTilemap.SetTile(tilePosition, terrain);
+                
                 
                 float spawnChance = Random.Range(0f, 1f);
                 foreach (string objectType in _objectSpawnChancesByBiome[biome].Keys)
@@ -147,16 +151,20 @@ public class WorldGenerator : MonoBehaviour
                         GameObject objectToInstantiate = objects[objectIndex];
                         if (objectToInstantiate.name.Contains(objectType))
                         {
-                            objectToInstantiate.GetComponent<SpriteRenderer>().sortingOrder = height - y;
-                            if (objectToInstantiate.name.Contains("Tree"))
+                            GameObject instantiatedObject; 
+                            
+                            objectPosition = new Vector3(x, y, 0);
+                            instantiatedObject = Instantiate(objectToInstantiate, objectPosition, Quaternion.identity); 
+
+                            float baseOrder = width - objectPosition.y + 1;  // Use objectPosition.y instead of transform.position.y
+                            if (instantiatedObject.GetComponent<SpriteRenderer>() != null)
                             {
-                                objectPosition = new Vector3(x, y, 0) + treeOffset;
-                                Instantiate(objectToInstantiate, objectPosition, Quaternion.identity);
+                                instantiatedObject.GetComponent<SpriteRenderer>().sortingOrder = (int)baseOrder; 
                             }
-                            else
+
+                            if (instantiatedObject.GetComponentInChildren<SpriteRenderer>() != null)
                             {
-                                objectPosition = new Vector3(x, y, 0);
-                                Instantiate(objectToInstantiate, objectPosition, Quaternion.identity);
+                                instantiatedObject.GetComponentInChildren<SpriteRenderer>().sortingOrder = (int)baseOrder; 
                             }
                         }
                     }

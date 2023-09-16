@@ -17,35 +17,32 @@ namespace UnityEditor.U2D.Sprites
             DrawSpriteRectGizmos();
             DrawPotentialSpriteRectGizmos();
 
-            if (!spriteEditor.editingDisabled)
+            HandleGizmoMode();
+
+            if (containsMultipleSprites)
+                HandleRectCornerScalingHandles();
+
+            HandleBorderCornerScalingHandles();
+            HandleBorderSidePointScalingSliders();
+
+            if (containsMultipleSprites)
+                HandleRectSideScalingHandles();
+
+            HandleBorderSideScalingHandles();
+            HandlePivotHandle();
+
+            if (containsMultipleSprites)
+                HandleDragging();
+
+            spriteEditor.HandleSpriteSelection();
+
+            if (containsMultipleSprites)
             {
-                HandleGizmoMode();
-
-                if (containsMultipleSprites)
-                    HandleRectCornerScalingHandles();
-
-                HandleBorderCornerScalingHandles();
-                HandleBorderSidePointScalingSliders();
-
-                if (containsMultipleSprites)
-                    HandleRectSideScalingHandles();
-
-                HandleBorderSideScalingHandles();
-                HandlePivotHandle();
-
-                if (containsMultipleSprites)
-                    HandleDragging();
-
-                spriteEditor.HandleSpriteSelection();
-
-                if (containsMultipleSprites)
-                {
-                    HandleCreate();
-                    HandleDelete();
-                    HandleDuplicate();
-                }
-                spriteEditor.spriteRects = m_RectsCache.GetSpriteRects();
+                HandleCreate();
+                HandleDelete();
+                HandleDuplicate();
             }
+            spriteEditor.spriteRects = m_RectsCache.GetSpriteRects();
         }
 
         private void DrawPotentialSpriteRectGizmos()

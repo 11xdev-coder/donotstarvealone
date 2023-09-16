@@ -53,12 +53,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d740244625ec70e439b9275622c157c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 0
+  searchRadius: {fileID: 0}
+  attackDetectionRadius: {fileID: 0}
+  keyBindingManager: {fileID: 0}
+  showSearchRadius: 0
+  showAttackDetectionRadius: 0
+  canAccessDebug: 0
+  menu: {fileID: 0}
   attackDetectionRadiusRenderer: {fileID: 0}
   searchRadiusRenderer: {fileID: 0}
   segments: 50
   pc: {fileID: 4730328541580573804}
   lrPrefab: {fileID: 1611928862431324166, guid: a9403ef4ffad78843b20d0b82814ef12, type: 3}
+  color: {fileID: 0}
 --- !u!114 &4730328541580573804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,6 +83,11 @@ MonoBehaviour:
   attackTarget: {fileID: 0}
   currentAttackableTarget: {fileID: 0}
   currentInteractableSlot: {fileID: 0}
+  isInCar: 0
+  car: {fileID: 0}
+  carRb: {fileID: 0}
+  carMoveSpeed: 5
+  carTurnSpeed: 90
   mainCamera: {fileID: 0}
   hoveringText: {fileID: 0}
   hud: {fileID: 0}
@@ -88,6 +100,12 @@ MonoBehaviour:
   heartImage: {fileID: 0}
   heartImageFull: {fileID: 21300000, guid: 8dd42f91b924e7347a3e8451c1b91cf8, type: 3}
   heartImageCracked: {fileID: 21300000, guid: afce5c5e43338bb47ba62de485b9f7a2, type: 3}
+  head: {fileID: 9094269578639536489}
+  body: {fileID: 5351691645146526244}
+  armL: {fileID: 1242480962830802973}
+  armR: {fileID: 9115943933683964994}
+  legL: {fileID: 8741820180128931605}
+  legR: {fileID: 8417991103204895704}
   horizontal: 0
   vertical: 0
   movement: {x: 0, y: 0}
@@ -358,7 +376,8 @@ MonoBehaviour:
   deathParticles: {fileID: 0}
   hasHitSound: 0
   hitSound: {fileID: 0}
-  tool: {fileID: 0}
+  pickaxePower: 0
+  axePower: 0
   isMineable: 0
   attackOffset: {x: 0, y: 0, z: 0}
   onHoverText: 
