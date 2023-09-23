@@ -75,23 +75,23 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.2.1f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\AssemblyInfo.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\Solvers\FABRIK2D.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\IKUtility.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\Solver2D.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\IKManager2D.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\Solvers\CCD2D.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\LimbSolver2D.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\Solver2DMenuAttribute.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\IKChain2D.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\FabrikSolver2D.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\CCDSolver2D.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\Solvers\Limb.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\IconUtility.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\IKManager2DEditorData.cs" />
-     <None Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\Unity.2D.IK.Runtime.asmdef" />
-     <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime\Solvers" />
-     <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Runtime" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\AssemblyInfo.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\Solvers\FABRIK2D.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\IKUtility.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\Solver2D.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\IKManager2D.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\Solvers\CCD2D.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\LimbSolver2D.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\Solver2DMenuAttribute.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\IKChain2D.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\FabrikSolver2D.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\CCDSolver2D.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\Solvers\Limb.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\IconUtility.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\IKManager2DEditorData.cs" />
+     <None Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\Unity.2D.IK.Runtime.asmdef" />
+     <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime\Solvers" />
+     <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Runtime" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.2.1f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\Variations\mono\Managed\UnityEngine.dll</HintPath>
      </Reference>

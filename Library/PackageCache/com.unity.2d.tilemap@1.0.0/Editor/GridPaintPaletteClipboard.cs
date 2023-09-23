@@ -13,10 +13,17 @@ namespace UnityEditor.Tilemaps
     {
         static class Styles
         {
-            public static readonly GUIContent emptyProjectInfo = EditorGUIUtility.TrTextContent("Create a new palette in the dropdown above.");
-            public static readonly GUIContent emptyPaletteInfo = EditorGUIUtility.TrTextContent("Drag Tile, Sprite or Sprite Texture assets here.");
+            public static readonly GUIContent emptyProjectTopInfo = EditorGUIUtility.TrTextContent("Drag Tile, Sprite, Texture (Sprite type) asset/s here to");
+            public static readonly GUIContent emptyProjectLeftInfo = EditorGUIUtility.TrTextContent("create a new ");
+            public static readonly GUIContent emptyProjectRightInfo = EditorGUIUtility.TrTextContent(" Tile Palette");
+            public static readonly GUIContent whiteboxDropdownInfo = EditorGUIUtility.TrTextContent("Create a new Whitebox Tile Palette");
+            public static readonly GUIContent whiteboxAlternateInfo = EditorGUIUtility.TrTextContent("Alternatively, get started quickly with a Whitebox Tile Palette");
+            public static readonly GUIContent whiteboxButtonInfo = EditorGUIUtility.TrTextContent("Create");
+
+            public static readonly GUIContent emptyPaletteInfo = EditorGUIUtility.TrTextContent("Drag Tile, Sprite or Texture (Sprite type) asset/s here.");
             public static readonly GUIContent invalidPaletteInfo = EditorGUIUtility.TrTextContent("This is an invalid palette. Did you delete the palette asset?");
             public static readonly GUIContent invalidGridInfo = EditorGUIUtility.TrTextContent("The palette has an invalid Grid. Did you add a Grid to the palette asset?");
+            public static readonly GUIContent invalidDragAndDropInfo = EditorGUIUtility.TrTextContent("You have dragged invalid items to the palette.");
         }
 
 
@@ -40,7 +47,7 @@ namespace UnityEditor.Tilemaps
         private bool m_PaletteNeedsSave;
         private const float k_ZoomSpeed = 7f;
         private const float k_MinZoom = 10f; // How many pixels per cell at minimum
-        private const float k_MaxZoom = 100f; // How many pixels per cell at maximum
+        private const float k_MaxZoom = 200f; // How many pixels per cell at maximum
         private const float k_Padding = 0.75f; // How many percentages of window size is the empty padding around the palette content
 
         private int m_KeyboardPanningID;
@@ -70,6 +77,12 @@ namespace UnityEditor.Tilemaps
         private VisualElement m_VisualElement;
 
         public bool activeDragAndDrop { get { return DragAndDrop.objectReferences.Length > 0 && guiRect.Contains(Event.current.mousePosition); } }
+
+        [SerializeField]
+        private GridPaletteUtility.GridPaletteType m_FirstUserPaletteType = GridPaletteUtility.GridPaletteType.Rectangle;
+        [SerializeField]
+        private bool m_WhiteboxFoldout = false;
+        [SerializeField] private int m_WhiteboxIndex = 0;
 
         [SerializeField] private bool m_CameraInitializedToBounds;
         [SerializeField] public bool m_CameraPositionSaved;
@@ -137,15 +150,15 @@ namespace UnityEditor.Tilemaps
         private Mesh m_GridMesh;
         private int m_LastGridHash;
         private Material m_GridMaterial;
-        private static readonly Color k_GridColor = Color.white.AlphaMultiplied(0.1f);
+        private static readonly PrefColor k_GridColor = new PrefColor("2D/Tile Palette Grid", 255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f, 25.5f / 255.0f);
         private static readonly PrefColor tilePaletteBackgroundColor = new PrefColor("2D/Tile Palette Background"
-            , 118.0f / 255.0f // Light
-            , 118.0f / 255.0f
-            , 118.0f / 255.0f
+            , 1.0f / 255.0f // Light
+            , 35.0f / 255.0f
+            , 90.0f / 255.0f
             , 127.0f / 255.0f
-            , 31.0f / 255.0f // Dark
-            , 31.0f / 255.0f
-            , 31.0f / 255.0f
+            , 1.0f / 255.0f // Dark
+            , 35.0f / 255.0f
+            , 90.0f / 255.0f
             , 127.0f / 255.0f);
 
         private bool m_PaletteUsed; // We mark palette used, when it has been changed in any way during being actively open.
@@ -167,18 +180,43 @@ namespace UnityEditor.Tilemaps
             }
         }
 
+        private RectInt? m_GameObjectBounds = null;
+
         private RectInt bounds
         {
             get
             {
                 RectInt r = default;
                 if (tilemap == null || TilemapIsEmpty(tilemap))
-                    return r;
+                {
+                    if (!isReceivingDragAndDrop)
+                        return m_GameObjectBounds.HasValue ? m_GameObjectBounds.Value : r;
+                    r = TileDragAndDrop.GetMinMaxRect(m_HoverData.Keys);
+                }
+                else
+                {
+                    tilemap.CompressBounds();
+                    r = new RectInt((Vector2Int) tilemap.origin, (Vector2Int) tilemap.size);
+                }
 
-                tilemap.CompressBounds();
-                var origin = tilemap.origin;
-                var size = tilemap.size;
-                r = new RectInt(origin.x, origin.y, size.x, size.y);
+                if (m_GameObjectBounds.HasValue)
+                {
+                    var origin = r.position;
+                    var size = r.size;
+                    var extent = origin + size;
+                    var goOrigin = m_GameObjectBounds.Value.min;
+                    var goExtent = m_GameObjectBounds.Value.max;
+                    if (goOrigin.x < origin.x)
+                        origin.x = goOrigin.x;
+                    if (goOrigin.y < origin.y)
+                        origin.y = goOrigin.y;
+                    if (goExtent.x > extent.x)
+                        extent.x = goExtent.x;
+                    if (goExtent.y > extent.y)
+                        extent.y = goExtent.y;
+                    size = extent - origin;
+                    r = new RectInt(origin.x, origin.y, size.x, size.y);
+                }
                 return r;
             }
         }
@@ -241,6 +279,8 @@ namespace UnityEditor.Tilemaps
 
         public bool isReceivingDragAndDrop { get { return m_HoverData != null && m_HoverData.Count > 0; } }
 
+        public bool isInvalidDragAndDrop { get { return m_HoverData != null && m_HoverData.Count == 0; } }
+
         public bool showNewEmptyClipboardInfo
         {
             get
@@ -261,6 +301,9 @@ namespace UnityEditor.Tilemaps
                     return false;
 
                 if (isReceivingDragAndDrop)
+                    return false;
+
+                if (isInvalidDragAndDrop)
                     return false;
 
                 // If user happens to erase the last content of used palette, we don't want to show the new palette info anymore
@@ -291,6 +334,8 @@ namespace UnityEditor.Tilemaps
             {
                 m_HoverData.Clear();
                 m_HoverData = null;
+                if (palette == null)
+                    DestroyPreviewInstance();
             }
         }
 
@@ -401,7 +446,18 @@ namespace UnityEditor.Tilemaps
                     transform.gameObject.hideFlags = HideFlags.HideAndDontSave;
 
                 // Show all renderers from Palettes from previous versions
-                PreviewRenderUtility.SetEnabledRecursive(m_PaletteInstance, true);
+                var goBounds = SetEnableRenderersAndGetBounds(m_PaletteInstance, true);
+                if (float.IsNormal(goBounds.x) && float.IsNormal(goBounds.y))
+                {
+                    m_GameObjectBounds = new RectInt(Mathf.FloorToInt(goBounds.x)
+                        , Mathf.FloorToInt(goBounds.y)
+                        , Mathf.CeilToInt(goBounds.width)
+                        , Mathf.CeilToInt(goBounds.height));
+                }
+                else
+                {
+                    m_GameObjectBounds = null;
+                }
 
                 // Update preview Grid Mesh for new palette instance
                 ResetPreviewGridMesh();
@@ -419,6 +475,95 @@ namespace UnityEditor.Tilemaps
                     GridSelection.Select(transform.gameObject, previousGridSelectionPosition);
                 }
             }
+            m_DelayedResetPaletteInstance = false;
+        }
+
+        internal static Rect SetEnableRenderersAndGetBounds(GameObject go, bool enabled)
+        {
+            var origin = Vector2.positiveInfinity;
+            var extents = Vector2.negativeInfinity;
+            foreach (Renderer renderer in go.GetComponentsInChildren<Renderer>())
+            {
+                renderer.enabled = enabled;
+                if (renderer is not TilemapRenderer)
+                {
+                    var rbounds = renderer.bounds;
+                    if (rbounds.min.x < origin.x)
+                        origin.x = rbounds.min.x;
+                    if (rbounds.min.y < origin.y)
+                        origin.y = rbounds.min.y;
+                    if (rbounds.max.x > extents.x)
+                        extents.x = rbounds.max.x;
+                    if (rbounds.min.x < extents.x)
+                        extents.y = rbounds.max.y;
+                }
+            }
+            return new Rect(origin, extents - origin);
+        }
+
+        public void CreateTemporaryPreviewInstance()
+        {
+            if (palette != null)
+                return;
+
+            DestroyPreviewInstance();
+
+            m_PaletteInstance = new GameObject("First User Palette", typeof(Grid), typeof(Tilemap),
+                typeof(TilemapRenderer));
+            m_PreviewUtility.camera.transparencySortMode = TransparencySortMode.Default;
+            m_PreviewUtility.camera.transparencySortAxis = new Vector3(0f, 0f, 1f);
+            var paletteGrid = m_PaletteInstance.GetComponent<Grid>();
+
+            switch (m_FirstUserPaletteType)
+            {
+                case GridPaletteUtility.GridPaletteType.Rectangle:
+                {
+                    paletteGrid.cellLayout = GridLayout.CellLayout.Rectangle;
+                    paletteGrid.cellSize = new Vector3(1, 1, 0);
+                    break;
+                }
+                case GridPaletteUtility.GridPaletteType.HexagonalPointTop:
+                {
+                    paletteGrid.cellLayout = GridLayout.CellLayout.Hexagon;
+                    paletteGrid.cellSize = new Vector3(1, 1, 0);
+                    break;
+                }
+                case GridPaletteUtility.GridPaletteType.HexagonalFlatTop:
+                {
+                    paletteGrid.cellLayout = GridLayout.CellLayout.Hexagon;
+                    paletteGrid.cellSize = new Vector3(1, 1, 0);
+                    paletteGrid.cellSwizzle = GridLayout.CellSwizzle.YXZ;
+                    break;
+                }
+                case GridPaletteUtility.GridPaletteType.Isometric:
+                {
+                    paletteGrid.cellLayout = GridLayout.CellLayout.Isometric;
+                    paletteGrid.cellSize = new Vector3(1, 0.5f, 1);
+                    break;
+                }
+                case GridPaletteUtility.GridPaletteType.IsometricZAsY:
+                {
+                    paletteGrid.cellLayout = GridLayout.CellLayout.IsometricZAsY;
+                    paletteGrid.cellSize = new Vector3(1, 0.5f, 1);
+                    m_PreviewUtility.camera.transparencySortMode  = TransparencySortMode.CustomAxis;
+                    m_PreviewUtility.camera.transparencySortAxis  = new Vector3(0f, 1f, -0.25f);
+                    break;
+                }
+            }
+
+            EditorUtility.InitInstantiatedPreviewRecursive(m_PaletteInstance);
+            m_PaletteInstance.transform.position = new Vector3(0, 0, 0);
+            m_PaletteInstance.transform.rotation = Quaternion.identity;
+            m_PaletteInstance.transform.localScale = Vector3.one;
+
+            foreach (var transform in m_PaletteInstance.GetComponentsInChildren<Transform>())
+                transform.gameObject.hideFlags = HideFlags.HideAndDontSave;
+
+            // Show all renderers from Palettes from previous versions
+            PreviewRenderUtility.SetEnabledRecursive(m_PaletteInstance, true);
+
+            // Update preview Grid Mesh for new palette instance
+            ResetPreviewGridMesh();
         }
 
         public void DestroyPreviewInstance()
@@ -537,6 +682,71 @@ namespace UnityEditor.Tilemaps
             GUI.color = old;
         }
 
+        private void DisplayClipboardFirstUserExperienceText(Rect rect)
+        {
+            var dragRect = new Rect(rect.x, rect.y, rect.width, rect.height * 0.65f);
+
+            Color old = GUI.color;
+            GUI.color = Color.white;
+            var topSize = GUI.skin.label.CalcSize(Styles.emptyProjectTopInfo);
+            var topRect = new Rect(dragRect.center.x - topSize.x * .5f, dragRect.center.y - topSize.y * 1.05f
+                , topSize.x, topSize.y);
+            var leftSize = GUI.skin.label.CalcSize(Styles.emptyProjectLeftInfo);
+            var middleSize = GUI.skin.label.CalcSize(GUIContent.Temp(Enum.GetName(typeof(GridPaletteUtility.GridPaletteType), m_FirstUserPaletteType)));
+            middleSize.x += 22f;
+            var rightSize = GUI.skin.label.CalcSize(Styles.emptyProjectRightInfo);
+
+            var width = leftSize.x + middleSize.x + rightSize.x;
+            var leftRect = new Rect(dragRect.center.x - width * .5f, dragRect.center.y + leftSize.y * 0.05f
+                , leftSize.x, leftSize.y);
+            var middleRect = new Rect(dragRect.center.x - width * .5f + leftSize.x, dragRect.center.y + leftSize.y * 0.05f
+                , middleSize.x, middleSize.y);
+            var rightRect = new Rect(dragRect.center.x + width * .5f - rightSize.x, dragRect.center.y + rightSize.y * 0.05f
+                , rightSize.x, rightSize.y);
+
+            GUI.Label(topRect, Styles.emptyProjectTopInfo);
+            GUI.Label(leftRect, Styles.emptyProjectLeftInfo);
+            m_FirstUserPaletteType = (GridPaletteUtility.GridPaletteType) EditorGUI.EnumPopup(middleRect, m_FirstUserPaletteType);
+            GUI.Label(rightRect, Styles.emptyProjectRightInfo);
+
+            if (TilePaletteWhiteboxSamplesUtility.whiteboxSamples.Count > 0)
+            {
+                var whiteboxRect = new Rect(rect.x, dragRect.center.y + 2 * rightSize.y, rect.width, rect.height * 0.4f);
+                var foldoutSize = GUI.skin.label.CalcSize(Styles.whiteboxDropdownInfo);
+                var foldoutRect = new Rect(whiteboxRect.center.x - foldoutSize.x * .5f, whiteboxRect.y, foldoutSize.x,
+                    foldoutSize.y);
+
+                if (foldoutRect.y > leftRect.y + leftRect.height)
+                {
+                    m_WhiteboxFoldout = EditorGUI.Foldout(foldoutRect, m_WhiteboxFoldout, Styles.whiteboxDropdownInfo);
+                    if (m_WhiteboxFoldout)
+                    {
+                        var alternateSize = GUI.skin.label.CalcSize(Styles.whiteboxAlternateInfo);
+                        var alternateRect = new Rect(whiteboxRect.center.x - alternateSize.x * .5f, foldoutRect.y + foldoutRect.height + alternateSize.y * 0.1f
+                            , alternateSize.x, alternateSize.y);
+                        var dropdownSize = GUI.skin.label.CalcSize(GUIContent.Temp(TilePaletteWhiteboxSamplesUtility.longestName));
+                        dropdownSize.x += 16f;
+                        var buttonSize = GUI.skin.button.CalcSize(Styles.whiteboxButtonInfo);
+                        GUI.Label(alternateRect, Styles.whiteboxAlternateInfo);
+                        var whiteboxWidth = buttonSize.x + dropdownSize.x;
+                        var dropdownRect = new Rect(whiteboxRect.center.x - whiteboxWidth * .5f, alternateRect.y + alternateRect.height + dropdownSize.y * 0.1f
+                            , dropdownSize.x, dropdownSize.y);
+                        var buttonRect = new Rect(whiteboxRect.center.x - whiteboxWidth * .5f + dropdownSize.x, alternateRect.y + alternateRect.height + buttonSize.y * 0.1f
+                            , buttonSize.x, buttonSize.y);
+                        m_WhiteboxIndex = EditorGUI.Popup(dropdownRect, m_WhiteboxIndex, TilePaletteWhiteboxSamplesUtility.whiteboxSampleNamesArray);
+                        if (GUI.Button(buttonRect, Styles.whiteboxButtonInfo))
+                        {
+                            TilePaletteWhiteboxSamplesUtility.DuplicateWhiteboxSample(m_WhiteboxIndex);
+                            PickFirstFromPalette();
+                            GUIUtility.ExitGUI();
+                        }
+                    }
+                }
+            }
+
+            GUI.color = old;
+        }
+
         public void OnClipboardGUI(Rect clipboardPosition)
         {
             if (Event.current.type != EventType.Layout && clipboardPosition.Contains(Event.current.mousePosition) && GridPaintingState.activeGrid != this && unlocked)
@@ -546,26 +756,28 @@ namespace UnityEditor.Tilemaps
             }
 
             // Validate palette (case 1017965)
-            GUIContent paletteError = null;
-            if (palette == null)
+            if (palette == null && GridPaintingState.palettes.Count == 0)
             {
-                if (GridPaintingState.palettes.Count == 0)
-                    paletteError = Styles.emptyProjectInfo;
-                else
-                    paletteError = Styles.invalidPaletteInfo;
+                DisplayClipboardFirstUserExperienceText(clipboardPosition);
+            }
+            else if (palette == null && GridPaintingState.palettes.Count > 0)
+            {
+                DisplayClipboardText(Styles.invalidPaletteInfo, clipboardPosition);
+            }
+            else if (m_HoverData != null && m_HoverData.Count == 0)
+            {
+                DisplayClipboardText(Styles.invalidDragAndDropInfo, clipboardPosition);
             }
             else if (palette.GetComponent<Grid>() == null)
             {
-                paletteError = Styles.invalidGridInfo;
+                DisplayClipboardText(Styles.invalidGridInfo, clipboardPosition);
             }
-
-            if (paletteError != null)
+            else if (showNewEmptyClipboardInfo)
             {
-                DisplayClipboardText(paletteError, clipboardPosition);
-                return;
+                DisplayClipboardText(Styles.emptyPaletteInfo, clipboardPosition);
             }
 
-            bool oldEnabled = GUI.enabled;
+            var oldEnabled = GUI.enabled;
             GUI.enabled = !showNewEmptyClipboardInfo || DragAndDrop.objectReferences.Length > 0;
             if (Event.current.type == EventType.Repaint)
                 guiRect = clipboardPosition;
@@ -576,11 +788,6 @@ namespace UnityEditor.Tilemaps
                 Repaint();
 
             GUI.enabled = oldEnabled;
-
-            if (showNewEmptyClipboardInfo)
-            {
-                DisplayClipboardText(Styles.emptyPaletteInfo, clipboardPosition);
-            }
         }
 
         public override void OnGUI()
@@ -588,17 +795,23 @@ namespace UnityEditor.Tilemaps
             if (Mathf.Approximately(guiRect.width, 0f) || Mathf.Approximately(guiRect.height, 0f))
                 return;
 
-            UpdateMouseGridPosition();
+            if (paletteInstance != null)
+                UpdateMouseGridPosition();
+
+            if (m_DelayedResetPaletteInstance)
+                ResetPreviewInstance();
 
             HandleDragAndDrop();
 
-            if (m_DelayedResetPaletteInstance)
+            if (isInvalidDragAndDrop)
             {
-                ResetPreviewInstance();
-                m_DelayedResetPaletteInstance = false;
+                UpdateMouseGridPosition();
+                HandleMouseEnterLeave();
+                m_PreviousMousePosition = Event.current.mousePosition;
+                return;
             }
 
-            if (palette == null)
+            if (paletteInstance == null)
                 return;
 
             HandlePanAndZoom();
@@ -635,14 +848,6 @@ namespace UnityEditor.Tilemaps
         {
             if (Mathf.Approximately(oldSize.height * oldSize.width * newSize.height * newSize.width, 0f))
                 return;
-
-            Camera cam = m_PreviewUtility.camera;
-
-            Vector2 sizeDelta = new Vector2(
-                newSize.width / LocalToScreenRatio(newSize.height) - oldSize.width / LocalToScreenRatio(oldSize.height),
-                newSize.height / LocalToScreenRatio(newSize.height) - oldSize.height / LocalToScreenRatio(oldSize.height));
-
-            cam.transform.Translate(sizeDelta / 2f);
 
             ClampZoomAndPan();
         }
@@ -834,6 +1039,7 @@ namespace UnityEditor.Tilemaps
                         disableOnBrushPicked = true;
                         PickBrush(new BoundsInt(m_ActivePick.Value.position + delta, m_ActivePick.Value.size),
                             m_ActivePivot);
+                        GridPaintingState.ActiveGridBrushAssetChanged();
                         disableOnBrushPicked = false;
                         Event.current.Use();
                     }
@@ -848,15 +1054,18 @@ namespace UnityEditor.Tilemaps
 
         private void ClampZoomAndPan()
         {
-            float pixelsPerCell = grid.cellSize.y * LocalToScreenRatio();
+            if (grid == null)
+                return;
+
+            var pixelsPerCell = grid.cellSize.y * LocalToScreenRatio();
             if (pixelsPerCell < k_MinZoom)
                 m_PreviewUtility.camera.orthographicSize = (grid.cellSize.y * guiRect.height) / (k_MinZoom * 2f);
             else if (pixelsPerCell > k_MaxZoom)
                 m_PreviewUtility.camera.orthographicSize = (grid.cellSize.y * guiRect.height) / (k_MaxZoom * 2f);
 
-            Camera cam = m_PreviewUtility.camera;
-            float cameraOrthographicSize = cam.orthographicSize;
-            Rect r = paddedBounds;
+            var cam = m_PreviewUtility.camera;
+            var cameraOrthographicSize = cam.orthographicSize;
+            var r = paddedBounds;
 
             Vector3 camPos = cam.transform.position;
             Vector2 camMin = camPos - new Vector3(cameraOrthographicSize * (guiRect.width / guiRect.height), cameraOrthographicSize);
@@ -900,10 +1109,12 @@ namespace UnityEditor.Tilemaps
 
             using (new PreviewInstanceScope(guiRect, m_PreviewUtility, paletteInstance, GridPaintingState.drawGizmos))
             {
+                m_PreviewUtility.Render(true);
                 if (GridPaintingState.drawGridGizmo)
+                {
                     RenderGrid();
+                }
                 CallOnPaintSceneGUI(mouseGridPosition);
-                m_PreviewUtility.Render();
                 if (GridPaintingState.drawGizmos)
                 {
                     // Set CameraType to SceneView to force Gizmos to be drawn
@@ -1018,17 +1229,34 @@ namespace UnityEditor.Tilemaps
 
             switch (Event.current.type)
             {
-                //TODO: Cache this
                 case EventType.DragUpdated:
                 {
-                    List<Texture2D> sheets = TileDragAndDrop.GetValidSpritesheets(DragAndDrop.objectReferences);
-                    List<Sprite> sprites = TileDragAndDrop.GetValidSingleSprites(DragAndDrop.objectReferences);
-                    List<TileBase> tiles = TileDragAndDrop.GetValidTiles(DragAndDrop.objectReferences);
-                    m_HoverData = TileDragAndDrop.CreateHoverData(sheets, sprites, tiles, tilemap.cellLayout);
-
-                    if (m_HoverData != null && m_HoverData.Count > 0)
+                    if (m_HoverData == null)
                     {
-                        DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                        var sheets = TileDragAndDrop.GetValidSpritesheets(DragAndDrop.objectReferences);
+                        var sprites = TileDragAndDrop.GetValidSingleSprites(DragAndDrop.objectReferences);
+                        var tiles = TileDragAndDrop.GetValidTiles(DragAndDrop.objectReferences);
+                        var gos = TileDragAndDrop.GetValidGameObjects(DragAndDrop.objectReferences);
+
+                        var noPalette = tilemap == null || palette == null;
+                        if (!noPalette)
+                        {
+                            TileDragAndDrop.FilterForValidGameObjectsForPrefab(palette, gos);
+                        }
+
+                        var targetLayout = !noPalette ? tilemap.cellLayout : GridPaletteUtility.GetCellLayoutFromGridPaletteType(m_FirstUserPaletteType);
+                        m_HoverData = TileDragAndDrop.CreateHoverData(sheets, sprites, tiles, gos, targetLayout);
+                        if (m_HoverData != null && m_HoverData.Count > 0)
+                        {
+                            if (noPalette)
+                                CreateTemporaryPreviewInstance();
+                        }
+                    }
+
+                    if (m_HoverData != null)
+                    {
+                        ClampZoomAndPan();
+                        DragAndDrop.visualMode = m_HoverData.Count > 0 ? DragAndDropVisualMode.Copy : DragAndDropVisualMode.Rejected;
                         Event.current.Use();
                         GUI.changed = true;
                     }
@@ -1036,28 +1264,92 @@ namespace UnityEditor.Tilemaps
                 break;
                 case EventType.DragPerform:
                 {
-                    if (m_HoverData == null || m_HoverData.Count == 0)
+                    if (m_HoverData == null)
+                        return;
+
+                    if (m_HoverData.Count == 0)
+                    {
+                        FlushHoverData();
+                        GUI.changed = true;
+                        return;
+                    }
+
+                    var paletteDirectory = String.Empty;
+                    if (palette == null)
+                    {
+                        DestroyPreviewInstance();
+
+                        var cellLayout = GridPaletteUtility.GetCellLayoutFromGridPaletteType(m_FirstUserPaletteType);
+                        var cellSizing = GridPalette.CellSizing.Automatic;
+                        var cellSize = new Vector3(1f, 1f, 0f);
+                        var cellSwizzle = GridLayout.CellSwizzle.XYZ;
+                        var sortMode = TransparencySortMode.Default;
+                        var sortAxis = new Vector3(0f, 0f, 1f);
+                        switch (m_FirstUserPaletteType)
+                        {
+                            case GridPaletteUtility.GridPaletteType.HexagonalFlatTop:
+                            {
+                                cellSwizzle = GridLayout.CellSwizzle.YXZ;
+                                break;
+                            }
+                            case GridPaletteUtility.GridPaletteType.Isometric:
+                            {
+                                cellSizing = GridPalette.CellSizing.Manual;
+                                cellSize = new Vector3(1, 0.5f, 1);
+                                break;
+                            }
+                            case GridPaletteUtility.GridPaletteType.IsometricZAsY:
+                            {
+                                cellSizing = GridPalette.CellSizing.Manual;
+                                cellSize = new Vector3(1, 0.5f, 1);
+                                sortMode = TransparencySortMode.CustomAxis;
+                                sortAxis = new Vector3(0f, 1f, -0.25f);
+                                break;
+                            }
+                        }
+
+                        var go = GridPaletteUtility.CreateNewPaletteAtCurrentFolder("New Tile Palette"
+                            , cellLayout
+                            , cellSizing
+                            , cellSize
+                            , cellSwizzle, sortMode, sortAxis);
+                        var temporaryHoverData = m_HoverData;
+                        m_HoverData = null;
+                        if (go != null)
+                        {
+                            GridPaintingState.palette = go;
+                            var assetPath = AssetDatabase.GetAssetPath(go);
+                            if (!String.IsNullOrEmpty(assetPath))
+                            {
+                                paletteDirectory = FileUtil.UnityGetDirectoryName(assetPath);
+                            }
+                            Selection.activeObject = go;
+                        }
+                        ResetPreviewInstance();
+                        m_HoverData = temporaryHoverData;
+                    }
+                    // No palette was created
+                    var paletteTilemap = tilemap;
+                    if (paletteTilemap == null)
                         return;
 
                     RegisterUndo();
 
-                    var wasEmpty = TilemapIsEmpty(tilemap);
+                    var wasEmpty = TilemapIsEmpty(paletteTilemap);
 
                     var targetPosition = mouseGridPosition;
+                    var tilemapPosition = new Vector2Int(-Int32.MaxValue, -Int32.MaxValue);
                     DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-                    var tileSheet = TileDragAndDrop.ConvertToTileSheet(m_HoverData);
+                    var tileSheet = TileDragAndDrop.ConvertToTileSheet(m_HoverData, paletteDirectory);
                     var i = 0;
                     foreach (var item in m_HoverData)
                     {
-                        if (i >= tileSheet.Count)
-                            break;
-
                         var offset = Vector3.zero;
                         if (item.Value.hasOffset)
                         {
-                            offset = item.Value.positionOffset - tilemap.tileAnchor;
+                            offset = item.Value.positionOffset - paletteTilemap.tileAnchor;
 
-                            var cellSize = tilemap.cellSize;
+                            var cellSize = paletteTilemap.cellSize;
                             if (wasEmpty)
                             {
                                 cellSize = item.Value.scaleFactor;
@@ -1067,12 +1359,65 @@ namespace UnityEditor.Tilemaps
                             offset.z *= cellSize.z;
                         }
 
-                        SetTile(tilemap
-                            , targetPosition + item.Key
-                            , tileSheet[i++]
-                            , Color.white
-                            , Matrix4x4.TRS(offset, Quaternion.identity, Vector3.one));
+                        var placePosition = targetPosition + item.Key;
+                        // Placing Tiles
+                        if (i < tileSheet.Count)
+                        {
+                            if (tilemapPosition.y < placePosition.y ||
+                                (tilemapPosition.y == placePosition.y && tilemapPosition.x > placePosition.x))
+                                tilemapPosition = placePosition;
+
+                            SetTile(paletteTilemap
+                                , targetPosition + item.Key
+                                , tileSheet[i++]
+                                , Color.white
+                                , Matrix4x4.TRS(offset, Quaternion.identity, Vector3.one));
+                        }
+                        else
+                        // Placing GameObjects
+                        {
+                            if (item.Value.hoverObject is not GameObject go)
+                                continue;
+
+                            GameObject instance;
+                            if (PrefabUtility.IsPartOfPrefabAsset(go))
+                            {
+                                instance = (GameObject) PrefabUtility.InstantiatePrefab(go, paletteTilemap.transform);
+                            }
+                            else
+                            {
+                                instance = Instantiate(go, paletteTilemap.transform);
+                                instance.name = go.name;
+                                instance.SetActive(true);
+                                foreach (var renderer in instance.GetComponentsInChildren<Renderer>())
+                                {
+                                    renderer.enabled = true;
+                                }
+                            }
+
+                            var tileAnchor = paletteTilemap.tileAnchor;
+                            var cellSize = paletteTilemap.cellSize;
+                            var cellStride = cellSize + paletteTilemap.cellGap;
+                            cellStride.x = Mathf.Approximately(0f, cellStride.x) ? 1f : cellStride.x;
+                            cellStride.y = Mathf.Approximately(0f, cellStride.y) ? 1f : cellStride.y;
+                            cellStride.z = Mathf.Approximately(0f, cellStride.z) ? 1f : cellStride.z;
+                            var anchorRatio = new Vector3(
+                                tileAnchor.x * cellSize.x / cellStride.x,
+                                tileAnchor.y * cellSize.y / cellStride.y,
+                                tileAnchor.z * cellSize.z / cellStride.z
+                            );
+                            instance.transform.position = grid.LocalToWorld(grid.CellToLocalInterpolated(((Vector3Int) placePosition) + anchorRatio));
+                            Undo.RegisterCreatedObjectUndo(instance, "Drag and drop GameObject");
+                        }
                     }
+
+                    if (wasEmpty && paletteTilemap.GetUsedTilesCount() != 0 &&
+                        GridPaintingState.gridBrush != null)
+                    {
+                        var pickBounds = new BoundsInt(new Vector3Int(tilemapPosition.x, tilemapPosition.y, 0), Vector3Int.one);
+                        PickBrush(pickBounds, m_ActivePivot);
+                    }
+
                     OnPaletteChanged();
 
                     m_PaletteNeedsSave = true;
@@ -1283,11 +1628,13 @@ namespace UnityEditor.Tilemaps
             return GridLayout.CellLayout.Rectangle;
         }
 
-        protected override Vector2Int ScreenToGrid(Vector2 screenPosition)
+        protected override Vector2Int ScreenToGrid(Vector2 screenPosition, float zPosition)
         {
-            Vector2 local = ScreenToLocal(screenPosition);
-            Vector3Int result3 = grid.LocalToCell(local);
-            Vector2Int result = new Vector2Int(result3.x, result3.y);
+            Vector3 local = ScreenToLocal(screenPosition);
+            if (GridPaintingState.gridBrushMousePositionAtZ)
+                local.z = zPosition;
+            var result3 = grid.LocalToCell(local);
+            var result = new Vector2Int(result3.x, result3.y);
             return result;
         }
 
@@ -1332,6 +1679,7 @@ namespace UnityEditor.Tilemaps
                         GridPaintingState.activeBrushEditor.OnMouseLeave();
                         Repaint();
                     }
+                    FlushHoverData();
                 }
             }
         }
@@ -1486,6 +1834,19 @@ namespace UnityEditor.Tilemaps
         {
             unlocked = true;
             m_PaletteNeedsSave = true;
+        }
+
+        internal void PickFirstFromPalette()
+        {
+            if (tilemap == null)
+                return;
+
+            var pickBounds = tilemap.cellBounds;
+            pickBounds.size = Vector3Int.one;
+            PickBrush(pickBounds, Vector3Int.zero);
+
+            if (!TilemapEditorTool.IsActive(typeof(PaintTool)))
+                TilemapEditorTool.SetActiveEditorTool(typeof(PaintTool));
         }
 
         // TODO: Better way of clearing caches than AssetPostprocessor

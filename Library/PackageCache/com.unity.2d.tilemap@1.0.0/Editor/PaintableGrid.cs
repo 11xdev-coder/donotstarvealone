@@ -27,7 +27,7 @@ namespace UnityEditor.Tilemaps
         protected abstract bool CustomTool(bool isToolHotControl, TilemapEditorTool tool, Vector3Int position);
 
         protected abstract bool ValidateFloodFillPosition(Vector3Int position);
-        protected abstract Vector2Int ScreenToGrid(Vector2 screenPosition);
+        protected abstract Vector2Int ScreenToGrid(Vector2 screenPosition, float zPosition = 0.0f);
         protected abstract bool PickingIsDefaultTool();
         protected abstract bool CanPickOutsideEditMode();
         protected abstract GridLayout.CellLayout CellLayout();
@@ -148,7 +148,7 @@ namespace UnityEditor.Tilemaps
                 || forceUpdate)
             {
                 m_MousePosition = Event.current.mousePosition;
-                Vector2Int newGridPosition = ScreenToGrid(m_MousePosition);
+                var newGridPosition = ScreenToGrid(m_MousePosition, m_ZPosition);
                 if (newGridPosition != m_MouseGridPosition)
                 {
                     var delta = newGridPosition - m_MouseGridPosition;
@@ -256,7 +256,7 @@ namespace UnityEditor.Tilemaps
                         }
                     }
 
-                    GridPaletteBrushes.ActiveGridBrushAssetChanged();
+                    GridPaintingState.ActiveGridBrushAssetChanged();
                     Event.current.Use();
                     GUI.changed = true;
                 }
@@ -418,6 +418,7 @@ namespace UnityEditor.Tilemaps
                             else
                                 Paint(position);
                         }
+                        ResetPreviousMousePositionToCurrentPosition();
                         Event.current.Use();
                         GUI.changed = true;
                     }

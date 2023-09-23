@@ -19,11 +19,10 @@ MonoBehaviour:
   maxStack: 1
   damage: 6
   handScale: {x: -0.3, y: 0.3, z: 1}
+  pickaxePower: 0
+  axePower: 20
   displayTextEntries:
   - enabled: 1
     label: Damage
     displayType: 1
-  - enabled: 1
-    label: 
-    displayType: 0
   toolType: 2

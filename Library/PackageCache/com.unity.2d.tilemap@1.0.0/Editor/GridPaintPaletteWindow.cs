@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEditor.EditorTools;
+using UnityEditor.Overlays;
 using UnityEditor.ShortcutManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -24,11 +25,15 @@ namespace UnityEditor.Tilemaps
             public static readonly GUIContent openAsDockableWindow = EditorGUIUtility.TrTextContent("Open Window as/Dockable");
 
             public static readonly GUIContent tilePalette = EditorGUIUtility.TrTextContent("Tile Palette");
+
+            public static readonly GUIContent mouseGridPositionAtZ = EditorGUIUtility.TrTextContent("Mouse Grid Position At Z", "Shows the Mouse Grid Position marquee at the Brush's Z Position.");
         }
 
         private static class UIStyles
         {
             public static readonly string styleSheetPath = "Packages/com.unity.2d.tilemap/Editor/UI/GridPaintPaletteWindow.uss";
+            public static readonly string darkStyleSheetPath = "Packages/com.unity.2d.tilemap/Editor/UI/GridPaintPaletteWindowDark.uss";
+            public static readonly string lightStyleSheetPath = "Packages/com.unity.2d.tilemap/Editor/UI/GridPaintPaletteWindowLight.uss";
             public static readonly string ussClassName = "unity-grid-paint-palette-window";
         }
 
@@ -51,50 +56,71 @@ namespace UnityEditor.Tilemaps
         private const float k_MinClipboardHeight = 200f;
         private static readonly Vector2 k_MinWindowSize = new Vector2(k_ActiveTargetLabelWidth + k_ActiveTargetDropdownWidth + k_ActiveTargetWarningSize, k_MinClipboardHeight);
 
-        [FormerlyPrefKeyAs("Grid Painting/Select", "s")]
-        [Shortcut("Grid Painting/Select", typeof(TilemapEditorTool.ShortcutContext), KeyCode.S)]
+        internal static class ShortcutIds
+        {
+            public const string k_Select = "Grid Painting/Select";
+            public const string k_Move = "Grid Painting/Move";
+            public const string k_Brush = "Grid Painting/Brush";
+            public const string k_Rectangle = "Grid Painting/Rectangle";
+            public const string k_Picker = "Grid Painting/Picker";
+            public const string k_Erase = "Grid Painting/Erase";
+            public const string k_Fill = "Grid Painting/Fill";
+            public const string k_RotateClockwise = "Grid Painting/Rotate Clockwise";
+            public const string k_RotateAntiClockwise = "Grid Painting/Rotate Anti-Clockwise";
+            public const string k_FlipX = "Grid Painting/Flip X";
+            public const string k_FlipY = "Grid Painting/Flip Y";
+            public const string k_IncreaseZ = "Grid Painting/Increase Z";
+            public const string k_DecreaseZ = "Grid Painting/Decrease Z";
+            public const string k_SwitchToNextBrush = "Grid Painting/Switch To Next Brush";
+            public const string k_SwitchToPreviousBrush = "Grid Painting/Switch To Previous Brush";
+            public const string k_ToggleSceneViewPalette = "Grid Painting/Toggle SceneView Palette";
+            public const string k_ToggleSceneViewBrushPick = "Grid Painting/Toggle SceneView BrushPick";
+        }
+        
+        [FormerlyPrefKeyAs(ShortcutIds.k_Select, "s")]
+        [Shortcut(ShortcutIds.k_Select, typeof(TilemapEditorTool.ShortcutContext), KeyCode.S)]
         static void GridSelectKey()
         {
             TilemapEditorTool.ToggleActiveEditorTool(typeof(SelectTool));
         }
 
-        [FormerlyPrefKeyAs("Grid Painting/Move", "m")]
-        [Shortcut("Grid Painting/Move", typeof(TilemapEditorTool.ShortcutContext), KeyCode.M)]
+        [FormerlyPrefKeyAs(ShortcutIds.k_Move, "m")]
+        [Shortcut(ShortcutIds.k_Move, typeof(TilemapEditorTool.ShortcutContext), KeyCode.M)]
         static void GridMoveKey()
         {
             TilemapEditorTool.ToggleActiveEditorTool(typeof(MoveTool));
         }
 
-        [FormerlyPrefKeyAs("Grid Painting/Brush", "b")]
-        [Shortcut("Grid Painting/Brush", typeof(TilemapEditorTool.ShortcutContext), KeyCode.B)]
+        [FormerlyPrefKeyAs(ShortcutIds.k_Brush, "b")]
+        [Shortcut(ShortcutIds.k_Brush, typeof(TilemapEditorTool.ShortcutContext), KeyCode.B)]
         static void GridBrushKey()
         {
             TilemapEditorTool.ToggleActiveEditorTool(typeof(PaintTool));
         }
 
-        [FormerlyPrefKeyAs("Grid Painting/Rectangle", "u")]
-        [Shortcut("Grid Painting/Rectangle", typeof(TilemapEditorTool.ShortcutContext), KeyCode.U)]
+        [FormerlyPrefKeyAs(ShortcutIds.k_Rectangle, "u")]
+        [Shortcut(ShortcutIds.k_Rectangle, typeof(TilemapEditorTool.ShortcutContext), KeyCode.U)]
         static void GridRectangleKey()
         {
             TilemapEditorTool.ToggleActiveEditorTool(typeof(BoxTool));
         }
 
-        [FormerlyPrefKeyAs("Grid Painting/Picker", "i")]
-        [Shortcut("Grid Painting/Picker", typeof(TilemapEditorTool.ShortcutContext), KeyCode.I)]
+        [FormerlyPrefKeyAs(ShortcutIds.k_Picker, "i")]
+        [Shortcut(ShortcutIds.k_Picker, typeof(TilemapEditorTool.ShortcutContext), KeyCode.I)]
         static void GridPickerKey()
         {
             TilemapEditorTool.ToggleActiveEditorTool(typeof(PickingTool));
         }
 
-        [FormerlyPrefKeyAs("Grid Painting/Erase", "d")]
-        [Shortcut("Grid Painting/Erase", typeof(TilemapEditorTool.ShortcutContext), KeyCode.D)]
+        [FormerlyPrefKeyAs(ShortcutIds.k_Erase, "d")]
+        [Shortcut(ShortcutIds.k_Erase, typeof(TilemapEditorTool.ShortcutContext), KeyCode.D)]
         static void GridEraseKey()
         {
             TilemapEditorTool.ToggleActiveEditorTool(typeof(EraseTool));
         }
 
-        [FormerlyPrefKeyAs("Grid Painting/Fill", "g")]
-        [Shortcut("Grid Painting/Fill", typeof(TilemapEditorTool.ShortcutContext), KeyCode.G)]
+        [FormerlyPrefKeyAs(ShortcutIds.k_Fill, "g")]
+        [Shortcut(ShortcutIds.k_Fill, typeof(TilemapEditorTool.ShortcutContext), KeyCode.G)]
         static void GridFillKey()
         {
             TilemapEditorTool.ToggleActiveEditorTool(typeof(FillTool));
@@ -106,16 +132,16 @@ namespace UnityEditor.Tilemaps
             GridPaintingState.activeGrid.Repaint();
         }
 
-        [FormerlyPrefKeyAs("Grid Painting/Rotate Clockwise", "]")]
-        [Shortcut("Grid Painting/Rotate Clockwise", typeof(TilemapEditorTool.ShortcutContext), KeyCode.RightBracket)]
+        [FormerlyPrefKeyAs(ShortcutIds.k_RotateClockwise, "]")]
+        [Shortcut(ShortcutIds.k_RotateClockwise, typeof(TilemapEditorTool.ShortcutContext), KeyCode.RightBracket)]
         static void RotateBrushClockwise()
         {
             if (GridPaintingState.gridBrush != null && GridPaintingState.activeGrid != null)
                 RotateBrush(GridBrushBase.RotationDirection.Clockwise);
         }
 
-        [FormerlyPrefKeyAs("Grid Painting/Rotate Anti-Clockwise", "[")]
-        [Shortcut("Grid Painting/Rotate Anti-Clockwise", typeof(TilemapEditorTool.ShortcutContext), KeyCode.LeftBracket)]
+        [FormerlyPrefKeyAs(ShortcutIds.k_RotateAntiClockwise, "[")]
+        [Shortcut(ShortcutIds.k_RotateAntiClockwise, typeof(TilemapEditorTool.ShortcutContext), KeyCode.LeftBracket)]
         static void RotateBrushAntiClockwise()
         {
             if (GridPaintingState.gridBrush != null && GridPaintingState.activeGrid != null)
@@ -128,16 +154,16 @@ namespace UnityEditor.Tilemaps
             GridPaintingState.activeGrid.Repaint();
         }
 
-        [FormerlyPrefKeyAs("Grid Painting/Flip X", "#[")]
-        [Shortcut("Grid Painting/Flip X", typeof(TilemapEditorTool.ShortcutContext), KeyCode.LeftBracket, ShortcutModifiers.Shift)]
+        [FormerlyPrefKeyAs(ShortcutIds.k_FlipX, "#[")]
+        [Shortcut(ShortcutIds.k_FlipX, typeof(TilemapEditorTool.ShortcutContext), KeyCode.LeftBracket, ShortcutModifiers.Shift)]
         static void FlipBrushX()
         {
             if (GridPaintingState.gridBrush != null && GridPaintingState.activeGrid != null)
                 FlipBrush(GridBrushBase.FlipAxis.X);
         }
 
-        [FormerlyPrefKeyAs("Grid Painting/Flip Y", "#]")]
-        [Shortcut("Grid Painting/Flip Y", typeof(TilemapEditorTool.ShortcutContext), KeyCode.RightBracket, ShortcutModifiers.Shift)]
+        [FormerlyPrefKeyAs(ShortcutIds.k_FlipY, "#]")]
+        [Shortcut(ShortcutIds.k_FlipY, typeof(TilemapEditorTool.ShortcutContext), KeyCode.RightBracket, ShortcutModifiers.Shift)]
         static void FlipBrushY()
         {
             if (GridPaintingState.gridBrush != null && GridPaintingState.activeGrid != null)
@@ -156,7 +182,7 @@ namespace UnityEditor.Tilemaps
             }
         }
 
-        [Shortcut("Grid Painting/Increase Z", typeof(TilemapEditorTool.ShortcutContext), KeyCode.Minus)]
+        [Shortcut(ShortcutIds.k_IncreaseZ, typeof(TilemapEditorTool.ShortcutContext), KeyCode.Minus)]
         static void IncreaseBrushZ()
         {
             if (GridPaintingState.gridBrush != null
@@ -166,7 +192,7 @@ namespace UnityEditor.Tilemaps
                 ChangeBrushZ(1);
         }
 
-        [Shortcut("Grid Painting/Decrease Z", typeof(TilemapEditorTool.ShortcutContext), KeyCode.Equals)]
+        [Shortcut(ShortcutIds.k_DecreaseZ, typeof(TilemapEditorTool.ShortcutContext), KeyCode.Equals)]
         static void DecreaseBrushZ()
         {
             if (GridPaintingState.gridBrush != null
@@ -176,13 +202,13 @@ namespace UnityEditor.Tilemaps
                 ChangeBrushZ(-1);
         }
 
-        [Shortcut("Grid Painting/Switch To Next Brush", typeof(TilemapEditorTool.ShortcutContext), KeyCode.B, ShortcutModifiers.Shift)]
+        [Shortcut(ShortcutIds.k_SwitchToNextBrush, typeof(TilemapEditorTool.ShortcutContext), KeyCode.B, ShortcutModifiers.Shift)]
         static void SwitchToNextBrush()
         {
             SwitchBrush(1);
         }
 
-        [Shortcut("Grid Painting/Switch To Previous Brush", typeof(TilemapEditorTool.ShortcutContext), KeyCode.B, ShortcutModifiers.Shift | ShortcutModifiers.Alt)]
+        [Shortcut(ShortcutIds.k_SwitchToPreviousBrush, typeof(TilemapEditorTool.ShortcutContext), KeyCode.B, ShortcutModifiers.Shift | ShortcutModifiers.Alt)]
         static void SwitchToPreviousBrush()
         {
             SwitchBrush(-1);
@@ -197,6 +223,40 @@ namespace UnityEditor.Tilemaps
                 GridPaintingState.gridBrush = GridPaintingState.brushes[newIndex];
         }
 
+        [Shortcut(ShortcutIds.k_ToggleSceneViewPalette, typeof(TilemapEditorTool.ShortcutContext), KeyCode.Semicolon)]
+        static void ToggleSceneViewPalette()
+        {
+            var sceneView = SceneView.lastActiveSceneView;
+            if (sceneView == null)
+                return;
+
+            if (!sceneView.TryGetOverlay(TilePaletteClipboardOverlay.k_OverlayId, out Overlay overlay))
+                return;
+
+            var tilePaletteClipboardOverlay = overlay as TilePaletteClipboardOverlay;
+            if (tilePaletteClipboardOverlay == null)
+                return;
+
+            tilePaletteClipboardOverlay.TogglePopup(GridPaintingState.lastSceneViewMousePosition);
+        }
+
+        [Shortcut(ShortcutIds.k_ToggleSceneViewBrushPick, typeof(TilemapEditorTool.ShortcutContext), KeyCode.Quote)]
+        static void ToggleSceneViewBrushPick()
+        {
+            var sceneView = SceneView.lastActiveSceneView;
+            if (sceneView == null)
+                return;
+
+            if (!sceneView.TryGetOverlay(TilePaletteBrushPickOverlay.k_OverlayId, out Overlay overlay))
+                return;
+
+            var tilePaletteBrushPickOverlay = overlay as TilePaletteBrushPickOverlay;
+            if (tilePaletteBrushPickOverlay == null)
+                return;
+
+            tilePaletteBrushPickOverlay.TogglePopup(GridPaintingState.lastSceneViewMousePosition);
+        }
+
         internal static void PreferencesGUI()
         {
             using (new SettingsWindow.GUIScope())
@@ -208,6 +268,12 @@ namespace UnityEditor.Tilemaps
                 if (EditorGUI.EndChangeCheck())
                 {
                     EditorPrefs.SetInt(TilePaletteActiveTargetsProperties.targetEditModeEditorPref, (int)val);
+                }
+                EditorGUI.BeginChangeCheck();
+                var val2 = EditorGUILayout.Toggle(Styles.mouseGridPositionAtZ, GridPaintingState.gridBrushMousePositionAtZ);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    GridPaintingState.gridBrushMousePositionAtZ = val2;
                 }
             }
         }
@@ -254,30 +320,34 @@ namespace UnityEditor.Tilemaps
         private void CreateGUI()
         {
             var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(UIStyles.styleSheetPath);
-            if (styleSheet != null)
+            var skinStyleSheet = EditorGUIUtility.isProSkin
+                ? AssetDatabase.LoadAssetAtPath<StyleSheet>(UIStyles.darkStyleSheetPath)
+                : AssetDatabase.LoadAssetAtPath<StyleSheet>(UIStyles.lightStyleSheetPath);
+            if (styleSheet == null || skinStyleSheet == null)
+                return;
+
+            m_ToolbarVisualElement = new GridPaintingToolbar(this);
+            m_ActiveTargetsVisualElement = new GridPaintPaletteWindowActiveTargets()
             {
-                m_ToolbarVisualElement = new GridPaintingToolbar(this);
-                m_ActiveTargetsVisualElement = new GridPaintPaletteWindowActiveTargets()
-                {
-                    name = "activeTargetsDropdown",
-                };
-                m_ClipboardSplitView = new GridPaintPaletteWindowSplitView(this, tilePaletteVerticalBrushSplit);
+                name = "activeTargetsDropdown",
+            };
+            m_ClipboardSplitView = new GridPaintPaletteWindowSplitView(tilePaletteVerticalBrushSplit);
 
-                var root = rootVisualElement;
-                root.Add(m_ToolbarVisualElement);
-                root.Add(m_ActiveTargetsVisualElement);
-                root.Add(m_ClipboardSplitView);
+            var root = rootVisualElement;
+            root.Add(m_ToolbarVisualElement);
+            root.Add(m_ActiveTargetsVisualElement);
+            root.Add(m_ClipboardSplitView);
 
-                root.styleSheetList.Add(styleSheet);
-                root.AddToClassList(UIStyles.ussClassName);
-                root.style.minHeight = k_MinClipboardHeight;
+            root.styleSheetList.Add(styleSheet);
+            root.styleSheetList.Add(skinStyleSheet);
+            root.AddToClassList(UIStyles.ussClassName);
+            root.style.minHeight = k_MinClipboardHeight;
 
-                root.AddManipulator(new TilePaletteContextMenuHandler(DoContextMenu));
-                m_ToolbarVisualElement.AddManipulator(new TilePaletteContextMenuHandler(DoContextMenu));
-                m_ActiveTargetsVisualElement.AddManipulator(new TilePaletteContextMenuHandler(DoContextMenu));
+            root.AddManipulator(new TilePaletteContextMenuHandler(DoContextMenu));
+            m_ToolbarVisualElement.AddManipulator(new TilePaletteContextMenuHandler(DoContextMenu));
+            m_ActiveTargetsVisualElement.AddManipulator(new TilePaletteContextMenuHandler(DoContextMenu));
 
-                m_ClipboardSplitView.AddManipulator(new TilePaletteDragHandler(DragUpdatedForConvertGridPrefabToPalette, DragPerformedForConvertGridPrefabToPalette));
-            }
+            m_ClipboardSplitView.AddManipulator(new TilePaletteDragHandler(DragUpdatedForConvertGridPrefabToPalette, DragPerformedForConvertGridPrefabToPalette));
         }
 
         private void OnGUI()
@@ -476,7 +546,7 @@ namespace UnityEditor.Tilemaps
             GridPaintingState.lastActiveGrid.ResetZPosition();
         }
 
-        [MenuItem("Window/2D/Tile Palette", false, 2)]
+        [MenuItem("Window/2D/Tile Palette", priority = 2)]
         public static void OpenTilemapPalette()
         {
             GridPaintPaletteWindow w = GetWindow<GridPaintPaletteWindow>();

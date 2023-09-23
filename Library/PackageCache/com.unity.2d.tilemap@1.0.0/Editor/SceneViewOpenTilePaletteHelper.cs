@@ -7,6 +7,13 @@ namespace UnityEditor.Tilemaps
     {
         private bool m_RegisteredEventHandlers;
         private bool m_IsSelectionValid;
+        private bool m_HighlightHelper;
+
+        internal static bool highlight
+        {
+            get => instance.m_HighlightHelper;
+            set => instance.m_HighlightHelper = value;
+        }
 
         [InitializeOnLoadMethod]
         private static void Initialize()
@@ -42,6 +49,7 @@ namespace UnityEditor.Tilemaps
         internal static void OpenTilePalette()
         {
             GridPaintPaletteWindow.OpenTilemapPalette();
+            instance.m_HighlightHelper = false;
 
             var target = Selection.activeGameObject;
             if (target != null)
@@ -92,7 +100,10 @@ namespace UnityEditor.Tilemaps
 
         private void SelectionChanged()
         {
+            var old = m_IsSelectionValid;
             m_IsSelectionValid = IsSelectionValid();
+            if (m_IsSelectionValid != old)
+                m_HighlightHelper = m_IsSelectionValid;
         }
 
         internal class SceneViewOpenTilePaletteProperties

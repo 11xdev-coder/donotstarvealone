@@ -21,6 +21,7 @@ namespace UnityEditor.Tilemaps
         [SerializeField] private GameObject m_ScenePaintTarget; // Which GameObject in scene is considered as painting target
         [SerializeField] private EditorTool[] m_BrushTools;
         [SerializeField] private GridBrushBase m_Brush; // Which brush will handle painting callbacks
+        [SerializeField] private GridBrushPickStore m_BrushPickStore; // Stores prior brush selection settings
         [SerializeField] private PaintableGrid m_ActiveGrid; // Grid that has painting focus (can be palette, too)
         [SerializeField] private PaintableGrid m_LastActiveGrid; // Grid that last had painting focus (can be palette, too)
         [SerializeField] private HashSet<System.Object> m_InterestedPainters = new HashSet<System.Object>(); // A list of objects that can paint using the GridPaintingState
@@ -48,9 +49,21 @@ namespace UnityEditor.Tilemaps
         /// </summary>
         public static event Action<GameObject> scenePaintTargetChanged;
         /// <summary>
+        /// Callback when the Tile Palette's active target has been edited
+        /// </summary>
+        public static event Action<GameObject> scenePaintTargetEdited;
+        /// <summary>
         /// Callback when the Tile Palette's active brush has changed.
         /// </summary>
         public static event Action<GridBrushBase> brushChanged;
+        /// <summary>
+        /// Callback when the Tile Palette's active brush's selection has changed.
+        /// </summary>
+        public static event Action brushPickChanged;
+        /// <summary>
+        /// Callback when the Tile Palette's brush selection store has changed.
+        /// </summary>
+        public static event Action brushPickStoreChanged;
         /// <summary>
         /// Callback when the Tile Palette's active brush tools have changed.
         /// </summary>
@@ -79,13 +92,24 @@ namespace UnityEditor.Tilemaps
         private static readonly string k_TilemapLastPaletteEditorPref = "TilemapLastPalette";
         private string lastTilemapPalette
         {
+            get => EditorPrefs.GetString(k_TilemapLastPaletteEditorPref, "");
+            set => EditorPrefs.SetString(k_TilemapLastPaletteEditorPref, value);
+        }
+
+        private static readonly string k_GridBrushMousePositionAtZ = "TilemapGridBrushMousePositionAtZ";
+        private static bool? m_CachedGridBrushMousePositionAtZ;
+
+        internal static bool gridBrushMousePositionAtZ
+        {
             get
             {
-                return EditorPrefs.GetString(k_TilemapLastPaletteEditorPref, "");
+                m_CachedGridBrushMousePositionAtZ ??= EditorPrefs.GetBool(k_GridBrushMousePositionAtZ, false);
+                return m_CachedGridBrushMousePositionAtZ.Value;
             }
             set
             {
-                EditorPrefs.SetString(k_TilemapLastPaletteEditorPref, value);
+                m_CachedGridBrushMousePositionAtZ = value;
+                EditorPrefs.SetBool(k_GridBrushMousePositionAtZ, value);
             }
         }
 
@@ -129,6 +153,7 @@ namespace UnityEditor.Tilemaps
             {
                 m_PaintableSceneViewGrid = CreateInstance<PaintableSceneViewGrid>();
                 m_PaintableSceneViewGrid.hideFlags = HideFlags.HideAndDontSave;
+                m_PaintableSceneViewGrid.onEdited += OnEdited;
             }
 
             m_FlushPaintTargetCache = true;
@@ -147,6 +172,11 @@ namespace UnityEditor.Tilemaps
             AssetPreview.SetPreviewTextureCacheSize(256, GetInstanceID());
 
             ShortcutIntegration.instance.contextManager.RegisterToolContext(m_ShortcutContext);
+        }
+
+        private void OnEdited(GameObject obj)
+        {
+            scenePaintTargetEdited?.Invoke(obj);
         }
 
         private void PaletteChanged(GameObject obj)
@@ -353,7 +383,7 @@ namespace UnityEditor.Tilemaps
         /// </summary>
         public static GameObject scenePaintTarget
         {
-            get { return instance.m_ScenePaintTarget; }
+            get => instance.m_ScenePaintTarget;
             set
             {
                 if (value != instance.m_ScenePaintTarget)
@@ -376,6 +406,7 @@ namespace UnityEditor.Tilemaps
                 if (instance.m_Brush == null)
                 {
                     instance.m_Brush = GridPaletteBrushes.instance.GetLastUsedBrush();
+                    instance.m_BrushPickStore = GridBrushPickStore.LoadOrCreateLibraryGridBrushPickAsset();
                     UpdateBrushToolbar();
                 }
                 return instance.m_Brush;
@@ -391,6 +422,10 @@ namespace UnityEditor.Tilemaps
                     {
                         GridPaletteBrushes.instance.StoreLastUsedBrush(value);
                         UpdateBrushToolbar();
+                    }
+                    else
+                    {
+                        instance.m_BrushPickStore = null;
                     }
 
                     // Ensure that current scenePaintTarget is still a valid target after a brush change
@@ -414,17 +449,43 @@ namespace UnityEditor.Tilemaps
         }
 
         /// <summary>
-        ///  Returns all available brushes for the Tile Palette
+        /// Returns a store of brush selection data for the current gridBrush
         /// </summary>
-        public static IList<GridBrushBase> brushes
+        public static GridBrushPickStore brushPickStore
         {
-            get { return GridPaletteBrushes.brushes; }
+            get
+            {
+                if (gridBrush != null && (instance.m_BrushPickStore == null
+                                          || !instance.m_BrushPickStore.IsValid()))
+                {
+                    instance.m_BrushPickStore = GridBrushPickStore.LoadOrCreateLibraryGridBrushPickAsset();
+                }
+                return instance.m_BrushPickStore;
+            }
+
+            internal set
+            {
+                if (instance.m_BrushPickStore == value)
+                    return;
+
+                var store = value;
+                if (store == null)
+                    store = GridBrushPickStore.LoadOrCreateLibraryGridBrushPickAsset();
+
+                instance.m_BrushPickStore = store;
+                InvokeBrushPickStoreChanged();
+            }
         }
+
+        /// <summary>
+        /// Returns all available brushes for the Tile Palette
+        /// </summary>
+        public static IList<GridBrushBase> brushes => GridPaletteBrushes.brushes;
 
         internal static GridBrush defaultBrush
         {
-            get { return gridBrush as GridBrush; }
-            set { gridBrush = value; }
+            get => gridBrush as GridBrush;
+            set => gridBrush = value;
         }
 
         /// <summary>
@@ -432,10 +493,7 @@ namespace UnityEditor.Tilemaps
         /// </summary>
         public static GameObject palette
         {
-            get
-            {
-                return instance.m_Palette;
-            }
+            get => instance.m_Palette;
             set
             {
                 if (value == null || !GridPalettes.palettes.Contains(value))
@@ -470,10 +528,7 @@ namespace UnityEditor.Tilemaps
         /// <summary>
         /// Returns all available Palette GameObjects for the Tile Palette
         /// </summary>
-        public static IList<GameObject> palettes
-        {
-            get { return GridPalettes.palettes; }
-        }
+        public static IList<GameObject> palettes => GridPalettes.palettes;
 
         /// <summary>
         /// The currently active editor for the active brush for the Tile Palette
@@ -499,7 +554,7 @@ namespace UnityEditor.Tilemaps
 
         internal static PaintableGrid activeGrid
         {
-            get { return instance.m_ActiveGrid; }
+            get => instance.m_ActiveGrid;
             set
             {
                 instance.m_ActiveGrid = value;
@@ -508,39 +563,28 @@ namespace UnityEditor.Tilemaps
             }
         }
 
-        internal static PaintableGrid lastActiveGrid
-        {
-            get { return instance.m_LastActiveGrid; }
-        }
+        internal static PaintableGrid lastActiveGrid => instance.m_LastActiveGrid;
 
-        internal static PaintableSceneViewGrid paintableSceneViewGrid
-        {
-            get => instance.m_PaintableSceneViewGrid;
-        }
+        internal static PaintableSceneViewGrid paintableSceneViewGrid => instance.m_PaintableSceneViewGrid;
 
         /// <summary>
         /// The last active mouse position on the `SceneView`
         /// when the `GridPaintingState` is active.
         /// </summary>
-        public static Vector2 lastSceneViewMousePosition
-        {
-            get => paintableSceneViewGrid.mousePosition;
-        }
+        public static Vector2 lastSceneViewMousePosition => paintableSceneViewGrid.mousePosition;
 
         /// <summary>
         /// The last active grid position on the `SceneView`
         /// when the `GridPaintingState` is active.
         /// </summary>
-        public static Vector3Int lastSceneViewGridPosition
-        {
-            get => new Vector3Int(paintableSceneViewGrid.mouseGridPosition.x
+        public static Vector3Int lastSceneViewGridPosition =>
+            new Vector3Int(paintableSceneViewGrid.mouseGridPosition.x
                 , paintableSceneViewGrid.mouseGridPosition.y
                 , paintableSceneViewGrid.zPosition);
-        }
 
         internal static EditorTool[] activeBrushTools
         {
-            get { return instance.m_BrushTools; }
+            get => instance.m_BrushTools;
             set
             {
                 instance.m_BrushTools = value;
@@ -556,7 +600,7 @@ namespace UnityEditor.Tilemaps
                     CalculateToolbarSize();
                 return instance.m_BrushToolbarSize;
             }
-            set { instance.m_BrushToolbarSize = value;  }
+            set => instance.m_BrushToolbarSize = value;
         }
 
         internal static bool drawGridGizmo
@@ -585,6 +629,57 @@ namespace UnityEditor.Tilemaps
                     editModeChanged?.Invoke();
                 }
             }
+        }
+
+        /// <summary>
+        /// Retrieves a stored selection from the current Active GridBrushPickStore
+        /// and copies it into the Active GridBrush.
+        /// </summary>
+        /// <param name="user">Use user selection or last selection.</param>
+        /// <param name="index">Index of selection from store to use.</param>
+        public static void SetPickOnActiveGridBrush(bool user, int index)
+        {
+            if (gridBrush == null || brushPickStore == null)
+                return;
+
+            GridBrushBase selection = null;
+            if (user)
+            {
+                if (0 <= index && index < brushPickStore.userSavedBrushes.Count)
+                    selection = brushPickStore.userSavedBrushes[index];
+            }
+            else
+            {
+                if (0 <= index && index < brushPickStore.lastSavedBrushes.Count)
+                    selection = brushPickStore.lastSavedBrushes[index];
+            }
+            if (selection == null)
+                return;
+
+            var selectedBrushType = selection.GetType();
+            if (!GridPaletteBrushes.IsDefaultInstanceVisibleGridBrushType(selectedBrushType)
+                && selectedBrushType != GridPaletteBrushes.GetDefaultBrushType())
+                return;
+
+            if (gridBrush.GetType() != selectedBrushType)
+            {
+                foreach (var brush in GridPaletteBrushes.brushes)
+                {
+                    if (brush.GetType() == selectedBrushType)
+                    {
+                        gridBrush = brush;
+                        break;
+                    }
+                }
+            }
+
+            var originalName = gridBrush.name;
+            var originalFlags = gridBrush.hideFlags;
+            EditorUtility.CopySerialized(selection, gridBrush);
+            gridBrush.name = originalName;
+            gridBrush.hideFlags = originalFlags;
+
+            GridPaletteBrushes.GridBrushAssetChanged(gridBrush);
         }
 
         private static void CalculateToolbarSize()
@@ -633,15 +728,12 @@ namespace UnityEditor.Tilemaps
         /// <summary>
         /// A list of all valid targets that can be set as an active target for the Tile Palette
         /// </summary>
-        public static GameObject[] validTargets
-        {
-            get { return instance.GetValidTargets(); }
-        }
+        public static GameObject[] validTargets => instance.GetValidTargets();
 
         internal static bool savingPalette
         {
-            get { return instance.m_SavingPalette; }
-            set { instance.m_SavingPalette = value; }
+            get => instance.m_SavingPalette;
+            set => instance.m_SavingPalette = value;
         }
 
         internal static void OnBeforePaletteChanged()
@@ -664,6 +756,19 @@ namespace UnityEditor.Tilemaps
             TilemapEditorTool.UpdateEditorTools(toolAttribute);
         }
 
+        internal static void ActiveGridBrushAssetChanged()
+        {
+            if (gridBrush == null)
+                return;
+
+            GridPaletteBrushes.GridBrushAssetChanged(gridBrush);
+
+            if (activeBrushEditor != null && activeBrushEditor.shouldSaveBrushForSelection)
+                brushPickStore.AddNewLastSavedBrush(gridBrush);
+
+            brushPickChanged?.Invoke();
+        }
+
         internal static void UpdateActiveGridPalette()
         {
             foreach (var clipboard in GridPaintPaletteClipboard.instances)
@@ -678,6 +783,11 @@ namespace UnityEditor.Tilemaps
             {
                 clipboard.Repaint();
             }
+        }
+
+        internal static void InvokeBrushPickStoreChanged()
+        {
+            brushPickStoreChanged?.Invoke();
         }
 
         internal static void UnlockGridPaintPaletteClipboardForEditing()
@@ -702,9 +812,6 @@ namespace UnityEditor.Tilemaps
                 instance.OnEditDisable();
         }
 
-        internal static bool hasInterestedPainters
-        {
-            get { return instance != null && instance.m_InterestedPainters.Count > 0; }
-        }
+        internal static bool hasInterestedPainters => instance != null && instance.m_InterestedPainters.Count > 0;
     }
 }

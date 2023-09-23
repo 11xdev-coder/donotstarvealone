@@ -4,9 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Inventory
-  - BlockPointer
   - MainCanvas
+  - BlockPointer
+  - Inventory
   layers:
   - Default
   - TransparentFX
@@ -14,15 +14,15 @@ TagManager:
   - 
   - Water
   - UI
-  - tiles
-  - small objects
-  - med objects
-  - big objects
-  - inventory
+  - Body
   - 
+  - Head
   - 
-  - 
-  - 
+  - LeftHand
+  - RightHand
+  - RightLeg
+  - LeftLeg
+  - HandTool
   - 
   - 
   - 

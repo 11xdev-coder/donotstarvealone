@@ -75,17 +75,17 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.2.1f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Editor\IKGizmos.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Editor\AssemblyInfo.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Editor\Inspectors\FabrikSolver2DEditor.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Editor\Inspectors\LimbSolver2DEditor.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Editor\Inspectors\CCDSolver2DEditor.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Editor\IKEditorManager.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Editor\Inspectors\IKManager2DEditor.cs" />
-     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Editor\Inspectors\Solver2DEditor.cs" />
-     <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Editor\Inspectors" />
-     <None Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Editor\Unity.2D.IK.Editor.asmdef" />
-     <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.1\IK\Editor" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Editor\IKGizmos.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Editor\AssemblyInfo.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Editor\Inspectors\FabrikSolver2DEditor.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Editor\Inspectors\LimbSolver2DEditor.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Editor\Inspectors\CCDSolver2DEditor.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Editor\IKEditorManager.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Editor\Inspectors\IKManager2DEditor.cs" />
+     <Compile Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Editor\Inspectors\Solver2DEditor.cs" />
+     <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Editor\Inspectors" />
+     <None Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Editor\Unity.2D.IK.Editor.asmdef" />
+     <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.3\IK\Editor" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.2.1f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
      </Reference>

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4466923777518263808}
   - component: {fileID: -4374899060412328160}
   - component: {fileID: 7219972338320539005}
+  - component: {fileID: 2819540649168786463}
   m_Layer: 7
   m_Name: miniBoulder
   m_TagString: Untagged
@@ -28,13 +29,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5387719478794832004}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &986669643722978058
 SpriteRenderer:
@@ -76,7 +77,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 167
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 237766cc01ba03943ba4eaccbb1ef36e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -96,6 +97,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5387719478794832004}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -119,19 +121,19 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.0024226457, y: -0.12779629}
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.0024226457, y: 0.042800423}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 0.32, y: 0.32}
     newSize: {x: 0.32, y: 0.39}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.1988661, y: 0.054459035}
+  m_Size: {x: 0.1988661, y: 0.060494013}
   m_EdgeRadius: 0
 --- !u!61 &4466923777518263808
 BoxCollider2D:
@@ -141,6 +143,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5387719478794832004}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -164,19 +167,19 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.006564945, y: -0.020080999}
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.006564945, y: 0.12754835}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 0.32, y: 0.32}
     newSize: {x: 0.32, y: 0.39}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.25743997, y: 0.27414808}
+  m_Size: {x: 0.25743997, y: 0.23025832}
   m_EdgeRadius: 0
 --- !u!82 &-4374899060412328160
 AudioSource:
@@ -198,7 +201,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 0.70075136
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -304,7 +307,8 @@ MonoBehaviour:
   deathParticles: {fileID: 1231736053040336201, guid: 3f6ca38d19d179d4eb39b82139a0f7a0, type: 3}
   hasHitSound: 1
   hitSound: {fileID: 8300000, guid: faf490900c881224f997cff321e981b7, type: 3}
-  tool: {fileID: 11400000, guid: 45d4e04a77eff6747bf8e44ba31b4910, type: 2}
+  pickaxePower: 15
+  axePower: 0
   isMineable: 1
   attackOffset: {x: 0, y: 0.2, z: 0}
   onHoverText: Mine
@@ -314,3 +318,18 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 48bc6fe4d5de184449cb28fe261d94eb, type: 3}
   - {fileID: 21300000, guid: 23b2ea31dd223e64b876d3321e577b3e, type: 3}
   - {fileID: 21300000, guid: 237766cc01ba03943ba4eaccbb1ef36e, type: 3}
+--- !u!114 &2819540649168786463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5387719478794832004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6da58feaf1825be40838c8e1483f6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseSortingOrder: 0
+  orderOffset: 0
+  doSort: 1

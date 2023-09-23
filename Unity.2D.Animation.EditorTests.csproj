@@ -41,8 +41,8 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.1\Tests\Editor" />
-     <None Include="Library\PackageCache\com.unity.2d.animation@9.0.1\Tests\Editor\Unity.2D.Animation.EditorTests.asmdef" />
+     <Folder Include="Library\PackageCache\com.unity.2d.animation@9.0.3\Tests\Editor" />
+     <None Include="Library\PackageCache\com.unity.2d.animation@9.0.3\Tests\Editor\Unity.2D.Animation.EditorTests.asmdef" />
      <Reference Include="UnityEngine">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.2.1f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
      </Reference>

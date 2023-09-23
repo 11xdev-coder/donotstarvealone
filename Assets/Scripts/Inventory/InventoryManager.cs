@@ -53,7 +53,7 @@ public class InventoryManager : MonoBehaviour
         // add all starting items
         foreach (var startingItem in startingItems)
             Add(startingItem.item, startingItem.count);
-
+        
         equippedToolIndex = items.Length - 1;
         Refresh();
     }
@@ -179,42 +179,50 @@ public class InventoryManager : MonoBehaviour
     
     public bool Add(ItemClass item, int count)
     {
-        //check if inventory contains item
         SlotClass slot = Contains(item);
 
+        // Step 1: Try to add to existing slot
         if (slot != null && slot.item.isStackable && slot.count < item.maxStack)
         {
-            // going to add 20 = count
-            // there is already 5 = slot.count;
-            var countCanAdd = slot.item.maxStack - slot.count; //16 - 5 = 11
-            var countToAdd = Mathf.Clamp(count, 0, countCanAdd);
-                
-            var remainder = count - countCanAdd; // = 9
-            
+            int countCanAdd = item.maxStack - slot.count; 
+            int countToAdd = Mathf.Min(count, countCanAdd); 
+
             slot.AddCount(countToAdd);
-            if (remainder > 0) Add(item, remainder);
+            count -= countToAdd;
         }
-        else
+
+        // Step 2: If there are more items, try to find another slot with the same item, but not full
+        for (int i = 0; i < items.Length && count > 0; i++)
         {
-            for (int i = 0; i < items.Length; i++)
+            if (items[i].item == item && items[i].count < item.maxStack)
             {
-                if (items[i].item == null) //this is an empty slot
-                { 
-                    var quantityCanAdd = item.maxStack - items[i].count; //16 - 5 = 11
-                    var quantityToAdd = Mathf.Clamp(count, 0, quantityCanAdd);
-                
-                    var remainder = count - quantityCanAdd; // = 9
-            
-                    items[i].AddItem(item, quantityToAdd);
-                    if (remainder > 0) Add(item, remainder);
-                    break;
-                }
+                int countCanAdd = item.maxStack - items[i].count;
+                int countToAdd = Mathf.Min(count, countCanAdd);
+
+                items[i].AddCount(countToAdd);
+                count -= countToAdd;
+            }
+        }
+
+        // Step 3: If there are any remaining items to add, find an empty slot
+        for (int i = 0; i < items.Length && count > 0; i++)
+        {
+            if (i != equippedToolIndex && items[i].item == null) 
+            {
+                int quantityCanAdd = item.maxStack; 
+                int quantityToAdd = Mathf.Min(count, quantityCanAdd);
+
+                items[i].AddItem(item, quantityToAdd);
+
+                count -= quantityToAdd;
             }
         }
 
         Refresh();
-        return true;
-    } 
+
+        return count == 0; // Returns true if all items were added, false otherwise
+    }
+
 
     public void UseSelected(ItemClass item)
     {

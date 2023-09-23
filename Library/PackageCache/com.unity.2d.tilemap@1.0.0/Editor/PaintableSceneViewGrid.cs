@@ -29,6 +29,8 @@ namespace UnityEditor.Tilemaps
             }
         }
 
+        public Action<GameObject> onEdited;
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -67,7 +69,7 @@ namespace UnityEditor.Tilemaps
 
             // Case 1077400: SceneView camera transform changes may update the mouse grid position even though the mouse position has not changed
             var currentSceneViewTransformHash = sceneView.camera.transform.localToWorldMatrix.GetHashCode();
-            UpdateMouseGridPosition(currentSceneViewTransformHash == sceneViewTransformHash);
+            UpdateMouseGridPosition(currentSceneViewTransformHash != sceneViewTransformHash);
             sceneViewTransformHash = currentSceneViewTransformHash;
 
             var dot = 1.0f;
@@ -242,6 +244,7 @@ namespace UnityEditor.Tilemaps
         {
             if (GridPaintingState.activeBrushEditor != null && grid != null)
                 GridPaintingState.activeBrushEditor.OnEditStart(grid, brushTarget);
+            onEdited?.Invoke(brushTarget);
         }
 
         protected override void OnEditEnd()
@@ -267,18 +270,24 @@ namespace UnityEditor.Tilemaps
             return true;
         }
 
-        protected override Vector2Int ScreenToGrid(Vector2 screenPosition)
+        protected override Vector2Int ScreenToGrid(Vector2 screenPosition, float zPosition)
         {
             if (tilemap != null)
             {
                 var transform = tilemap.transform;
-                Plane plane = new Plane(GetGridForward(tilemap), transform.position);
-                Vector3Int cell = LocalToGrid(tilemap, GridEditorUtility.ScreenToLocal(transform, screenPosition, plane));
+                var plane = new Plane(GetGridForward(tilemap), transform.position);
+                var screenLocal = GridEditorUtility.ScreenToLocal(transform, screenPosition, plane);
+                if (GridPaintingState.gridBrushMousePositionAtZ)
+                    screenLocal.z = zPosition;
+                var cell = LocalToGrid(tilemap, screenLocal);
                 return new Vector2Int(cell.x, cell.y);
             }
             if (grid != null)
             {
-                Vector3Int cell = LocalToGrid(grid, GridEditorUtility.ScreenToLocal(gridTransform, screenPosition, GetGridPlane(grid)));
+                var screenLocal = GridEditorUtility.ScreenToLocal(gridTransform, screenPosition, GetGridPlane(grid));
+                if (GridPaintingState.gridBrushMousePositionAtZ)
+                    screenLocal.z = zPosition;
+                var cell = LocalToGrid(grid, screenLocal);
                 return new Vector2Int(cell.x, cell.y);
             }
             return Vector2Int.zero;

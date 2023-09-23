@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Experimental.Rendering;
 using UnityEvent = UnityEngine.Event;
 
 namespace UnityEditor.U2D.Sprites
@@ -413,7 +414,7 @@ namespace UnityEditor.U2D.Sprites
         {
             float spacing = 38f;
             var texture = m_TextureDataProvider.GetReadableTexture2D();
-            if (texture != null && UnityEditor.TextureUtil.IsCompressedTextureFormat(texture.format))
+            if (texture != null && GraphicsFormatUtility.IsCompressedFormat(texture.format))
             {
                 EditorGUILayout.LabelField(s_Styles.automaticSlicingHintLabel, s_Styles.notice);
                 spacing -= 31f;
