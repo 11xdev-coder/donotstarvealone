@@ -33,6 +33,7 @@ namespace UnityEditor.Tilemaps
         private static long s_LastClosedTime;
         private string m_Name = "New Palette";
         private static GridPaletteAddPopup s_Instance;
+        private GridPaintPaletteWindow m_Owner;
         private GridLayout.CellLayout m_Layout;
         private int m_HexagonLayout;
         private GridPalette.CellSizing m_CellSizing;
@@ -40,8 +41,9 @@ namespace UnityEditor.Tilemaps
         private TransparencySortMode m_TransparencySortMode;
         private Vector3 m_TransparencySortAxis = new Vector3(0f, 0f, 1f);
 
-        void Init(Rect buttonRect)
+        void Init(Rect buttonRect, GridPaintPaletteWindow owner)
         {
+            m_Owner = owner;
             m_CellSize = new Vector3(1, 1, 0);
             buttonRect = GUIUtility.GUIToScreenRect(buttonRect);
             ShowAsDropDown(buttonRect, new Vector2(312, 185));
@@ -99,7 +101,7 @@ namespace UnityEditor.Tilemaps
             if (m_Layout == GridLayout.CellLayout.Hexagon)
             {
                 GUILayout.BeginHorizontal();
-                float oldLabelWidth = EditorGUIUtility.labelWidth;
+                float oldLabelWidth = UnityEditor.EditorGUIUtility.labelWidth;
                 EditorGUIUtility.labelWidth = 94;
                 m_HexagonLayout = EditorGUILayout.Popup(Styles.hexagonLabel, m_HexagonLayout, Styles.hexagonSwizzleTypeLabel);
                 EditorGUIUtility.labelWidth = oldLabelWidth;
@@ -159,7 +161,8 @@ namespace UnityEditor.Tilemaps
                         , swizzle, m_TransparencySortMode, m_TransparencySortAxis);
                     if (go != null)
                     {
-                        GridPaintingState.palette = go;
+                        m_Owner.palette = go;
+                        m_Owner.Repaint();
                     }
 
                     GUIUtility.ExitGUI();
@@ -170,7 +173,7 @@ namespace UnityEditor.Tilemaps
             GUILayout.EndHorizontal();
         }
 
-        internal static bool ShowAtPosition(Rect buttonRect)
+        internal static bool ShowAtPosition(Rect buttonRect, GridPaintPaletteWindow owner)
         {
             // We could not use realtimeSinceStartUp since it is set to 0 when entering/exitting playmode, we assume an increasing time when comparing time.
             long nowMilliSeconds = System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond;
@@ -181,7 +184,7 @@ namespace UnityEditor.Tilemaps
                 if (s_Instance == null)
                     s_Instance = ScriptableObject.CreateInstance<GridPaletteAddPopup>();
 
-                s_Instance.Init(buttonRect);
+                s_Instance.Init(buttonRect, owner);
                 return true;
             }
             return false;

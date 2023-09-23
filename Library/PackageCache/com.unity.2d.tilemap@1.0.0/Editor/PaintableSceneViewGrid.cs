@@ -1,6 +1,9 @@
 using System;
+using System.Reflection;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Object = UnityEngine.Object;
 
 namespace UnityEditor.Tilemaps
 {
@@ -97,7 +100,7 @@ namespace UnityEditor.Tilemaps
 
         private void HandleMouseEnterLeave(SceneView sceneView)
         {
-            if (GridPaintingState.isEditing)
+            if (inEditMode)
             {
                 if (Event.current.type == EventType.MouseEnterWindow)
                 {
@@ -105,7 +108,7 @@ namespace UnityEditor.Tilemaps
                 }
                 else if (Event.current.type == EventType.MouseLeaveWindow)
                 {
-                    OnMouseLeave();
+                    OnMouseLeave(sceneView);
                 }
                 // Case 1043365: When docked, the docking area is considered part of the window and MouseEnter/LeaveWindow events are not considered when entering the docking area
                 else if (sceneView.docked)
@@ -123,7 +126,7 @@ namespace UnityEditor.Tilemaps
                     {
                         if (GridPaintingState.activeGrid == this)
                         {
-                            OnMouseLeave();
+                            OnMouseLeave(sceneView);
                         }
                     }
                 }
@@ -140,7 +143,7 @@ namespace UnityEditor.Tilemaps
             ResetPreviousMousePositionToCurrentPosition();
         }
 
-        private void OnMouseLeave()
+        private void OnMouseLeave(SceneView sceneView)
         {
             if (GridPaintingState.activeBrushEditor != null)
                 GridPaintingState.activeBrushEditor.OnMouseLeave();
@@ -163,7 +166,7 @@ namespace UnityEditor.Tilemaps
         {
             if (GridPaintingState.activeBrushEditor != null)
             {
-                GridPaintingState.activeBrushEditor.RegisterUndo(brushTarget, EditTypeToBrushTool(EditorTools.ToolManager.activeToolType));
+                GridPaintingState.activeBrushEditor.RegisterUndo(brushTarget, EditTypeToBrushTool(UnityEditor.EditorTools.ToolManager.activeToolType));
             }
         }
 
@@ -230,12 +233,12 @@ namespace UnityEditor.Tilemaps
                 gridBrush.MoveEnd(grid, brushTarget, position);
         }
 
-        protected override bool CustomTool(bool isToolHotControl, TilemapEditorTool tool, Vector3Int position)
+        protected override bool CustomTool(bool isHotControl, TilemapEditorTool tool, Vector3Int position)
         {
             var executed = false;
             if (grid != null)
             {
-                executed = tool.HandleTool(isToolHotControl, grid, brushTarget, position);
+                executed = tool.HandleTool(isHotControl, grid, brushTarget, position);
             }
             return executed;
         }
@@ -333,9 +336,9 @@ namespace UnityEditor.Tilemaps
             return gridLayout.transform.forward * -1f;
         }
 
-        private Plane GetGridPlane(Grid planeForGrid)
+        private Plane GetGridPlane(Grid grid)
         {
-            return new Plane(GetGridForward(planeForGrid), planeForGrid.transform.position);
+            return new Plane(GetGridForward(grid), grid.transform.position);
         }
 
         private GridLayout GetGridView()
@@ -365,12 +368,12 @@ namespace UnityEditor.Tilemaps
             if (GridPaintingState.activeBrushEditor != null)
             {
                 GridPaintingState.activeBrushEditor.OnPaintSceneGUI(layoutGrid, brushTarget, brushBounds
-                    , EditTypeToBrushTool(EditorTools.ToolManager.activeToolType), m_MarqueeStart.HasValue || executing);
+                    , EditTypeToBrushTool(UnityEditor.EditorTools.ToolManager.activeToolType), m_MarqueeStart.HasValue || executing);
             }
             else // Fallback when user hasn't defined custom editor
             {
                 GridBrushEditorBase.OnPaintSceneGUIInternal(layoutGrid, brushTarget, brushBounds
-                    , EditTypeToBrushTool(EditorTools.ToolManager.activeToolType), m_MarqueeStart.HasValue || executing);
+                    , EditTypeToBrushTool(UnityEditor.EditorTools.ToolManager.activeToolType), m_MarqueeStart.HasValue || executing);
             }
         }
 
@@ -392,7 +395,7 @@ namespace UnityEditor.Tilemaps
                 RectInt rect = new RectInt(GridSelection.position.xMin, GridSelection.position.yMin, GridSelection.position.size.x, GridSelection.position.size.y);
                 BoundsInt brushBounds = new BoundsInt(new Vector3Int(rect.x, rect.y, zPosition), new Vector3Int(rect.width, rect.height, 1));
                 GridBrushEditorBase.OnSceneGUIInternal(gridLayout, brushTarget, brushBounds
-                    , EditTypeToBrushTool(EditorTools.ToolManager.activeToolType), m_MarqueeStart.HasValue || executing);
+                    , EditTypeToBrushTool(UnityEditor.EditorTools.ToolManager.activeToolType), m_MarqueeStart.HasValue || executing);
             }
         }
     }

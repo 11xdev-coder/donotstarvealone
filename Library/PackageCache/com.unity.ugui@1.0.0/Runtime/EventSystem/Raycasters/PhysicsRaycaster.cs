@@ -46,11 +46,7 @@ namespace UnityEngine.EventSystems
             {
                 if (m_EventCamera == null)
                     m_EventCamera = GetComponent<Camera>();
-
-                if (m_EventCamera == null)
-                    return Camera.main;
-
-                return m_EventCamera ;
+                return m_EventCamera ?? Camera.main;
             }
         }
 
@@ -105,7 +101,7 @@ namespace UnityEngine.EventSystems
             if (eventCamera == null)
                 return false;
 
-            var eventPosition = MultipleDisplayUtilities.RelativeMouseAtScaled(eventData.position);
+            var eventPosition = Display.RelativeMouseAt(eventData.position);
             if (eventPosition != Vector3.zero)
             {
                 // We support multiple display and display identification based on event position.

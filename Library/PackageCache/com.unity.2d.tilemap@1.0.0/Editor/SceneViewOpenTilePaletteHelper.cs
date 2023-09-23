@@ -82,7 +82,7 @@ namespace UnityEditor.Tilemaps
 
         internal static bool IsActive()
         {
-            if (GridPaintingState.isEditing)
+            if (GridPaintPaletteWindow.isActive)
                 return false;
             return instance.m_IsSelectionValid;
         }

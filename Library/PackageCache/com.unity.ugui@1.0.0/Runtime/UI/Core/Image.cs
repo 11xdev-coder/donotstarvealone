@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine.Experimental.Rendering;
 using UnityEngine.Serialization;
 using UnityEngine.U2D;
 
@@ -635,15 +634,7 @@ namespace UnityEngine.UI
         /// ]]>
         ///</code>
         /// </example>
-        public float alphaHitTestMinimumThreshold { get { return m_AlphaHitTestMinimumThreshold; }
-            set
-            {
-                if (sprite != null && (GraphicsFormatUtility.IsCrunchFormat(sprite.texture.format) || !sprite.texture.isReadable))
-                    throw new InvalidOperationException("alphaHitTestMinimumThreshold should not be modified on a texture not readeable or not using Crunch Compression.");
-
-                m_AlphaHitTestMinimumThreshold = value;
-            }
-        }
+        public float alphaHitTestMinimumThreshold { get { return m_AlphaHitTestMinimumThreshold; } set { m_AlphaHitTestMinimumThreshold = value; } }
 
         /// Controls whether or not to use the generated mesh from the sprite importer.
         [SerializeField] private bool m_UseSpriteMesh;
@@ -1157,7 +1148,7 @@ namespace UnityEngine.UI
             if (tileHeight <= 0)
                 tileHeight = yMax - yMin;
 
-            if (activeSprite != null && (hasBorder || activeSprite.packed || activeSprite.texture != null && activeSprite.texture.wrapMode != TextureWrapMode.Repeat))
+            if (activeSprite != null && (hasBorder || activeSprite.packed || activeSprite.texture.wrapMode != TextureWrapMode.Repeat))
             {
                 // Sprite has border, or is not in repeat mode, or cannot be repeated because of packing.
                 // We cannot use texture tiling so we will generate a mesh of quads to tile the texture.
@@ -1817,9 +1808,6 @@ namespace UnityEngine.UI
 
             Rect rect = GetPixelAdjustedRect();
 
-            if (m_PreserveAspect)
-                PreserveSpriteAspectRatio(ref rect, new Vector2(activeSprite.texture.width, activeSprite.texture.height));
-
             // Convert to have lower left corner as reference point.
             local.x += rectTransform.pivot.x * rect.width;
             local.y += rectTransform.pivot.y * rect.height;
@@ -1827,8 +1815,9 @@ namespace UnityEngine.UI
             local = MapCoordinate(local, rect);
 
             // Convert local coordinates to texture space.
-            float x = local.x / activeSprite.texture.width;
-            float y = local.y / activeSprite.texture.height;
+            Rect spriteRect = activeSprite.textureRect;
+            float x = (spriteRect.x + local.x) / activeSprite.texture.width;
+            float y = (spriteRect.y + local.y) / activeSprite.texture.height;
 
             try
             {
@@ -1914,7 +1903,6 @@ namespace UnityEngine.UI
         {
             SetMaterialDirty();
             SetVerticesDirty();
-            SetRaycastDirty();
         }
 
 #if UNITY_EDITOR

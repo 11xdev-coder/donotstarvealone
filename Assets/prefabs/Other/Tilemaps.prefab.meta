@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/prefabs/Other/Tilemaps.prefab.meta
 guid: 37a90740d35a18d46b18dbd84af0a8b5
 PrefabImporter:
+========
+guid: 2cda990e2423bbf4892e6590ba056729
+DefaultImporter:
+>>>>>>>> origin/main:Assets/Scenes/SampleScene.unity.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
