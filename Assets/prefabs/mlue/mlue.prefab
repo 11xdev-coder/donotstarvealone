@@ -83,11 +83,6 @@ MonoBehaviour:
   attackTarget: {fileID: 0}
   currentAttackableTarget: {fileID: 0}
   currentInteractableSlot: {fileID: 0}
-  isInCar: 0
-  car: {fileID: 0}
-  carRb: {fileID: 0}
-  carMoveSpeed: 5
-  carTurnSpeed: 90
   mainCamera: {fileID: 0}
   hoveringText: {fileID: 0}
   hud: {fileID: 0}
@@ -106,7 +101,6 @@ MonoBehaviour:
   armR: {fileID: 9115943933683964994}
   legL: {fileID: 8741820180128931605}
   legR: {fileID: 8417991103204895704}
-<<<<<<< HEAD
   isInCar: 0
   car: {fileID: 0}
   carRb: {fileID: 0}
@@ -114,8 +108,6 @@ MonoBehaviour:
   carTurnSpeed: 90
   boostPointer: {fileID: 0}
   boostMarks: {fileID: 0}
-=======
->>>>>>> origin/main
   horizontal: 0
   vertical: 0
   movement: {x: 0, y: 0}
@@ -129,16 +121,16 @@ MonoBehaviour:
   isMovingToMouse: 0
   canMoveToMouse: 0
   minCursorDistance: 0.1
-  bufferCursorDistance: 0.15
-  searchRadius: 4
+  bufferCursorDistance: 0.2
+  searchRadius: 6
   playerAttackDetectionRadius: 0.3
-  attackDetectionOffset: {x: 0, y: -0.3, z: 0}
+  attackDetectionOffset: {x: 0, y: 0, z: 0}
   animLocked: 0
   movementXString: Movement X
   movementYString: Movement Y
   attackXString: Attack X
   attackYString: Attack Y
-  offset: {x: 0, y: 25, z: 0}
+  offset: {x: 0, y: 15, z: 0}
 --- !u!114 &6730677856030601245
 MonoBehaviour:
   m_ObjectHideFlags: 0

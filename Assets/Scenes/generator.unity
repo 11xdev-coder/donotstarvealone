@@ -483,10 +483,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 985620078}
     - target: {fileID: 6730677856030601245, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-      propertyPath: talker
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6730677856030601245, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
       propertyPath: itemCursor
       value: 
       objectReference: {fileID: 1491934797}

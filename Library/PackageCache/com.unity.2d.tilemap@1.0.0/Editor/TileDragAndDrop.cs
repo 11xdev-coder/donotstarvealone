@@ -567,15 +567,23 @@ namespace UnityEditor.Tilemaps
             return result;
         }
 
-        internal static RectInt GetMinMaxRect(List<Vector2Int> positions)
+        internal static RectInt GetMinMaxRect(IEnumerable<Vector2Int> positions)
         {
-            if (positions == null || positions.Count == 0)
+            if (positions == null)
                 return new RectInt();
 
-            return GridEditorUtility.GetMarqueeRect(
-                new Vector2Int(positions.Min(p1 => p1.x), positions.Min(p1 => p1.y)),
-                new Vector2Int(positions.Max(p1 => p1.x), positions.Max(p1 => p1.y))
-            );
+            var hasValue = false;
+            var min = new Vector2Int(Int32.MaxValue, Int32.MaxValue);
+            var max = new Vector2Int(Int32.MinValue, Int32.MinValue);
+            foreach (var position in positions)
+            {
+                min.x = Math.Min(min.x, position.x);
+                max.x = Math.Max(max.x, position.x);
+                min.y = Math.Min(min.y, position.y);
+                max.y = Math.Max(max.y, position.y);
+                hasValue = true;
+            }
+            return hasValue ? GridEditorUtility.GetMarqueeRect(min, max) : new RectInt();
         }
     }
 }
