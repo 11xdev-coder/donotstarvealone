@@ -30,6 +30,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3820695727753249945}
+  serializedVersion: 2
   m_LocalRotation: {x: -1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: -0.76}
   m_LocalScale: {x: 100, y: 253.78375, z: 38.48717}
@@ -37,7 +38,6 @@ Transform:
   m_Children:
   - {fileID: 647966872640211821}
   m_Father: {fileID: 7280803068075441636}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: -180, y: 0, z: 0}
 --- !u!33 &794119336920214433
 MeshFilter:
@@ -100,6 +100,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3820695727753249945}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 6200000, guid: e68d739958eeabf419283f87477e0460, type: 2}
   m_IncludeLayers:
@@ -123,7 +124,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0.00013788161}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,7 +136,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 0.02, y: 0.013680579}
   m_EdgeRadius: 0
 --- !u!50 &1000898023179899410
@@ -230,13 +231,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6873905685273945574}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0.0088, y: 0.005201307, z: 0}
   m_LocalScale: {x: 1.0144798, y: 0.15384933, z: 0.20503965}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3063005914399185466}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: -180, y: -90, z: 0}
 --- !u!33 &8233957200128248393
 MeshFilter:
@@ -312,6 +313,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7688237150508186169}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 101.49236, y: 103.09513, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
@@ -319,5 +321,4 @@ Transform:
   m_Children:
   - {fileID: 3063005914399185466}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

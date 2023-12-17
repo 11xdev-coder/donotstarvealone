@@ -44,3 +44,24 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: ObjectBehind
+    uniqueID: 3446458829
+    locked: 0
+  - name: Head
+    uniqueID: 1960334377
+    locked: 0
+  - name: RightArm
+    uniqueID: 2482917419
+    locked: 0
+  - name: Body
+    uniqueID: 2685096749
+    locked: 0
+  - name: LeftArm
+    uniqueID: 3595177745
+    locked: 0
+  - name: Legs
+    uniqueID: 1159979107
+    locked: 0
+  - name: ObjectInFront
+    uniqueID: 3808432793
+    locked: 0

@@ -10,7 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5725249656249965778}
   - component: {fileID: 3450161410975217769}
+  - component: {fileID: 6581758089291913710}
+  - component: {fileID: 5885411620955195670}
   - component: {fileID: 7546422953854568187}
+  - component: {fileID: 3987224798153409072}
   m_Layer: 9
   m_Name: pineTree
   m_TagString: Untagged
@@ -85,6 +88,98 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &6581758089291913710
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5957941118420886137}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.015477084, y: 0.2656184}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 0.35, y: 0.58}
+    newSize: {x: 0.32, y: 0.52}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.24646349, y: 0.5312368}
+  m_EdgeRadius: 0
+--- !u!61 &5885411620955195670
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5957941118420886137}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.00053370744, y: 0.031158652}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 0.35, y: 0.58}
+    newSize: {x: 0.32, y: 0.52}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.1311857, y: 0.062317304}
+  m_EdgeRadius: 0
 --- !u!114 &7546422953854568187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,3 +195,41 @@ MonoBehaviour:
   baseSortingOrder: 0
   orderOffset: 0
   doSort: 1
+  player: {fileID: 0}
+--- !u!114 &3987224798153409072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5957941118420886137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 902fcd3a5630ccc46aebb7f76ea3f1f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 175
+  maxHealth: 175
+  self: {fileID: 0}
+  onDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  doDrops: 0
+  drops: []
+  doEnemySpawn: 0
+  enemiesToSpawn: []
+  doDeathParticles: 0
+  deathParticles: {fileID: 0}
+  hasHitSound: 0
+  hitSound: {fileID: 0}
+  pickaxePower: 0
+  axePower: 20
+  isMineable: 1
+  attackOffset: {x: 0, y: -0.9, z: 0}
+  onHoverText: Chop
+  changeSpriteDependingOnHealth: 0
+  destroyOnDeath: 1
+  damagedSprites: []

@@ -15,11 +15,12 @@ public class PlayerController : MonoBehaviour
     [Header("-- Debug --")] 
     public GameObject attackTarget;
     public GameObject currentAttackableTarget;
+    public GameObject currentDroppingTarget;
     public GameObject currentInteractableSlot;
     private readonly RaycastHit2D[] _hits = new RaycastHit2D[5];
     private GameObject _console;
     private KeyBindingManager _keyBindingManager;
-    private RaycastHit2D _hit;
+    private GameObject _hit;
     
     [Header("-- Assignable - Important --")]
     public Camera mainCamera;
@@ -45,9 +46,10 @@ public class PlayerController : MonoBehaviour
     public GameObject legL;
     public GameObject legR;
     private List<GameObject> _bodyParts = new List<GameObject>();
+    private int _originalSortingOrder;
 
     [Header("Interactions - Global")] 
-    public Settings currentInteractionSettings;
+    public Settings СurrentInteractionSettings;
     
     [Header("Interactions - Car")]
     public bool isInCar;
@@ -108,6 +110,9 @@ public class PlayerController : MonoBehaviour
         // setting up the body parts
         _bodyParts.Add(body); _bodyParts.Add(head); _bodyParts.Add(armL); _bodyParts.Add(armR); _bodyParts.Add(legL);
         _bodyParts.Add(legR);
+
+        _originalSortingOrder = _bodyParts[0].GetComponent<SpriteRenderer>().sortingOrder;
+
         
         hud.SetActive(true);
         canMoveToMouse = true;
@@ -123,24 +128,28 @@ public class PlayerController : MonoBehaviour
     {
         if (!animLocked)
         {
-            if (movement != Vector2.zero)
+            if (_isAttacking)
+            {
+                if (!animator.GetCurrentAnimatorStateInfo(0).IsName("attack"))
+                {
+                    animator.SetFloat(attackXString, Math.Sign(_dotProductRight));
+                    animator.SetFloat(attackYString, Math.Sign(_dotProductForward));
+                    animator.Play("attack");
+                }
+            }
+            else if (movement != Vector2.zero)
             {
                 animator.SetFloat(movementXString, Math.Sign(Mathf.Round(movement.x))); // -1, 0 or 1
                 animator.SetFloat(movementYString, Math.Sign(Mathf.Round(movement.y)));
                 animator.Play("walk");
             }
-            else if (_isAttacking)
-            {
-                animator.SetFloat(attackXString, Math.Sign(_dotProductRight));
-                animator.SetFloat(attackYString, Math.Sign(_dotProductForward));
-                animator.Play("attack");
-            }
-            else
+            else 
             {
                 animator.Play("idle");
             }
         }
     }
+
 
     #region Animations
     
@@ -274,7 +283,8 @@ public class PlayerController : MonoBehaviour
                 {
                     animLocked = true;
                     animator.Play("Drop");
-                    PickUpTargetItem(target);
+                    currentDroppingTarget = target;
+                    // PickUpTargetItem(target); // we rely on PickUpInAnimation in picking up animations
                 }
             }
         }
@@ -293,8 +303,8 @@ public class PlayerController : MonoBehaviour
                 // Stop moving
                 horizontal = 0;
                 vertical = 0;
-                isDropping = false;
-                inventory.movingSlot.item.DropItem(inventory.movingSlot, transform, inventory);
+                // isDropping = false;
+                // inventory.movingSlot.item.DropItem(inventory.movingSlot, transform, inventory); rely onb PickUpInAnimation
                 animLocked = true;
                 animator.Play("Drop");
             }
@@ -308,15 +318,41 @@ public class PlayerController : MonoBehaviour
             UpdateAnimations();
         }
     }
+    
+    public void PickUpInAnimation() // call this in animation
+    {
+        if (isDropping)
+        {
+            isDropping = false;
+            inventory.movingSlot.item.DropItem(inventory.movingSlot, transform, inventory);
+        }
+        else
+        {
+            PickUpTargetItem(currentDroppingTarget);
+            currentDroppingTarget = null;
+            ResetAttackTargetAndMoving();
+        }
+    }
 
     public void PickUpTargetItem(GameObject target)
     {
         DroppedItem droppedItem = target.GetComponent<DroppedItem>();
-        if (inventory.Add(droppedItem.item, droppedItem.count)) // Add the item to the inventory (adjust according to your inventory system)
+        int remainingItems = inventory.Add(droppedItem.item, droppedItem.count);
+    
+        // Only decrease the items from the dropped item if they were successfully added to the inventory.
+        int successfullyAddedItems = droppedItem.count - remainingItems;
+    
+        if (successfullyAddedItems > 0)
         {
-            Destroy(droppedItem.gameObject); // Destroy the dropped item game object
+            droppedItem.count -= successfullyAddedItems;
+
+            if (droppedItem.count <= 0)
+            {
+                Destroy(droppedItem.gameObject); // Destroy the dropped item game object only if all items were picked up
+            }
         }
     }
+
     
     public void SetAttackTarget(GameObject target)
     {
@@ -427,11 +463,11 @@ public class PlayerController : MonoBehaviour
         int baseOrder = 200 - Mathf.FloorToInt(transform.position.y);
 
         body.GetComponent<SpriteRenderer>().sortingOrder = baseOrder;
-        head.GetComponent<SpriteRenderer>().sortingOrder = baseOrder + 1;
+        head.GetComponent<SpriteRenderer>().sortingOrder = baseOrder;
         legL.GetComponent<SpriteRenderer>().sortingOrder = baseOrder;
         legR.GetComponent<SpriteRenderer>().sortingOrder = baseOrder;
         armR.GetComponent<SpriteRenderer>().sortingOrder = baseOrder;
-        armL.GetComponent<SpriteRenderer>().sortingOrder = baseOrder + 1;
+        armL.GetComponent<SpriteRenderer>().sortingOrder = baseOrder;
     }
 
     private void UpdatePointerPosition(Settings settings)
@@ -470,7 +506,7 @@ public class PlayerController : MonoBehaviour
         gameObject.GetComponent<BoxCollider2D>().enabled = false;
         carRb = car.GetComponent<Rigidbody2D>();
         
-        print(currentInteractionSettings.CurrentBoost);
+        print(СurrentInteractionSettings.CurrentBoost);
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
         {
@@ -484,20 +520,20 @@ public class PlayerController : MonoBehaviour
         // Increase the CurrentBoost based on AccelerationSpeed
         if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
         {
-            currentInteractionSettings.CurrentBoost += currentInteractionSettings.AccelerationSpeed * Time.deltaTime;
+            СurrentInteractionSettings.CurrentBoost += СurrentInteractionSettings.AccelerationSpeed * Time.deltaTime;
 
             // Ensure CurrentBoost doesn't exceed MaxBoost
-            currentInteractionSettings.CurrentBoost = Mathf.Min(currentInteractionSettings.CurrentBoost, currentInteractionSettings.MaxBoost);
+            СurrentInteractionSettings.CurrentBoost = Mathf.Min(СurrentInteractionSettings.CurrentBoost, СurrentInteractionSettings.MaxBoost);
         }
         else
         {
             // Reset CurrentBoost when not accelerating
-            currentInteractionSettings.CurrentBoost = 0;
+            СurrentInteractionSettings.CurrentBoost = 0;
         }
 
         if (Input.GetKey(KeyCode.W))
         {
-            Vector2 moveDirection = car.transform.up * carMoveSpeed * currentInteractionSettings.CurrentBoost;
+            Vector2 moveDirection = car.transform.up * carMoveSpeed * СurrentInteractionSettings.CurrentBoost;
             carRb.velocity = moveDirection;
 
             // If there's a turn input and the car is moving, set rotation
@@ -509,7 +545,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.S)) 
         {
-            Vector2 moveDirection = car.transform.up * -carMoveSpeed * currentInteractionSettings.CurrentBoost;
+            Vector2 moveDirection = car.transform.up * -carMoveSpeed * СurrentInteractionSettings.CurrentBoost;
             carRb.velocity = moveDirection;
 
             // If there's a turn input and the car is moving, set rotation
@@ -520,7 +556,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         
-        UpdatePointerPosition(currentInteractionSettings);
+        UpdatePointerPosition(СurrentInteractionSettings);
     }
 
     
@@ -634,6 +670,9 @@ public class PlayerController : MonoBehaviour
         }
 
 
+        if (!canMoveToMouse) isMovingToMouse = false;
+
+
         movement = new Vector2(horizontal, vertical);
 
         if (!isHit) // if not hit
@@ -666,15 +705,15 @@ public class PlayerController : MonoBehaviour
                 canMoveToMouse = false;
                 hoveringText.gameObject.SetActive(true);
                 hoveringText.text = inventory.FindClosestSlotItem().item.name;
-                
+
                 ItemClass hoveredItem = inventory.FindClosestSlotItem().item;
-                
-                if(hoveredItem != null)
+
+                if (hoveredItem != null)
                 {
                     var itemInfo = hoveredItem.GetDisplayInfo();
                     hoveringText.text = string.Join("\n", itemInfo);
                 }
-                
+
                 ChangeCurrentSlotScale(true, new Vector3(1.15f, 1.15f, 1.15f));
             }
             else if (inventory.IsOverSlot())
@@ -682,7 +721,7 @@ public class PlayerController : MonoBehaviour
                 canMoveToMouse = false;
                 hoveringText.gameObject.SetActive(true);
                 hoveringText.text = "";
-                
+
                 ChangeCurrentSlotScale(true, new Vector3(1.15f, 1.15f, 1.15f));
             }
             else if (inventory.isMovingItem && !inventory.IsOverSlot())
@@ -691,57 +730,63 @@ public class PlayerController : MonoBehaviour
                 hoveringText.text = "Drop";
                 if (Input.GetMouseButtonDown(0))
                 {
-                    // Get the mouse position in screen space, then convert to world space
                     Vector3 screenPos = Input.mousePosition;
                     screenPos.z = Mathf.Abs(mainCamera.transform.position.z);
                     targetPosition = mainCamera.ScreenToWorldPoint(screenPos);
 
-                    // Reset the Z coordinate to match your 2D world
                     targetPosition.z = 1;
                     isDropping = true;
                 }
-                
+
                 ChangeCurrentSlotScale(false, null);
             }
-            else if(!inventory.IsOverSlot())
+            else if (!inventory.IsOverSlot())
             {
                 hoveringText.gameObject.SetActive(true);
                 if (IsPointerOverComponent<AttackableComponent>())
                 {
-                    if (_hit.collider.GetComponent<AttackableComponent>().DoCanAttackCheck(inventory)) // if we can mine the object
+                    if (_hit.gameObject.GetComponent<AttackableComponent>()
+                        .DoCanAttackCheck(inventory)) // if we can mine the object
                     {
-                        hoveringText.text = _hit.collider.GetComponent<AttackableComponent>().onHoverText; // change the text to one that assigned
-                        if(Input.GetMouseButtonDown(0) && !_isAttacking) SetAttackTarget(_hit.collider.gameObject); // set attack target and ready to attack
+                        hoveringText.text =
+                            _hit.gameObject.GetComponent<AttackableComponent>()
+                                .onHoverText; // change the text to one that assigned
+                        if (Input.GetMouseButtonDown(0) && !_isAttacking)
+                            SetAttackTarget(_hit.gameObject.gameObject); // set attack target and ready to attack
                     }
                 }
                 else if (IsPointerOverComponent<DroppedItem>())
                 {
                     hoveringText.gameObject.SetActive(true);
-                    hoveringText.text = "Pick up";
-                    if (Input.GetMouseButtonDown(0) && !_isAttacking) // If the player clicks while hovering over a dropped item
+                    hoveringText.text = "Pick up " + _hit.gameObject.GetComponent<DroppedItem>().item.itemName + " x" +
+                                        _hit.gameObject.GetComponent<DroppedItem>().count;
+                    if (Input.GetMouseButtonDown(0) &&
+                        !_isAttacking) // If the player clicks while hovering over a dropped item
                     {
-                        SetAttackTarget(_hit.collider.gameObject);
+                        SetAttackTarget(_hit.gameObject.gameObject);
                     }
                 }
                 else if (IsPointerOverComponent<InteractableComponent>()) // Checking for Interactable component
                 {
-                    InteractableComponent interactableComponent = _hit.collider.GetComponent<InteractableComponent>();
+                    InteractableComponent interactableComponent = _hit.gameObject.GetComponent<InteractableComponent>();
                     hoveringText.gameObject.SetActive(true);
-                    hoveringText.text = "Interact"; // or any suitable text you'd like
-    
+                    hoveringText.text = "Interact";
+
                     if (Input.GetMouseButtonDown(0) && !_isAttacking)
                     {
-                        SetAttackTarget(_hit.collider.gameObject); // Assuming you're using the same mechanism to move to the object as with the attack target
-                        interactableComponent.Interact(gameObject); // Execute the action from the Interactable component
+                        SetAttackTarget(_hit.gameObject
+                            .gameObject); // Assuming you're using the same mechanism to move to the object as with the attack target
+                        interactableComponent
+                            .Interact(gameObject); // Execute the action from the Interactable component
                     }
                 }
                 else
                 {
                     canMoveToMouse = true;
                     hoveringText.text = "Walk";
-                    if(!_isMovingToTarget && !_isAttacking) ResetAttackTargetAndMoving();
+                    if (!_isMovingToTarget && !_isAttacking) ResetAttackTargetAndMoving();
                 }
-                
+
                 ChangeCurrentSlotScale(false, null);
             }
             else
@@ -754,7 +799,8 @@ public class PlayerController : MonoBehaviour
             canMoveToMouse = false;
             hoveringText.gameObject.SetActive(false);
         }
-        
+
+
         #endregion
     }
     
@@ -774,7 +820,7 @@ public class PlayerController : MonoBehaviour
             }
 
             currentInteractableSlot = inventory.FindClosestSlotObject();
-            if (bigScale != null) currentInteractableSlot.transform.localScale = (Vector3) bigScale;
+            if (bigScale != null && currentInteractableSlot != null) currentInteractableSlot.transform.localScale = (Vector3) bigScale;
         }
         else
         {
@@ -787,22 +833,39 @@ public class PlayerController : MonoBehaviour
 
     private bool IsPointerOverComponent<T>() where T : Component
     {
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = -mainCamera.transform.position.z; // This value should be adjusted depending on the positions of your game objects
+        // Get the mouse position in screen space
+        Vector3 mouseScreenPosition = Input.mousePosition;
 
-        Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePosition);
+        // Create a ray from the camera through the mouse position
+        Ray ray = mainCamera.ScreenPointToRay(mouseScreenPosition);
 
-        int numHits = Physics2D.RaycastNonAlloc(worldPos, Vector2.zero, _hits);
-
-        for (int i = 0; i < numHits; i++)
+        // Determine the point where this ray intersects with the plane of your game (assuming it's at z=0)
+        // This requires calculating the distance along the ray that corresponds to z=0
+        float rayDistance;
+        Plane gamePlane = new Plane(Vector3.forward, Vector3.zero); // Game plane facing forward at origin
+        if (gamePlane.Raycast(ray, out rayDistance))
         {
-            RaycastHit2D hit = _hits[i];
-            if (hit.collider != null && hit.collider.gameObject != healthComponent.self && hit.collider.gameObject.GetComponent<T>() != null)
+            // Get the intersection point
+            Vector3 hitPoint = ray.GetPoint(rayDistance);
+            Vector2 hitPoint2D = new Vector2(hitPoint.x, hitPoint.y);
+
+            // Perform the 2D raycast at this point
+            RaycastHit2D hit = Physics2D.Raycast(hitPoint2D, Vector2.zero);
+
+            // Optionally, draw the ray for debugging
+            //Debug.DrawRay(ray.origin, ray.direction * rayDistance, Color.red, 1f);
+
+            if (hit.collider != null)
             {
-                _hit = hit; // Store the hit result that you care about
-                return true;
+                T component = hit.collider.GetComponent<T>();
+                if (component != null)
+                {
+                    _hit = hit.collider.gameObject;
+                    return true;
+                }
             }
         }
+
         return false;
     }
     
@@ -846,5 +909,14 @@ public class PlayerController : MonoBehaviour
         }
         
         UpdateAnimations();
+        ResetAttackTargetAndMoving();
     }
+    
+    // void OnDrawGizmos()
+    // {
+    //     // Draw a yellow sphere at the player's position + attackDetectionOffset, with a radius of playerAttackDetectionRadius.
+    //     Gizmos.color = Color.yellow;
+    //     Gizmos.DrawWireSphere((Vector3)_rb.position + attackDetectionOffset, playerAttackDetectionRadius);
+    // }
+
 }

@@ -1,13 +1,11 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 public class InventoryManager : MonoBehaviour
 {
-    public Object[] crafts;
-    
-    
     public GameObject slotHolder;
     
     public SlotClass[] startingItems;
@@ -37,8 +35,6 @@ public class InventoryManager : MonoBehaviour
 
     public void Start()
     {
-        crafts = Resources.LoadAll("Recipes", typeof(CraftingRecipeClass));
-        
         // set slots to amount of children that have "Inventory" panel
         slots = new GameObject[slotHolder.transform.childCount];
         items = new SlotClass[slots.Length];
@@ -58,7 +54,7 @@ public class InventoryManager : MonoBehaviour
         Refresh();
     }
 
-    private void Craft(CraftingRecipeClass craft)
+    public void Craft(CraftingRecipeClass craft)
     {
         if (craft.CanCraft(this))
         {
@@ -72,10 +68,6 @@ public class InventoryManager : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            Craft((CraftingRecipeClass)crafts[0]);
-        }
         // setting active item cursor if me moving item
         itemCursor.SetActive(isMovingItem);
         itemCursor.transform.position = Input.mousePosition;
@@ -177,8 +169,9 @@ public class InventoryManager : MonoBehaviour
         }
     }
     
-    public bool Add(ItemClass item, int count)
+    public int Add(ItemClass item, int count)
     {
+        
         SlotClass slot = Contains(item);
 
         // Step 1: Try to add to existing slot
@@ -217,10 +210,18 @@ public class InventoryManager : MonoBehaviour
                 count -= quantityToAdd;
             }
         }
-
+        
+        if(count > 0 && movingSlot.count < item.maxStack)
+        {
+            int countCanAddToMovingSlot = Mathf.Min(item.maxStack - movingSlot.count, count);
+            movingSlot.AddItem(item, countCanAddToMovingSlot);
+            count -= countCanAddToMovingSlot;
+            isMovingItem = true;
+        }
+        
         Refresh();
 
-        return count == 0; // Returns true if all items were added, false otherwise
+        return count; // Returns true if all items were added, false otherwise
     }
 
 
@@ -450,10 +451,14 @@ public class InventoryManager : MonoBehaviour
     
     public SlotClass FindClosestSlotItem()
     {
-        for (int s = 0; s < slots.Length; s++)
+        foreach (GameObject slotGameObject in slots)
         {
-            if (Vector2.Distance(slots[s].transform.position, Input.mousePosition) <= 65)
-                return items[s];
+            PointerCheck slot = slotGameObject.GetComponent<PointerCheck>();
+            if (slot != null && slot.IsMouseOver())
+            {
+                int index = Array.IndexOf(slots, slotGameObject);
+                return items[index];
+            }
         }
 
         return null;
@@ -461,21 +466,27 @@ public class InventoryManager : MonoBehaviour
     
     public GameObject FindClosestSlotObject()
     {
-        for (int s = 0; s < slots.Length; s++)
+        foreach (GameObject slotGameObject in slots)
         {
-            if (Vector2.Distance(slots[s].transform.position, Input.mousePosition) <= 65)
-                return slots[s];
+            PointerCheck slot = slotGameObject.GetComponent<PointerCheck>();
+            if (slot != null && slot.IsMouseOver())
+            {
+                return slotGameObject;
+            }
         }
 
         return null;
     }
-    
+
     public bool IsOverSlot()
     {
-        for (int s = 0; s < slots.Length; s++)
+        foreach (GameObject slotGameObject in slots)
         {
-            if (Vector2.Distance(slots[s].transform.position, Input.mousePosition) <= 65)
+            PointerCheck slot = slotGameObject.GetComponent<PointerCheck>();
+            if (slot != null && slot.IsMouseOver())
+            {
                 return true;
+            }
         }
 
         return false;

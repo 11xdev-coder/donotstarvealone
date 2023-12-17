@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -30,19 +31,22 @@ public class CameraFollow : MonoBehaviour
 
     private void Update()
     {
-        // Input logic for FOV
-        float inputFov = Input.GetAxis("Mouse ScrollWheel");
-        if (inputFov != 0)
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            _currentAngle -= -inputFov * rotationSpeed;
-            _currentAngle = Mathf.Clamp(_currentAngle, minAngle, maxAngle); 
-        }
+            // Input logic for FOV
+            float inputFov = Input.GetAxis("Mouse ScrollWheel");
+            if (inputFov != 0)
+            {
+                _currentAngle -= -inputFov * rotationSpeed;
+                _currentAngle = Mathf.Clamp(_currentAngle, minAngle, maxAngle); 
+            }
 
-        // Input logic for Zoom
-        //float inputZoom = Input.GetAxis("Vertical");
-        //offset.z += inputZoom * zoomSpeed;
-        //offset.z = Mathf.Clamp(offset.z, -maxZoomDistance, -minZoomDistance); // note the negatives as we're working with a negative offset.z
-    
+            // Input logic for Zoom
+            //float inputZoom = Input.GetAxis("Vertical");
+            //offset.z += inputZoom * zoomSpeed;
+            //offset.z = Mathf.Clamp(offset.z, -maxZoomDistance, -minZoomDistance); // note the negatives as we're working with a negative offset.z
+        }
+        
         UpdateCameraPosition();
     }
 

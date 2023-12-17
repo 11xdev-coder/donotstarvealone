@@ -81,7 +81,7 @@ public class KeyBindingManager : MonoBehaviour
         }
     }
 
-    System.Collections.IEnumerator WaitForKeyPress(string keyName, Button buttonToUpdate)
+    IEnumerator WaitForKeyPress(string keyName, Button buttonToUpdate)
     {
         while (isWaitingForKeyPress)
         {
@@ -120,10 +120,10 @@ public class KeyBindingManager : MonoBehaviour
         // Fade In
         while (canvasGroup.alpha < 1f)
         {
-            canvasGroup.alpha += Time.deltaTime; // Adjust this value to control the fade speed
+            canvasGroup.alpha += Time.deltaTime;
             yield return null;
         }
-        canvasGroup.alpha = 1f;  // Ensure it's completely opaque
+        canvasGroup.alpha = 1f; 
     }
 
     IEnumerator FadeOut(CanvasGroup canvasGroup)
@@ -131,12 +131,12 @@ public class KeyBindingManager : MonoBehaviour
         // Fade Out
         while (canvasGroup.alpha > 0f)
         {
-            canvasGroup.alpha -= Time.deltaTime; // Adjust this value to control the fade speed
+            canvasGroup.alpha -= Time.deltaTime;
             yield return null;
         }
-        canvasGroup.alpha = 0f;  // Ensure it's completely transparent
+        canvasGroup.alpha = 0f;
 
-        canvasGroup.gameObject.SetActive(false);  // Disable the object to prevent it from blocking other UI
+        canvasGroup.gameObject.SetActive(false);
     }
     
     #endregion

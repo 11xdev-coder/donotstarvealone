@@ -15,7 +15,6 @@ public class WorldGenerator : MonoBehaviour
     public int partToSpawnPlayer = 2;
     public bool havePlayerSpawned;
     
-    
     [Header("Tilemaps")]
     public Tilemap triggerTilemap;
     public Tilemap collidableTilemap;
@@ -56,7 +55,7 @@ public class WorldGenerator : MonoBehaviour
                 "Grassland",
                 new Dictionary<string, float>()
                 {
-                    {"BirchNutTree", 0.07f}
+                    {"birchnutTree", 0.07f}
                 }
             },
             {

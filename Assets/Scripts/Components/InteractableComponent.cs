@@ -1,4 +1,5 @@
 using System;
+using Components;
 using UnityEngine;
 
 public class InteractableComponent : MonoBehaviour

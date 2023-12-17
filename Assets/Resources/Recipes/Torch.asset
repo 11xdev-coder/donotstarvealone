@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ad23c3fb2d223348a3d020768a839ea, type: 3}
+  m_Name: Torch
+  m_EditorClassIdentifier: 
+  inputItems:
+  - <item>k__BackingField: {fileID: 11400000, guid: 53d0341116822cf4aa2fa4463ed8985d, type: 2}
+    <count>k__BackingField: 1
+  - <item>k__BackingField: {fileID: 11400000, guid: 9e575718000f08b40829aff65d0e680d, type: 2}
+    <count>k__BackingField: 1
+  outputItem:
+    <item>k__BackingField: {fileID: 11400000, guid: ff1504dc136ffbc40b8f159f29d095c2, type: 2}
+    <count>k__BackingField: 1

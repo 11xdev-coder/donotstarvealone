@@ -96,7 +96,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+      m_AllTileFlags: 2147483649
   - first: {x: 1, y: -1, z: 0}
     second:
       serializedVersion: 2
@@ -164,6 +164,24 @@ Tilemap:
       e30: 0
       e31: 0
       e32: 0
+      e33: 1
+  - m_RefCount: 0
+    m_Data:
+      e00: -1.9980961e-11
+      e01: 0
+      e02: -3.2300253e-31
+      e03: 0
+      e10: 3.4e-43
+      e11: NaN
+      e12: 4.5916e-41
+      e13: 0
+      e20: 7.4986e-41
+      e21: 0
+      e22: -1.9980934e-11
+      e23: 0
+      e30: 0
+      e31: 7.34684e-40
+      e32: 3.4e-43
       e33: 1
   m_TileColorArray:
   - m_RefCount: 4
