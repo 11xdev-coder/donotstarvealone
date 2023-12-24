@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Vector2 = UnityEngine.Vector2;
 
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public GameObject currentAttackableTarget;
     public GameObject currentDroppingTarget;
     public GameObject currentInteractableSlot;
+    public CraftingRecipeClass currentCraftable;
     private readonly RaycastHit2D[] _hits = new RaycastHit2D[5];
     private GameObject _console;
     private KeyBindingManager _keyBindingManager;
@@ -28,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public GameObject hud;
     public InventoryManager inventory;
     public GameObject handToolSpriteRenderer;
+    private TalkerComponent _talker;
     
     [Header("-- Health - Important --")]
     public AttackableComponent healthComponent;
@@ -49,7 +52,7 @@ public class PlayerController : MonoBehaviour
     private int _originalSortingOrder;
 
     [Header("Interactions - Global")] 
-    public Settings СurrentInteractionSettings;
+    public Settings currentInteractionSettings;
     
     [Header("Interactions - Car")]
     public bool isInCar;
@@ -98,8 +101,11 @@ public class PlayerController : MonoBehaviour
     public string attackYString;
     
     [Header("Hovering")]
-    public Vector3 offset;
-
+    public Vector3 hoveringOffset;
+    public Vector3 invertedHoveringOffset;
+    private bool _isOverSlot;
+    private AutoSizeTMP _autoSizeHovering;
+    
     private void Awake()
     {
         _keyBindingManager = FindObjectOfType<KeyBindingManager>().instance;
@@ -118,6 +124,9 @@ public class PlayerController : MonoBehaviour
         canMoveToMouse = true;
         _rb = GetComponent<Rigidbody2D>();
         healthFillableImage.fillAmount = 1f;
+
+        _autoSizeHovering = hoveringText.GetComponent<AutoSizeTMP>();
+        _talker = GetComponent<TalkerComponent>();
 
         AddListeners();
         
@@ -175,6 +184,7 @@ public class PlayerController : MonoBehaviour
         animator.Play("hit");
         isHit = true;
         animLocked = true;
+        ResetAttackTargetAndMoving();
     }
 
     public void HandleDeath()
@@ -225,7 +235,36 @@ public class PlayerController : MonoBehaviour
         ResetAttackTargetAndMoving(); // stop moving to target
     }
 
+    public void CraftInAnimation()
+    {
+        if (currentCraftable != null)
+        {
+            currentCraftable.Craft(inventory);
+            isHit = false; // cancels the hit animation
+            currentCraftable = null;
+        }
+    }
+    
+    public void Craft(CraftingRecipeClass craft)
+    {
+        if (craft.CanCraft(inventory))
+        {
+            PlayAnimationAndCancelHit("use");
+            currentCraftable = craft;
+        }
+        else
+        {
+            if (_talker != null) _talker.Say("Cant craft!");
+        }
+    }
 
+    private void PlayAnimationAndCancelHit(string anim)
+    {
+        animLocked = true;
+        animator.Play(anim);
+        isHit = false;
+    }
+    
     private void MoveTowardsTarget(GameObject target, bool doAttack, bool pickUp, bool drop)
     {
         if (!drop)
@@ -281,8 +320,7 @@ public class PlayerController : MonoBehaviour
 
                 if (pickUp)
                 {
-                    animLocked = true;
-                    animator.Play("Drop");
+                    PlayAnimationAndCancelHit("Drop");
                     currentDroppingTarget = target;
                     // PickUpTargetItem(target); // we rely on PickUpInAnimation in picking up animations
                 }
@@ -305,8 +343,7 @@ public class PlayerController : MonoBehaviour
                 vertical = 0;
                 // isDropping = false;
                 // inventory.movingSlot.item.DropItem(inventory.movingSlot, transform, inventory); rely onb PickUpInAnimation
-                animLocked = true;
-                animator.Play("Drop");
+                PlayAnimationAndCancelHit("Drop");
             }
             else
             {
@@ -506,7 +543,7 @@ public class PlayerController : MonoBehaviour
         gameObject.GetComponent<BoxCollider2D>().enabled = false;
         carRb = car.GetComponent<Rigidbody2D>();
         
-        print(СurrentInteractionSettings.CurrentBoost);
+        print(currentInteractionSettings.CurrentBoost);
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
         {
@@ -520,20 +557,20 @@ public class PlayerController : MonoBehaviour
         // Increase the CurrentBoost based on AccelerationSpeed
         if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
         {
-            СurrentInteractionSettings.CurrentBoost += СurrentInteractionSettings.AccelerationSpeed * Time.deltaTime;
+            currentInteractionSettings.CurrentBoost += currentInteractionSettings.AccelerationSpeed * Time.deltaTime;
 
             // Ensure CurrentBoost doesn't exceed MaxBoost
-            СurrentInteractionSettings.CurrentBoost = Mathf.Min(СurrentInteractionSettings.CurrentBoost, СurrentInteractionSettings.MaxBoost);
+            currentInteractionSettings.CurrentBoost = Mathf.Min(currentInteractionSettings.CurrentBoost, currentInteractionSettings.MaxBoost);
         }
         else
         {
             // Reset CurrentBoost when not accelerating
-            СurrentInteractionSettings.CurrentBoost = 0;
+            currentInteractionSettings.CurrentBoost = 0;
         }
 
         if (Input.GetKey(KeyCode.W))
         {
-            Vector2 moveDirection = car.transform.up * carMoveSpeed * СurrentInteractionSettings.CurrentBoost;
+            Vector2 moveDirection = car.transform.up * carMoveSpeed * currentInteractionSettings.CurrentBoost;
             carRb.velocity = moveDirection;
 
             // If there's a turn input and the car is moving, set rotation
@@ -545,7 +582,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.S)) 
         {
-            Vector2 moveDirection = car.transform.up * -carMoveSpeed * СurrentInteractionSettings.CurrentBoost;
+            Vector2 moveDirection = car.transform.up * -carMoveSpeed * currentInteractionSettings.CurrentBoost;
             carRb.velocity = moveDirection;
 
             // If there's a turn input and the car is moving, set rotation
@@ -556,12 +593,13 @@ public class PlayerController : MonoBehaviour
             }
         }
         
-        UpdatePointerPosition(СurrentInteractionSettings);
+        UpdatePointerPosition(currentInteractionSettings);
     }
 
     
     #endregion
 
+    [Obsolete("Obsolete")]
     private void Update()
     {
         if (!_keyBindingManager.isWaitingForKeyPress && 
@@ -695,8 +733,8 @@ public class PlayerController : MonoBehaviour
         } 
         
         #region Hovering
-        
-        hoveringText.transform.position = Input.mousePosition + offset;
+
+        hoveringText.transform.position = Input.mousePosition + AdjustOffsetForScreenBorders(hoveringOffset, invertedHoveringOffset);
 
         if (!EventSystem.current.IsPointerOverGameObject()) // if not hovering over the button (can be annoying)
         {
@@ -704,30 +742,32 @@ public class PlayerController : MonoBehaviour
             {
                 canMoveToMouse = false;
                 hoveringText.gameObject.SetActive(true);
-                hoveringText.text = inventory.FindClosestSlotItem().item.name;
+                _autoSizeHovering.UpdateText(inventory.FindClosestSlotItem().item.name);
 
                 ItemClass hoveredItem = inventory.FindClosestSlotItem().item;
 
                 if (hoveredItem != null)
                 {
                     var itemInfo = hoveredItem.GetDisplayInfo();
-                    hoveringText.text = string.Join("\n", itemInfo);
+                    _autoSizeHovering.UpdateText(String.Join("\n", itemInfo));
                 }
 
+                _isOverSlot = true;
                 ChangeCurrentSlotScale(true, new Vector3(1.15f, 1.15f, 1.15f));
             }
             else if (inventory.IsOverSlot())
             {
                 canMoveToMouse = false;
                 hoveringText.gameObject.SetActive(true);
-                hoveringText.text = "";
-
+                _autoSizeHovering.UpdateText("");
+                
+                _isOverSlot = true;
                 ChangeCurrentSlotScale(true, new Vector3(1.15f, 1.15f, 1.15f));
             }
             else if (inventory.isMovingItem && !inventory.IsOverSlot())
             {
                 hoveringText.gameObject.SetActive(true);
-                hoveringText.text = "Drop";
+                _autoSizeHovering.UpdateText("Drop");
                 if (Input.GetMouseButtonDown(0))
                 {
                     Vector3 screenPos = Input.mousePosition;
@@ -748,9 +788,7 @@ public class PlayerController : MonoBehaviour
                     if (_hit.gameObject.GetComponent<AttackableComponent>()
                         .DoCanAttackCheck(inventory)) // if we can mine the object
                     {
-                        hoveringText.text =
-                            _hit.gameObject.GetComponent<AttackableComponent>()
-                                .onHoverText; // change the text to one that assigned
+                        _autoSizeHovering.UpdateText(_hit.gameObject.GetComponent<AttackableComponent>().onHoverText);
                         if (Input.GetMouseButtonDown(0) && !_isAttacking)
                             SetAttackTarget(_hit.gameObject.gameObject); // set attack target and ready to attack
                     }
@@ -758,8 +796,9 @@ public class PlayerController : MonoBehaviour
                 else if (IsPointerOverComponent<DroppedItem>())
                 {
                     hoveringText.gameObject.SetActive(true);
-                    hoveringText.text = "Pick up " + _hit.gameObject.GetComponent<DroppedItem>().item.itemName + " x" +
-                                        _hit.gameObject.GetComponent<DroppedItem>().count;
+                    _autoSizeHovering.UpdateText("Pick up " + _hit.gameObject.GetComponent<DroppedItem>().item.itemName +
+                                            " x" +
+                                            _hit.gameObject.GetComponent<DroppedItem>().count);
                     if (Input.GetMouseButtonDown(0) &&
                         !_isAttacking) // If the player clicks while hovering over a dropped item
                     {
@@ -770,7 +809,7 @@ public class PlayerController : MonoBehaviour
                 {
                     InteractableComponent interactableComponent = _hit.gameObject.GetComponent<InteractableComponent>();
                     hoveringText.gameObject.SetActive(true);
-                    hoveringText.text = "Interact";
+                    _autoSizeHovering.UpdateText("Interact");
 
                     if (Input.GetMouseButtonDown(0) && !_isAttacking)
                     {
@@ -783,10 +822,11 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     canMoveToMouse = true;
-                    hoveringText.text = "Walk";
+                    _autoSizeHovering.UpdateText("Walk");
                     if (!_isMovingToTarget && !_isAttacking) ResetAttackTargetAndMoving();
                 }
-
+                
+                _isOverSlot = false;
                 ChangeCurrentSlotScale(false, null);
             }
             else
@@ -805,6 +845,72 @@ public class PlayerController : MonoBehaviour
     }
     
     #region FUNCS FOR HOVERING
+
+    private float DetermineScreenHeightAdjustmentFactor(float bestHeight)
+    {
+        return 1f; // fix it later
+        // float referenceHeight = bestHeight;
+        // float currentHeight = Screen.height;
+        //
+        // float scaleY = currentHeight / referenceHeight;
+        //
+        // return scaleY;
+    }
+
+    private Vector3 CalculateScaledOffset(Vector3 originalOffset)
+    {
+        // Reference and current resolutions
+        float referenceWidth = 1920.0f;
+        float referenceHeight = 1080.0f;
+        float currentWidth = Screen.width;
+        float currentHeight = Screen.height;
+
+        // Calculate scale factors
+        float scaleX = currentWidth / referenceWidth;
+        float scaleY = currentHeight / referenceHeight;
+
+        // Scale the offset
+        return new Vector3(
+            originalOffset.x * scaleX,
+            originalOffset.y * scaleY,
+            originalOffset.z
+        );
+    }
+
+    private Vector3 AdjustOffsetForScreenBorders(Vector3 originalOffset, Vector3 invertOffset)
+    {
+        // scaling offsets
+        Vector3 scaledOffset = CalculateScaledOffset(originalOffset);
+        Vector3 scaledInvertedOffset = CalculateScaledOffset(invertOffset);
+
+        // getting rect transform
+        RectTransform textRectTransform = hoveringText.GetComponent<RectTransform>();
+
+        // adjustment factor
+        float screenHeightAdjustmentFactor = DetermineScreenHeightAdjustmentFactor(Screen.height);
+
+        // adjusted screen height
+        float adjustedScreenHeight = Screen.height * screenHeightAdjustmentFactor;
+
+        // potential position of text's top
+        Vector3 potentialTopPosition = Input.mousePosition + new Vector3(scaledOffset.x, textRectTransform.rect.height + scaledOffset.y, scaledOffset.z);
+
+        // invert offset if y position goes beyond the screen and is over slot
+        if (potentialTopPosition.y > adjustedScreenHeight && _isOverSlot)
+        {
+            scaledOffset.y = scaledInvertedOffset.y - (textRectTransform.rect.height / 1.5f - scaledInvertedOffset.y);
+        }
+
+        // final pos
+        Vector3 finalPosition = Input.mousePosition + CalculateScaledOffset(scaledOffset);
+
+        // clamp
+        finalPosition.x = Mathf.Clamp(finalPosition.x, 0, Screen.width);
+        finalPosition.y = Mathf.Clamp(finalPosition.y, 0, Screen.height);
+
+        return finalPosition - Input.mousePosition;
+    }
+
 
     private void ChangeCurrentSlotScale(bool turnOn, Vector3? bigScale)
     {
@@ -831,9 +937,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    [Obsolete("Obsolete")]
     private bool IsPointerOverComponent<T>() where T : Component
     {
-        // Get the mouse position in screen space
+        // get mouse position
         Vector3 mouseScreenPosition = Input.mousePosition;
 
         // Create a ray from the camera through the mouse position
@@ -849,20 +956,37 @@ public class PlayerController : MonoBehaviour
             Vector3 hitPoint = ray.GetPoint(rayDistance);
             Vector2 hitPoint2D = new Vector2(hitPoint.x, hitPoint.y);
 
-            // Perform the 2D raycast at this point
-            RaycastHit2D hit = Physics2D.Raycast(hitPoint2D, Vector2.zero);
+            // raycast and store in _hits
+            int hitCount = Physics2D.RaycastNonAlloc(hitPoint2D, Vector2.zero, _hits);
+    
+            // the nearest values
+            RaycastHit2D nearestHit = new RaycastHit2D();
+            float nearestDistance = float.MaxValue;
 
-            // Optionally, draw the ray for debugging
-            //Debug.DrawRay(ray.origin, ray.direction * rayDistance, Color.red, 1f);
-
-            if (hit.collider != null)
+            // find the nearest valid hit
+            for (int i = 0; i < hitCount; i++)
             {
-                T component = hit.collider.GetComponent<T>();
-                if (component != null)
+                RaycastHit2D hit = _hits[i];
+                if (hit.collider != null && hit.collider.gameObject != healthComponent.self) // is not self
                 {
-                    _hit = hit.collider.gameObject;
-                    return true;
+                    T component = hit.collider.GetComponent<T>();
+                    if (component != null)
+                    {
+                        float distance = Vector2.Distance(hitPoint2D, hit.point);
+                        if (distance < nearestDistance)
+                        {
+                            nearestHit = hit;
+                            nearestDistance = distance;
+                        }
+                    }
                 }
+            }
+
+            // if a valid nearest hit was found
+            if (nearestHit.collider != null)
+            {
+                _hit = nearestHit.collider.gameObject;
+                return true;
             }
         }
 

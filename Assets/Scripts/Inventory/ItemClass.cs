@@ -57,14 +57,14 @@ public abstract class ItemClass : ScriptableObject
     [System.Serializable]
     public class DisplayTextEntry
     {
-        public bool enabled = true; // This allows you to toggle display on/off for each entry directly in the editor.
-        public string label;       // Label like "Damage", "Name", etc.
+        public bool enabled = true;
+        public string label;
         public DisplayType displayType;
 
         public enum DisplayType
         {
             Description, 
-            DamageValue    // The damage value of the item
+            DamageValue 
         }
     }
     
@@ -73,7 +73,7 @@ public abstract class ItemClass : ScriptableObject
         List<string> info = new List<string>();
         info.Add(itemName); // name by default
         
-        if(GetTool() != null) info.Add("RMB: Equip/Unequip");
+        if(GetTool() != null) info.Add("RMB: Equip"); // if it is a tool
         
         foreach(var entry in displayTextEntries)
         {

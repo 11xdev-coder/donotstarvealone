@@ -132,7 +132,8 @@ MonoBehaviour:
   movementYString: Movement Y
   attackXString: Attack X
   attackYString: Attack Y
-  offset: {x: 0, y: 15, z: 0}
+  hoveringOffset: {x: 0, y: 5, z: 0}
+  invertedHoveringOffset: {x: 0, y: -5, z: 0}
 --- !u!114 &6730677856030601245
 MonoBehaviour:
   m_ObjectHideFlags: 0

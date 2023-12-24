@@ -11,7 +11,7 @@ public class RecipeLoader : MonoBehaviour
     public Transform contentPanel; // scroll rect content
     public RecipeScroller recipeScroller;
     public GameObject craftingMenuPanel;
-    public InventoryManager invManager;
+    public PlayerController player;
     
     [Header("Animation")]
     [SerializeField] private float moveAmount;
@@ -32,6 +32,7 @@ public class RecipeLoader : MonoBehaviour
 
     private void Awake()
     {
+        player = FindObjectOfType<PlayerController>();
         LoadRecipes();
         CreateButtons();
     }
@@ -104,7 +105,8 @@ public class RecipeLoader : MonoBehaviour
             foreach (var material in recipe.inputItems)
             {
                 GameObject materialButtonObject = Instantiate(materialButtonPrefab, materialsTransform);
-                materialButtonObject.transform.Find("Icon").GetComponent<Image>().sprite = material.item.itemSprite;
+                materialButtonObject.transform.Find("Icon").GetComponent<Image>().sprite = material.item.itemSprite; 
+                materialButtonObject.transform.Find("Count").GetComponent<Text>().text = material.count > 1 ? material.count.ToString() : " ";
 
                 // position the button
                 RectTransform rectTransform = materialButtonObject.GetComponent<RectTransform>();
@@ -198,11 +200,6 @@ public class RecipeLoader : MonoBehaviour
         canvasGroup.gameObject.SetActive(false);
         _currentFadeCoroutine = null;
     }
-
-    private void CraftItem(CraftingRecipeClass recipe)
-    {
-        invManager.Craft(recipe);
-    }
     
     public void CraftItem(GameObject button)
     {
@@ -212,7 +209,7 @@ public class RecipeLoader : MonoBehaviour
 
         if (recipeToCraft != null)
         {
-            invManager.Craft(recipeToCraft);
+            player.Craft(recipeToCraft);
         }
     }
 }

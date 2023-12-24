@@ -23,7 +23,7 @@ public class RecipeScroller : MonoBehaviour, IScrollHandler
     private GameObject _currentButton;
     private bool _isScrolling;
 
-    private void Start()
+    private void Update()
     {
         // calculate scroll amount
         _scrollAmount = buttonHeight + spacing;
@@ -41,6 +41,7 @@ public class RecipeScroller : MonoBehaviour, IScrollHandler
         if (_currentButton != null)
         {
             recipeLoader.HideMaterialsInstantly(_currentButton);
+            clickedButton = null;
             _currentButton = null;
         }
 

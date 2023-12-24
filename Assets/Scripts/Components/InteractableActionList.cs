@@ -11,7 +11,7 @@ namespace Components
             pc.ToggleVisibility(true);
             pc.isInCar = true; // we are in car
             pc.car = caller; // set car to caller (Car object)
-            pc.СurrentInteractionSettings = settings;
+            pc.currentInteractionSettings = settings;
         }
 
         public void ExitCar(GameObject doer)
@@ -20,7 +20,7 @@ namespace Components
             pc.ToggleVisibility(false);
             pc.isInCar = false;
             pc.car = null;
-            pc.СurrentInteractionSettings = null;
+            pc.currentInteractionSettings = null;
         }   
     }
 }

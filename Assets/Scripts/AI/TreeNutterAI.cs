@@ -110,28 +110,28 @@ public class TreeNutterAI : MonoBehaviour
 
     public void Update()
     {
-        if (isAttacking)
+        if (!isAttacking)
         {
-            Attacking();
+            switch(m_CurrentState)
+            {
+                case State.Wandering:
+                    Wandering();
+                    break;
+                case State.Chasing:
+                    Chasing();
+                    break;
+            }
+            MoveToTarget();
+            UpdateAnimations();
+        }
+        
+        
+        
+        if (m_CurrentState == State.Attacking || (m_CurrentState == State.Chasing && ShouldStartAttack()))
+        {
             m_Rb.velocity = Vector2.zero;
-            return;
+            Attacking();
         }
-        
-        switch(m_CurrentState)
-        {
-            case State.Wandering:
-                Wandering();
-                break;
-            case State.Chasing:
-                Chasing();
-                break;
-            case State.Attacking:
-                Attacking();
-                break;
-        }
-        
-        MoveToTarget();
-        UpdateAnimations();
     }
 
     private void GetNewTarget()
@@ -243,7 +243,9 @@ public class TreeNutterAI : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         isAttacking = false;
+        m_CurrentState = State.Wandering; // Reset state to Wandering after attack
     }
+
     
     public void DealDamage()
     {
@@ -257,45 +259,34 @@ public class TreeNutterAI : MonoBehaviour
         }
     }
 
-
+    private bool ShouldStartAttack()
+    {
+        return player != null && 
+               Vector2.Distance(m_Transform.position, player.position) <= attackDistance && 
+               Time.time >= m_LastAttackTime + attackCooldown;
+    }
+    
     private void Attacking()
     {
-        // If the player is too far away or null, stop attacking
-        if (player == null || Vector2.Distance(m_Transform.position, player.position) > attackDistance)
+        if (!isAttacking)
         {
-            m_CurrentState = State.Wandering;
-            return;
-        }
+            // start attack and get the time when started
+            m_LastAttackTime = Time.time;
+            isAttacking = true;
 
-        // If it's not yet time for the next attack, do nothing
-        if (Time.time < m_LastAttackTime + attackCooldown)
-        {
-            return;
-        }
-        
-        // deal the damage in animation
-
-        if (player != null)
-        {
+            // attack direction
             Transform rbTransform = m_Rb.transform;
             Vector3 toObjectVector = (player.transform.position - rbTransform.position).normalized;
-    
-            // Since it's a 2D top-down view game, your forward vector will be along the Y axis
-            // Right vector will be along the X axis
             Vector3 playerForward = rbTransform.up;
             Vector3 playerRight = rbTransform.right;
-            
+
             dotProductForward = Vector3.Dot(toObjectVector, playerForward);
             dotProductRight = Vector3.Dot(toObjectVector, playerRight);
+
+            // start coroutine to end attack in time
+            StartCoroutine(EndAttack(attackAnimationDuration));
+
+            m_Rb.velocity = Vector2.zero; // no velocity so no "dash" effect when attacking
         }
-        
-        
-        // Start the cooldown
-        m_LastAttackTime = Time.time;
-        // Set isAttacking to true
-        isAttacking = true;
-        
-        // Start the coroutine to end the attack
-        StartCoroutine(EndAttack(attackAnimationDuration));
     }
 }

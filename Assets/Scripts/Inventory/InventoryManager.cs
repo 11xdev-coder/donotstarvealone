@@ -30,9 +30,7 @@ public class InventoryManager : MonoBehaviour
     public SlotClass tempSlot;
     public SlotClass movingSlot;
     public bool isMovingItem;
-
-    public TalkerComponent talker;
-
+    
     public void Start()
     {
         // set slots to amount of children that have "Inventory" panel
@@ -52,18 +50,6 @@ public class InventoryManager : MonoBehaviour
         
         equippedToolIndex = items.Length - 1;
         Refresh();
-    }
-
-    public void Craft(CraftingRecipeClass craft)
-    {
-        if (craft.CanCraft(this))
-        {
-            craft.Craft(this);
-        }
-        else
-        {
-            if (talker != null) talker.Say("Cant craft!");
-        }
     }
 
     public void Update()

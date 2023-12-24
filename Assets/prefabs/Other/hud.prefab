@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 8614230830858157173}
   - component: {fileID: 5378264266491790295}
   - component: {fileID: 4675503954120855918}
+  - component: {fileID: 4266649743214694289}
   m_Layer: 5
   m_Name: HoveringText
   m_TagString: Untagged
@@ -155,8 +156,8 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 72.06}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 136.27, y: 36.03003}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &5378264266491790295
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -218,7 +219,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 8
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
@@ -254,6 +255,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4266649743214694289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632085046566856263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b41ebcc2cb195743801ba47f45ef277, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2264720102317535770
 GameObject:
   m_ObjectHideFlags: 0

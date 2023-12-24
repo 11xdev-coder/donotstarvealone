@@ -538,7 +538,7 @@ MonoBehaviour:
   contentPanel: {fileID: 1178315558}
   recipeScroller: {fileID: 1383595796}
   craftingMenuPanel: {fileID: 477360153}
-  invManager: {fileID: 522898221}
+  player: {fileID: 0}
   moveAmount: 250
   animationDuration: 0.5
   startSpacing: -50
@@ -575,17 +575,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 902fcd3a5630ccc46aebb7f76ea3f1f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &522898221 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6730677856030601245, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
-  m_PrefabInstance: {fileID: 872048341}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 522898210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4d9f23f469c8cb439d95e214382c14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &523222436 stripped
@@ -945,6 +934,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: a74cf0ae01c62e2488a10b5a861267ab, type: 2}
     - target: {fileID: 6730677856030601245, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
+      propertyPath: startingItems.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6730677856030601245, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
       propertyPath: items.Array.data[0].count
       value: 0
       objectReference: {fileID: 0}
@@ -1023,14 +1016,14 @@ PrefabInstance:
     - target: {fileID: 6730677856030601245, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
       propertyPath: startingItems.Array.data[3].<item>k__BackingField
       value: 
-      objectReference: {fileID: 11400000, guid: 9e575718000f08b40829aff65d0e680d, type: 2}
+      objectReference: {fileID: 11400000, guid: 6e5d279d405b1524dbd538987525c778, type: 2}
     - target: {fileID: 6730677856030601245, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
       propertyPath: startingItems.Array.data[2].<count>k__BackingField
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6730677856030601245, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
       propertyPath: startingItems.Array.data[3].<count>k__BackingField
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6776549432209531629, guid: 88670bf19999536439ddd2ab195ea0f7, type: 3}
       propertyPath: m_RootOrder
@@ -1375,7 +1368,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 71dd8991b7930d3419f422682535e396, type: 3}
+    m_Font: {fileID: 12800000, guid: 5516026b798a9874a8aab2c5dd332b8f, type: 3}
     m_FontSize: 50
     m_FontStyle: 1
     m_BestFit: 0
@@ -2689,6 +2682,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 786290191961054969, guid: 37a90740d35a18d46b18dbd84af0a8b5, type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 3996671554778899662, guid: 37a90740d35a18d46b18dbd84af0a8b5, type: 3}
       propertyPath: m_CellSwizzle
       value: 0
@@ -2720,6 +2717,10 @@ PrefabInstance:
     - target: {fileID: 5052814285439313841, guid: 37a90740d35a18d46b18dbd84af0a8b5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6081027628944594652, guid: 37a90740d35a18d46b18dbd84af0a8b5, type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 7058016600211471427, guid: 37a90740d35a18d46b18dbd84af0a8b5, type: 3}
       propertyPath: m_Name
