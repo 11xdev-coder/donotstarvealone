@@ -24,6 +24,11 @@ public abstract class ItemClass : ScriptableObject
         
     }
     
+    public virtual void RightClick(PlayerController caller, Vector3Int tilePosition)
+    {
+        
+    }
+    
     #region Drop
     
     public void DropItem(SlotClass slot, Transform dropTransform, InventoryManager inventoryManager)
@@ -108,6 +113,11 @@ public abstract class ItemClass : ScriptableObject
     }
 
     public virtual MiscClass GetMisc()
+    {
+        return null; 
+    }
+    
+    public virtual TilePlacerItem GetTilePlacer()
     {
         return null; 
     }

@@ -233,6 +233,7 @@ MonoBehaviour:
       m_Calls: []
   doDrops: 1
   drops:
+  - {fileID: 11400000, guid: 7adaefc29d30a7645be07aca6334a762, type: 2}
   - {fileID: 11400000, guid: 9e575718000f08b40829aff65d0e680d, type: 2}
   doEnemySpawn: 0
   enemiesToSpawn: []

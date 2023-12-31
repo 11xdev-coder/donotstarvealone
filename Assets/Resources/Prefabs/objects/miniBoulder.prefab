@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7219972338320539005}
   - component: {fileID: 2819540649168786463}
   m_Layer: 7
-  m_Name: miniBoulder
+  m_Name: MiniBoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

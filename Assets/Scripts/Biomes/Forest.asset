@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f87468ded448e24db32ff51427d146c, type: 3}
+  m_Name: Forest
+  m_EditorClassIdentifier: 
+  mainTile: {fileID: 11400000, guid: 6ac76c6c15b8a07489cf446614c82c28, type: 2}
+  canPlayerSpawn: 1
+  freqToSpawn: 0.6
+  objects:
+  - {fileID: 5957941118420886137, guid: 381c69051f9e978449ab81a9277a67f4, type: 3}
+  - {fileID: 5387719478794832004, guid: f07c15d2e4411e941b7c4e54ce50ab4b, type: 3}
+  spawnChances:
+  - 0.1
+  - 0.005
+  isIsland: 0
+  numberOfIslands: 0

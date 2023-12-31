@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0dceb2ddf6478fbd6b5cb4afc96839, type: 3}
+  m_Name: Planks
+  m_EditorClassIdentifier: 
+  itemName: Planks
+  itemSprite: {fileID: 21300000, guid: 5dee0c7596b37d7418d7d46bf26d0e5c, type: 3}
+  droppedItemPrefab: {fileID: 8454655466585242356, guid: b07804af9da7f9d45b7945b2569b74e0, type: 3}
+  isStackable: 1
+  maxStack: 10
+  damage: 0
+  handScale: {x: 0, y: 0, z: 0}
+  pickaxePower: 0
+  axePower: 0
+  displayTextEntries:
+  - enabled: 1
+    label: Can be placed (RMB)
+    displayType: 0
+  tile: {fileID: 11400000, guid: 1bdf841614e444e4688f9fd73cc3f1ce, type: 2}

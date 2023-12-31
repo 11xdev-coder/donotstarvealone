@@ -79,8 +79,9 @@ public class InventoryManager : MonoBehaviour
         // if there is an item in tool slot
         if (items[equippedToolIndex].item != null)
         {
-            // check if it isnt a tool
-            if (items[equippedToolIndex].item.GetTool() == null)
+            // check if it isnt a tool and we are hovered on tool slot where this item is
+            if (items[equippedToolIndex].item.GetTool() == null && FindClosestSlotItem() != null && items[equippedToolIndex].item != null &&
+                FindClosestSlotItem().item == items[equippedToolIndex].item)
             {
                 // start moving item so it wouldnt be put in to a slot
                 ItemMoveOnLeftClick();

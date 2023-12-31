@@ -1,14 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Random = UnityEngine.Random;
 
 public class WorldGenerator : MonoBehaviour
 {
-    [Header("seed")] 
+    public Dictionary<Vector3Int, GameObject> objects;
+    public List<HashSet<Vector3Int>> islands = new List<HashSet<Vector3Int>>();
+    
+    [Header("Seed")] 
     public int seed;
     
-    [Header("world settings")]
+    [Header("World Settings")]
     public int width = 1000;
     public int height = 1000;
     public int freq = 2;
@@ -19,170 +21,381 @@ public class WorldGenerator : MonoBehaviour
     public Tilemap triggerTilemap;
     public Tilemap collidableTilemap;
 
-    [Header("Tiles")]
-    public Tile grassTile;
-    public Tile forestTile;
-    public Tile rockylandTile;
-    public Tile oceanTile;
+    [Header("Biomes")] 
+    public List<Biome> biomes;
+    // public Biome grasslandBiome;
+    // public Biome forestBiome;
+    // public Biome rockylandBiome;
+    public Biome oceanBiome;
 
-    [Header("objects")] 
+    [Header("Player")] 
     public GameObject player;
-    public GameObject birchnutTree;
-    public GameObject pineTree;
-    public GameObject miniBoulder;
-    public GameObject rockOcean;
-    public GameObject boulder;
 
-    private Dictionary<string, GameObject[]> _objectsByBiome;
-    private float[,] _noiseValues;
     private Vector2 _perlinOffset;
-    private Dictionary<string, Dictionary<string, float>> _objectSpawnChancesByBiome;
     
-    public void Awake()
+    void Awake()
     {
         Random.InitState(seed);
-        
-        _objectsByBiome = new Dictionary<string, GameObject[]>
-        {
-            {"Grassland", new [] {birchnutTree}},
-            {"Forest", new [] {pineTree, miniBoulder}},
-            {"Rockyland", new [] {miniBoulder, boulder}},
-            {"Ocean", new [] {rockOcean}}
-        };
-        _objectSpawnChancesByBiome = new Dictionary<string, Dictionary<string, float>>()
-        {
-            {
-                "Grassland",
-                new Dictionary<string, float>()
-                {
-                    {"birchnutTree", 0.07f}
-                }
-            },
-            {
-                "Forest",
-                new Dictionary<string, float>()
-                {
-                    {"pineTree", 0.1f},
-                    {"miniBoulder", 0.05f}
-                }
-            },
-            {
-                "Rockyland",
-                new Dictionary<string, float>()
-                {
-                    {"miniBoulder", 0.075f},
-                    {"boulder", 0.005f}
-                }
-            },
-            {
-                "Ocean",
-                new Dictionary<string, float>()
-                {
-                    {"rockOcean", 0.01f}
-                }
-            }
-        };
-        
         _perlinOffset = new Vector2(Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
-        _noiseValues = new float[width, height];
+        objects = new Dictionary<Vector3Int, GameObject>();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        for (int x = 0; x < width; x++)
+        GenerateWorld();
+        foreach (Biome biome in biomes)
         {
-            for (int y = 0; y < height; y++)
+            if (biome.isIsland)
             {
-                _noiseValues[x, y] = Mathf.PerlinNoise((float)x / width * freq + _perlinOffset.x, 
-                    (float)y / height * freq + _perlinOffset.y);
+                for (var i = 0; i < biome.numberOfIslands; i++)
+                {
+                    GenerateIsland(biome, biome.islandRadius);
+                }
             }
         }
         
+        DetectIslands();
+    }
+    
+    /// <summary>
+    /// Generates non-island biomes (all of them at once)
+    /// </summary>
+    void GenerateWorld()
+    {
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                float noiseValue = _noiseValues[x, y];
-                Tile terrain;
-                GameObject[] objects;
-                string biome;
-                Tilemap currentTilemap;
+                float noiseValue = Mathf.PerlinNoise((float)x / width * freq + _perlinOffset.x, 
+                    (float)y / height * freq + _perlinOffset.y);
+                Biome currentBiome = DetermineBiome(noiseValue);
+                Tilemap currentTilemap = currentBiome == oceanBiome ? collidableTilemap : triggerTilemap;
 
-                if (noiseValue > 0.5f)
+                if (ShouldSpawnPlayer(x, y, currentBiome))
                 {
-                    if (noiseValue > 0.6f)
-                    {
-                        if (noiseValue >= 0.7f)
-                        {
-                            terrain = rockylandTile;
-                            objects = _objectsByBiome["Rockyland"];
-                            biome = "Rockyland";
-                            currentTilemap = triggerTilemap;
-                        }
-                        else
-                        {
-                            terrain = forestTile;
-                            objects = _objectsByBiome["Forest"];
-                            biome = "Forest";
-                            currentTilemap = triggerTilemap;
-                        }
-                    }
-                    else
-                    {
-                        if (x > width / partToSpawnPlayer && y > height / partToSpawnPlayer && !havePlayerSpawned)
-                        {
-                            player.transform.position = new Vector3(x, y, 0);
-                            havePlayerSpawned = true;
-                        }
-                            
-                        terrain = grassTile;
-                        objects = _objectsByBiome["Grassland"];
-                        biome = "Grassland";
-                        currentTilemap = triggerTilemap;
-                    }
-                }
-                else
-                {
-                    terrain = oceanTile;
-                    objects = _objectsByBiome["Ocean"];
-                    biome = "Ocean";
-                    currentTilemap = collidableTilemap;
+                    player.transform.position = new Vector3(x, y, 0);
+                    havePlayerSpawned = true;
                 }
 
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
-                currentTilemap.SetTile(tilePosition, terrain);
-                
-                
-                float spawnChance = Random.Range(0f, 1f);
-                foreach (string objectType in _objectSpawnChancesByBiome[biome].Keys)
+                currentTilemap.SetTile(tilePosition, currentBiome.mainTile);
+
+                TrySpawnObject(currentBiome, x, y);
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Generates island biome (only one!)
+    /// </summary>
+    /// <param name="biome"></param>
+    /// <param name="baseRadius"></param>
+    private void GenerateIsland(Biome biome, int baseRadius)
+    {
+        Vector3Int centerPosition = FindRandomPositionNearCenter();
+        float noiseScale = 0.3f; // island noise affection scale
+
+        // noise to randomize island shape
+        Vector2 noiseOffset = new Vector2(Random.Range(0f, 100f), Random.Range(0f, 100f));
+
+        // list to store positions that werent filled
+        List<Vector3Int> skippedPositions = new List<Vector3Int>();
+
+        for (int x = -baseRadius; x <= baseRadius; x++)
+        {
+            for (int y = -baseRadius; y <= baseRadius; y++)
+            {
+                Vector3Int tilePosition = new Vector3Int(centerPosition.x + x, centerPosition.y + y, 0);
+
+                // calculate noise
+                float noise = Mathf.PerlinNoise((x + noiseOffset.x) * noiseScale, (y + noiseOffset.y) * noiseScale);
+                float radius = baseRadius * (0.8f + 0.4f * noise); // less/more roundness
+
+                if (Vector3Int.Distance(centerPosition, tilePosition) <= radius)
                 {
-                    if (spawnChance < _objectSpawnChancesByBiome[biome][objectType])
+                    triggerTilemap.SetTile(tilePosition, biome.mainTile);
+                    TrySpawnObject(biome, tilePosition.x, tilePosition.y);
+                    
+                    RemoveOceanTile(tilePosition);
+                    PlaceSurroundingOceanTiles(tilePosition, biome);
+                }
+            }
+        }
+
+        // fill skipped tiles
+        /*foreach (Vector3Int pos in skippedPositions)
+        {
+            if (Random.value < 0.1f) // 0.1f - jaggedness
+            {
+                // if has enough neighbors - fill that hole
+                if (HasEnoughNeighbors(pos, skippedPositions))
+                {
+                    triggerTilemap.SetTile(pos, biome.mainTile);
+                    RemoveSpawnedObject(pos);
+                }
+            }
+        }*/
+        
+        CreateBufferZoneAroundIsland(centerPosition, baseRadius, biome);
+    }
+    
+    
+    /// <summary>
+    /// Creates an ocean around an island (bufferZoneRadius = Biome's param)
+    /// </summary>
+    /// <param name="centerPosition"></param>
+    /// <param name="baseRadius"></param>
+    /// <param name="biome"></param>
+    private void CreateBufferZoneAroundIsland(Vector3Int centerPosition, int baseRadius, Biome biome)
+    {
+        int bufferZoneRadius = biome.distanceFromMainIsland;
+        for (int x = -baseRadius - bufferZoneRadius; x <= baseRadius + bufferZoneRadius; x++)
+        {
+            for (int y = -baseRadius - bufferZoneRadius; y <= baseRadius + bufferZoneRadius; y++)
+            {
+                Vector3Int tilePosition = new Vector3Int(centerPosition.x + x, centerPosition.y + y, 0);
+            
+                // Check if the position is within the buffer zone distance from the island edge
+                if (Vector3Int.Distance(centerPosition, tilePosition) > baseRadius &&
+                    Vector3Int.Distance(centerPosition, tilePosition) <= baseRadius + bufferZoneRadius)
+                {
+                    // Clear the tile if it is not part of the island
+                    if (triggerTilemap.GetTile(tilePosition) != biome.mainTile)
                     {
-                        Vector3 objectPosition;
-                        int objectIndex = Random.Range(0, objects.Length);
-                        GameObject objectToInstantiate = objects[objectIndex];
-                        if (objectToInstantiate.name.Contains(objectType))
+                        SwapForOceanTile(tilePosition, biome);
+                    }
+                }
+            }
+        }
+    }
+
+    Vector3Int FindRandomPositionNearCenter()
+    {
+        int centerX = width / 2;
+        int centerY = height / 2;
+        int range = Mathf.Min(width, height) / 4; // Adjust range for "closeness" to center
+
+        int x = Random.Range(centerX - range, centerX + range);
+        int y = Random.Range(centerY - range, centerY + range);
+        return new Vector3Int(x, y, 0);
+    }
+    
+    /// <summary>
+    /// Gets random position from the tile
+    /// </summary>
+    /// <param name="placedTiles"></param>
+    /// <returns>Random position</returns>
+    Vector3Int GetRandomAdjacentPosition(HashSet<Vector3Int> placedTiles)
+    {
+        Vector3Int[] offsets = { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right };
+        Vector3Int randomTile = new List<Vector3Int>(placedTiles)[Random.Range(0, placedTiles.Count)];
+        Vector3Int randomOffset = offsets[Random.Range(0, offsets.Length)];
+        return randomTile + randomOffset;
+    }
+    
+    /// <summary>
+    /// Places 4 ocean tiles around the tile
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="currentBiome"></param>
+    void PlaceSurroundingOceanTiles(Vector3Int position, Biome currentBiome)
+    {
+        Vector3Int[] neighbors = { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right };
+
+        foreach (var offset in neighbors)
+        {
+            Vector3Int neighborPos = position + offset;
+            if (triggerTilemap.GetTile(neighborPos) != currentBiome.mainTile)
+            {
+                SwapForOceanTile(neighborPos, currentBiome); // remove the normal tile and place ocean one
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Checks if a tile has at least 3 tile neighbors around it
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="tiles"></param>
+    /// <returns>True if >= 3 neighbors</returns>
+    private bool HasEnoughNeighbors(Vector3Int position, List<Vector3Int> tiles)
+    {
+        int neighborCount = 0;
+        Vector3Int[] offsets = { Vector3Int.up, Vector3Int.down, Vector3Int.left, Vector3Int.right };
+        foreach (var offset in offsets)
+        {
+            if (tiles.Contains(position + offset))
+            {
+                neighborCount++;
+            }
+        }
+        
+        return neighborCount >= 3;
+    }
+
+    private void RemoveSpawnedObject(Vector3Int tilePos)
+    {
+        if (objects.ContainsKey(tilePos))
+        {
+            Destroy(objects[tilePos]);
+            objects.Remove(tilePos);
+        }
+    }
+
+    Biome DetermineBiome(float noiseValue)
+    {
+        foreach (Biome biome in biomes)
+        {
+            if (noiseValue > biome.freqToSpawn && !biome.isIsland) return biome;
+        }
+        return oceanBiome;
+        // if (noiseValue > 0.7f) return rockylandBiome;
+        // if (noiseValue > 0.6f) return forestBiome;
+        // if (noiseValue > 0.5f) return grasslandBiome;
+        // return oceanBiome;
+    }
+
+    bool ShouldSpawnPlayer(int x, int y, Biome currentBiome)
+    {
+        return x > width / partToSpawnPlayer && y > height / partToSpawnPlayer && 
+               !havePlayerSpawned && currentBiome.canPlayerSpawn;
+    }
+
+    void TrySpawnObject(Biome biome, int x, int y)
+    {
+        GameObject objectToInstantiate = biome.GetRandomObject();
+        if (objectToInstantiate != null)
+        {
+            Vector3 objectPosition = new Vector3(x, y, 0);
+            GameObject instantiatedObject = Instantiate(objectToInstantiate, objectPosition, Quaternion.identity);
+            SetSortingOrder(instantiatedObject, width - y + 1);
+            
+            // record object
+            Vector3Int tilePos = new Vector3Int(x, y, 0);
+            objects[tilePos] = instantiatedObject;
+        }
+    }
+
+    void SetSortingOrder(GameObject obj, int order)
+    {
+        SpriteRenderer spriteRenderer = obj.GetComponentInChildren<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.sortingOrder = order;
+        }
+    }
+    
+    /// <summary>
+    /// Removes an ocean tile
+    /// </summary>
+    /// <param name="pos"></param>
+    private void RemoveOceanTile(Vector3Int pos) 
+    {
+        collidableTilemap.SetTile(pos, null); // remove ocean tile
+    }
+    
+    /// <summary>
+    /// Swaps a normal tile for an ocean one, deleting the object that was standing on this tile
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="currentBiome"></param>
+    private void SwapForOceanTile(Vector3Int pos, Biome currentBiome)
+    {
+        collidableTilemap.SetTile(pos, oceanBiome.mainTile); // Set the ocean tile
+        triggerTilemap.SetTile(pos, null); // Remove the normal tile
+
+        // Remove any objects that might be on this tile
+        if (objects.TryGetValue(pos, out var o))
+        {
+            if (currentBiome.objects.Contains(o)) return; // does not clear any objects that correspond to current biome
+            RemoveSpawnedObject(pos);
+        }
+    }
+    
+    public void DetectIslands()
+    {
+        islands.Clear();
+        HashSet<Vector3Int> visited = new HashSet<Vector3Int>();
+        
+        BoundsInt bounds = triggerTilemap.cellBounds;
+        TileBase[] allLandTiles = triggerTilemap.GetTilesBlock(bounds);
+
+        for (int x = 0; x < bounds.size.x; x++)
+        {
+            for (int y = 0; y < bounds.size.y; y++)
+            {
+                TileBase tile = allLandTiles[x + y * bounds.size.x];
+                if (tile != null) // We found a land tile
+                {
+                    Vector3Int tilePos = new Vector3Int(x + bounds.xMin, y + bounds.yMin, 0);
+                    if (!visited.Contains(tilePos))
+                    {
+                        HashSet<Vector3Int> newIsland = new HashSet<Vector3Int>();
+                        FloodFill(tilePos, ref visited, ref newIsland);
+                        if (newIsland.Count > 0)
                         {
-                            GameObject instantiatedObject; 
-                            
-                            objectPosition = new Vector3(x, y, 0);
-                            instantiatedObject = Instantiate(objectToInstantiate, objectPosition, Quaternion.identity); 
-
-                            float baseOrder = width - objectPosition.y + 1;  // Use objectPosition.y instead of transform.position.y
-                            if (instantiatedObject.GetComponent<SpriteRenderer>() != null)
-                            {
-                                instantiatedObject.GetComponent<SpriteRenderer>().sortingOrder = (int)baseOrder; 
-                            }
-
-                            if (instantiatedObject.GetComponentInChildren<SpriteRenderer>() != null)
-                            {
-                                instantiatedObject.GetComponentInChildren<SpriteRenderer>().sortingOrder = (int)baseOrder; 
-                            }
+                            islands.Add(newIsland);
                         }
                     }
                 }
             }
+        }
+
+        // Debug output
+        foreach (var island in islands)
+        {
+            Debug.Log($"Detected an island with {island.Count} tiles.");
+        }
+    }
+    
+    /// <summary>
+    /// Flood fill algorithm
+    /// </summary>
+    /// <param name="start">
+    /// Starting position
+    /// </param>
+    /// <param name="visited">
+    /// Visited tiles
+    /// </param>
+    /// <param name="islandTiles">
+    /// Detected island tiles
+    /// </param>
+    private void FloodFill(Vector3Int start, ref HashSet<Vector3Int> visited, ref HashSet<Vector3Int> islandTiles)
+    {
+        Queue<Vector3Int> queue = new Queue<Vector3Int>();
+        queue.Enqueue(start);
+
+        while (queue.Count > 0)
+        {
+            Vector3Int position = queue.Dequeue();
+
+            // skip if the tile is visited or is water
+            if (visited.Contains(position) || collidableTilemap.HasTile(position))
+                continue;
+
+            // mark the tiles as visited (they are island tiles)
+            visited.Add(position);
+            islandTiles.Add(position);
+
+            // enqueue neighboring tiles
+            EnqueueIfValid(position + Vector3Int.up, ref visited, queue);
+            EnqueueIfValid(position + Vector3Int.down, ref visited, queue);
+            EnqueueIfValid(position + Vector3Int.left, ref visited, queue);
+            EnqueueIfValid(position + Vector3Int.right, ref visited, queue);
+        }
+    }
+    
+    /// <summary>
+    /// Adds a tile to the queue if it hasn't been visited yet (helper method)
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="visited"></param>
+    /// <param name="queue"></param>
+    private void EnqueueIfValid(Vector3Int position, ref HashSet<Vector3Int> visited, Queue<Vector3Int> queue)
+    {
+        if (!visited.Contains(position) && triggerTilemap.HasTile(position) && !collidableTilemap.HasTile(position))
+        {
+            queue.Enqueue(position);
         }
     }
 }

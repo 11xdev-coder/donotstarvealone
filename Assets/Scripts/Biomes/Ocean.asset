@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f87468ded448e24db32ff51427d146c, type: 3}
+  m_Name: Ocean
+  m_EditorClassIdentifier: 
+  mainTile: {fileID: 11400000, guid: 6c86f42036cec204c8c87a92696f7f1e, type: 2}
+  canPlayerSpawn: 0
+  freqToSpawn: 0
+  objects: []
+  spawnChances: []
+  isIsland: 0
+  numberOfIslands: 0
+  islandSize: 0

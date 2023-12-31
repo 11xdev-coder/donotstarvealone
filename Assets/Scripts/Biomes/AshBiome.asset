@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f87468ded448e24db32ff51427d146c, type: 3}
+  m_Name: AshBiome
+  m_EditorClassIdentifier: 
+  mainTile: {fileID: 11400000, guid: 68b57b41330e3514289a9aea64dd03e1, type: 2}
+  canPlayerSpawn: 0
+  freqToSpawn: 0.9
+  objects:
+  - {fileID: 3418335907686926578, guid: 8cb588deeca94a741af224ad4160ea83, type: 3}
+  - {fileID: 8847047761419001490, guid: b90af03c7d897234b8653e3063aeec36, type: 3}
+  - {fileID: 8847047761419001490, guid: 19a8bd8f70c6292459bc3ec0d278bfc6, type: 3}
+  - {fileID: 8847047761419001490, guid: 06823697d184896439c417b1e4d1c340, type: 3}
+  spawnChances:
+  - 0.009
+  - 0.005
+  - 0.01
+  - 0.009
+  isIsland: 1
+  numberOfIslands: 1
+  islandRadius: 15
+  distanceFromMainIsland: 10

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f87468ded448e24db32ff51427d146c, type: 3}
+  m_Name: RockyLand
+  m_EditorClassIdentifier: 
+  mainTile: {fileID: 11400000, guid: 9822ea86c1ad93b46b6e04ab759f45b2, type: 2}
+  canPlayerSpawn: 0
+  freqToSpawn: 0.7
+  objects:
+  - {fileID: 5387719478794832004, guid: f07c15d2e4411e941b7c4e54ce50ab4b, type: 3}
+  - {fileID: 5387719478794832004, guid: a95354cc321f8c24a82c22e19b0d3ada, type: 3}
+  spawnChances:
+  - 0.075
+  - 0.005
+  isIsland: 0
+  numberOfIslands: 0

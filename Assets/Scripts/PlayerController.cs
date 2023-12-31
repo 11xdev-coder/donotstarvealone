@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 2f;
     public Animator animator;
+    public GameObject tileIndicator;
 
     [Header("-- Debug --")] 
     public GameObject attackTarget;
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public TMP_Text hoveringText;
     public GameObject hud;
     public InventoryManager inventory;
+    public WorldGenerator world;
     public GameObject handToolSpriteRenderer;
     private TalkerComponent _talker;
     
@@ -71,6 +73,10 @@ public class PlayerController : MonoBehaviour
     public Vector3 targetPosition;
     public bool isHit;
     private Rigidbody2D _rb;
+    
+    [Header("Right Clicking")]
+    public bool hasRightClicked;
+    public Vector3Int targetTilePosition;
     
     [Header("Dropping")]
     public Vector2 directionDifference;
@@ -127,6 +133,7 @@ public class PlayerController : MonoBehaviour
 
         _autoSizeHovering = hoveringText.GetComponent<AutoSizeTMP>();
         _talker = GetComponent<TalkerComponent>();
+        world = FindObjectOfType<WorldGenerator>();
 
         AddListeners();
         
@@ -361,7 +368,8 @@ public class PlayerController : MonoBehaviour
         if (isDropping)
         {
             isDropping = false;
-            inventory.movingSlot.item.DropItem(inventory.movingSlot, transform, inventory);
+            if(!hasRightClicked) inventory.movingSlot.item.DropItem(inventory.movingSlot, transform, inventory);
+            else if (hasRightClicked && inventory.movingSlot.item.GetTilePlacer() != null) inventory.movingSlot.item.RightClick(this, targetTilePosition);
         }
         else
         {
@@ -394,6 +402,7 @@ public class PlayerController : MonoBehaviour
     public void SetAttackTarget(GameObject target)
     {
         attackTarget = target;
+        hasRightClicked = false;
         canMoveToMouse = false;
     }
 
@@ -404,6 +413,7 @@ public class PlayerController : MonoBehaviour
         isDropping = false;
         _isAttacking = false;
         attackTarget = null;
+        hasRightClicked = false;
     }
 
     private GameObject FindNearestTarget(bool isSpaceHitted, bool isFHitted)
@@ -482,6 +492,42 @@ public class PlayerController : MonoBehaviour
             // nothing in hand
             if(attackableComponent != null && !attackableComponent.isMineable && currentAttackableTarget != healthComponent.self)
                 attackableComponent.TakeDamage(5);
+        }
+    }
+    
+    private void MoveToTileEdge()
+    {
+        if (!hasRightClicked) return;
+        
+        canMoveToMouse = false;
+        isMovingToMouse = false;
+
+        var position = _rb.position;
+        direction = (targetTilePosition - (Vector3) position).normalized;
+        // moving
+        directionDifference = targetTilePosition - (Vector3)position;
+        if (directionDifference.sqrMagnitude < 1f * 1f)
+        {
+            // Stop moving
+            horizontal = 0;
+            vertical = 0;
+            if (inventory.movingSlot.item != null && inventory.movingSlot.item.GetTilePlacer() != null)
+            {
+                inventory.movingSlot.item.RightClick(this, targetTilePosition);
+                inventory.movingSlot.SubCount(1);
+                if (inventory.movingSlot.count <= 0)
+                {
+                    inventory.movingSlot.Clear();
+                    inventory.isMovingItem = false;
+                }
+                hasRightClicked = false;
+            }
+        }
+        else
+        {
+            direction = directionDifference.normalized;
+            horizontal = direction.x;
+            vertical = direction.y;
         }
     }
     
@@ -602,6 +648,34 @@ public class PlayerController : MonoBehaviour
     [Obsolete("Obsolete")]
     private void Update()
     {
+        mousePos = Input.mousePosition;
+        mousePos.z = Mathf.Abs(mainCamera.transform.position.z);
+        Vector3 mouseWorldPoint = mainCamera.ScreenToWorldPoint(mousePos);
+
+        // Ensure the z-coordinate is set appropriately
+        mouseWorldPoint.z = 1;
+
+        // Round to the nearest whole number to get the tile position
+        Vector3Int intPosition = new Vector3Int(
+            Mathf.RoundToInt(mouseWorldPoint.x),
+            Mathf.RoundToInt(mouseWorldPoint.y),
+            0
+        );
+
+        Vector3Int tilePosition = world.triggerTilemap.WorldToCell(intPosition);
+        tileIndicator.transform.position = tilePosition;
+        
+        if (inventory.movingSlot.item != null && inventory.movingSlot.item.GetTilePlacer() != null)
+        {
+            tileIndicator.SetActive(true);
+        }
+        else
+        {
+            tileIndicator.SetActive(false);
+        }
+        
+
+        
         if (!_keyBindingManager.isWaitingForKeyPress && 
             Input.GetKeyUp(_keyBindingManager.bindings.OpenConsole))
         {
@@ -671,6 +745,11 @@ public class PlayerController : MonoBehaviour
         if (isDropping)
         {
             MoveTowardsTarget(attackTarget, false, false, true);
+        }
+
+        if (hasRightClicked)
+        {
+            MoveToTileEdge();
         }
 
 
@@ -768,7 +847,7 @@ public class PlayerController : MonoBehaviour
             {
                 hoveringText.gameObject.SetActive(true);
                 _autoSizeHovering.UpdateText("Drop");
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0)) // if left clicked
                 {
                     Vector3 screenPos = Input.mousePosition;
                     screenPos.z = Mathf.Abs(mainCamera.transform.position.z);
@@ -777,6 +856,14 @@ public class PlayerController : MonoBehaviour
                     targetPosition.z = 1;
                     isDropping = true;
                 }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    targetPosition = mainCamera.ScreenToWorldPoint(mousePos);
+                    targetPosition.z = 1;
+                    targetTilePosition = tilePosition;
+                    hasRightClicked = true;
+                }
+
 
                 ChangeCurrentSlotScale(false, null);
             }
