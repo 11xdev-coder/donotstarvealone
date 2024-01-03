@@ -167,25 +167,39 @@ public class WorldGenerator : MonoBehaviour
     private void CreateBufferZoneAroundIsland(Vector3Int centerPosition, int baseRadius, Biome biome)
     {
         int bufferZoneRadius = biome.distanceFromMainIsland;
-        for (int x = -baseRadius - bufferZoneRadius; x <= baseRadius + bufferZoneRadius; x++)
+        int extendedRadius = baseRadius + (biome.doGenerateBeach ? biome.beachWidth : 0) + bufferZoneRadius;
+
+        for (int x = -extendedRadius; x <= extendedRadius; x++)
         {
-            for (int y = -baseRadius - bufferZoneRadius; y <= baseRadius + bufferZoneRadius; y++)
+            for (int y = -extendedRadius; y <= extendedRadius; y++)
             {
                 Vector3Int tilePosition = new Vector3Int(centerPosition.x + x, centerPosition.y + y, 0);
-            
-                // Check if the position is within the buffer zone distance from the island edge
-                if (Vector3Int.Distance(centerPosition, tilePosition) > baseRadius &&
-                    Vector3Int.Distance(centerPosition, tilePosition) <= baseRadius + bufferZoneRadius)
+                float distanceFromCenter = Vector3Int.Distance(centerPosition, tilePosition);
+                
+                // generate ocean buffer zone
+                if (distanceFromCenter > baseRadius && distanceFromCenter <= baseRadius + bufferZoneRadius)
                 {
-                    // Clear the tile if it is not part of the island
                     if (triggerTilemap.GetTile(tilePosition) != biome.mainTile)
                     {
                         SwapForOceanTile(tilePosition, biome);
                     }
                 }
+                
+                // generate beach if within beach width
+                if (biome.doGenerateBeach && distanceFromCenter > baseRadius + bufferZoneRadius && 
+                    distanceFromCenter <= baseRadius + bufferZoneRadius+ biome.beachWidth)
+                {
+                    // if not biome's main tile and doesn't have any ocean tile (collidable)
+                    if (triggerTilemap.GetTile(tilePosition) != biome.mainTile && !collidableTilemap.HasTile(tilePosition))
+                    {
+                        triggerTilemap.SetTile(tilePosition, biome.beachTile);
+                    }
+                }
+                
             }
         }
     }
+
 
     Vector3Int FindRandomPositionNearCenter()
     {
@@ -447,7 +461,7 @@ public class WorldGenerator : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="position">Clamped to int automatically</param>
-    /// <returns>A possible biome that in the given position</returns>
+    /// <returns>A possible biome that is in the given position</returns>
     public PossibleBiomes GetBiomeByPositionEnum(Vector3 position)
     {
         Vector3Int intPosition = ClampVector3(position);
@@ -464,6 +478,11 @@ public class WorldGenerator : MonoBehaviour
         return PossibleBiomes.Ocean;
     }
     
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="position">Clamped to int automatically</param>
+    /// <returns>A biome scriptable object that is in the given position</returns>
     public Biome GetBiomeByPosition(Vector3 position)
     {
         Vector3Int intPosition = ClampVector3(position);

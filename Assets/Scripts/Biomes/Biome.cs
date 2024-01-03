@@ -21,6 +21,11 @@ public class Biome : ScriptableObject
     public int islandRadius;
     public int distanceFromMainIsland;
 
+    [Header("Beach for Island")] 
+    public bool doGenerateBeach;
+    public Tile beachTile;
+    public int beachWidth;
+
     /// <summary>
     /// 
     /// </summary>
