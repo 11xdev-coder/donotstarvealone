@@ -201,8 +201,13 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
-  doDrops: 0
-  drops: []
+  doDrops: 1
+  drops:
+  - {fileID: 11400000, guid: d57ce5e3b0fa899408f440eead8ecd35, type: 2}
+  - {fileID: 11400000, guid: d57ce5e3b0fa899408f440eead8ecd35, type: 2}
+  - {fileID: 11400000, guid: d57ce5e3b0fa899408f440eead8ecd35, type: 2}
+  - {fileID: 11400000, guid: 7adaefc29d30a7645be07aca6334a762, type: 2}
+  - {fileID: 11400000, guid: 7adaefc29d30a7645be07aca6334a762, type: 2}
   doEnemySpawn: 1
   enemiesToSpawn:
   - {fileID: 2875021884302096533, guid: 9a006642f140a454385faf4d6073b34f, type: 3}
@@ -234,3 +239,7 @@ MonoBehaviour:
   baseSortingOrder: 0
   orderOffset: 0
   doSort: 1
+  deactivate: 0
+  doColliderCheck: 1
+  invertRotationForParticle: 0
+  invertXRotation: 0

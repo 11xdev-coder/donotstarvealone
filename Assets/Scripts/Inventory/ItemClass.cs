@@ -28,6 +28,11 @@ public abstract class ItemClass : ScriptableObject
     {
         
     }
+
+    public virtual bool CanRightClick(PlayerController caller, Vector3Int tilePosition)
+    {
+        return true;
+    }
     
     #region Drop
     

@@ -15,8 +15,11 @@ MonoBehaviour:
   mainTile: {fileID: 11400000, guid: 6c86f42036cec204c8c87a92696f7f1e, type: 2}
   canPlayerSpawn: 0
   freqToSpawn: 0
+  possibleBiome: 2
+  music: {fileID: 8300000, guid: 81507ff6f3b3bda43859cc24e62fa630, type: 3}
   objects: []
   spawnChances: []
   isIsland: 0
   numberOfIslands: 0
-  islandSize: 0
+  islandRadius: 0
+  distanceFromMainIsland: 0

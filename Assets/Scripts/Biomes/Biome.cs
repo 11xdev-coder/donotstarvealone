@@ -8,6 +8,8 @@ public class Biome : ScriptableObject
     public Tile mainTile;
     public bool canPlayerSpawn;
     public float freqToSpawn;
+    public WorldGenerator.PossibleBiomes possibleBiome;
+    public AudioClip music;
     
     [Header("Objects")]
     public List<GameObject> objects;

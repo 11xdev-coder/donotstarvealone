@@ -1,11 +1,15 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Random = UnityEngine.Random;
 
 public class WorldGenerator : MonoBehaviour
 {
     public Dictionary<Vector3Int, GameObject> objects;
     public List<HashSet<Vector3Int>> islands = new List<HashSet<Vector3Int>>();
+    public float globalTicks;
     
     [Header("Seed")] 
     public int seed;
@@ -27,6 +31,15 @@ public class WorldGenerator : MonoBehaviour
     // public Biome forestBiome;
     // public Biome rockylandBiome;
     public Biome oceanBiome;
+
+    public enum PossibleBiomes
+    {
+        Ash,
+        Rocky,
+        Ocean,
+        Grass,
+        Forest
+    }
 
     [Header("Player")] 
     public GameObject player;
@@ -55,6 +68,11 @@ public class WorldGenerator : MonoBehaviour
         }
         
         DetectIslands();
+    }
+
+    void Update()
+    {
+        globalTicks += Time.deltaTime;
     }
     
     /// <summary>
@@ -397,5 +415,68 @@ public class WorldGenerator : MonoBehaviour
         {
             queue.Enqueue(position);
         }
+    }
+    
+    public IEnumerator TransitionValues(float startValue, float endValue, float duration, Action<float> applyValue)
+    {
+        float elapsed = 0.0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float currentValue = Mathf.Lerp(startValue, endValue, elapsed / duration);
+            applyValue(currentValue);
+
+            yield return null;
+        }
+
+        applyValue(endValue); 
+    }
+
+    
+    public Vector3Int ClampVector3(Vector3 value)
+    {
+        return new Vector3Int(
+            Mathf.RoundToInt(value.x),
+            Mathf.RoundToInt(value.y),
+            0
+        );
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="position">Clamped to int automatically</param>
+    /// <returns>A possible biome that in the given position</returns>
+    public PossibleBiomes GetBiomeByPositionEnum(Vector3 position)
+    {
+        Vector3Int intPosition = ClampVector3(position);
+        TileBase tile = triggerTilemap.GetTile(intPosition);
+
+        foreach (Biome biome in biomes)
+        {
+            if (biome.mainTile == tile)
+            {
+                return biome.possibleBiome;
+            }
+        }
+
+        return PossibleBiomes.Ocean;
+    }
+    
+    public Biome GetBiomeByPosition(Vector3 position)
+    {
+        Vector3Int intPosition = ClampVector3(position);
+        TileBase tile = triggerTilemap.GetTile(intPosition);
+
+        foreach (Biome biome in biomes)
+        {
+            if (biome.mainTile == tile)
+            {
+                return biome;
+            }
+        }
+
+        return oceanBiome;
     }
 }

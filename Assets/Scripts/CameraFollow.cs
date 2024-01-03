@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -20,11 +21,11 @@ public class CameraFollow : MonoBehaviour
     public float maxZoomDistance = 50f;
 
     private float _currentAngle;
-    private Camera _camera;
+    private Vector3 _velocity;
+    public bool isShaking;
 
     private void Start()
     {
-        _camera = GetComponent<Camera>();
         _currentAngle = transform.eulerAngles.x;
         UpdateCameraPosition();
     }
@@ -66,4 +67,31 @@ public class CameraFollow : MonoBehaviour
         // Always look at the target
         transform.LookAt(target.transform.position);
     }
+    
+    public IEnumerator Shake(float duration, float magnitude)
+    {
+        isShaking = true;
+        float elapsed = 0.0f;
+        Vector3 originalPosition = transform.position; // Store the original camera position
+
+        while (elapsed < duration)
+        {
+            var targetPos = target.transform.position;
+            
+            Vector3 randomPoint = targetPos + (Random.insideUnitSphere * magnitude);
+            randomPoint.z = originalPosition.z; // Keep the original Z position constant
+
+            var transformPos = transform.position;
+            transformPos = Vector3.Lerp(transformPos, randomPoint, Time.deltaTime * 2f);
+            
+            transformPos = Vector3.Lerp(transformPos, targetPos + offset, Time.deltaTime * 2f);
+
+            transform.position = transformPos;
+            
+            elapsed += Time.deltaTime;
+            isShaking = false;
+            yield return null;
+        }
+    }
+
 }

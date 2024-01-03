@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: PlanksRecipe
   m_EditorClassIdentifier: 
   inputItems:
+  - <item>k__BackingField: {fileID: 11400000, guid: d57ce5e3b0fa899408f440eead8ecd35, type: 2}
+    <count>k__BackingField: 4
   - <item>k__BackingField: {fileID: 11400000, guid: 7adaefc29d30a7645be07aca6334a762, type: 2}
-    <count>k__BackingField: 1
+    <count>k__BackingField: 2
   outputItem:
     <item>k__BackingField: {fileID: 11400000, guid: 81cc46d573f393243961edf22c2bcdbf, type: 2}
     <count>k__BackingField: 1

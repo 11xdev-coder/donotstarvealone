@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47fe2a599ce35f84698e2a6724ccda00, type: 3}
+  m_Name: Log
+  m_EditorClassIdentifier: 
+  itemName: Log
+  itemSprite: {fileID: 21300000, guid: 21de2a078aeb45643a3374c5c15e4de8, type: 3}
+  droppedItemPrefab: {fileID: 8454655466585242356, guid: 4080febfd7a803444a121d02dbed40af, type: 3}
+  isStackable: 1
+  maxStack: 20
+  damage: 0
+  handScale: {x: 0, y: 0, z: 0}
+  pickaxePower: 0
+  axePower: 0
+  displayTextEntries: []

@@ -14,7 +14,6 @@ public class ShowUIText : MonoBehaviour
 
     private void Update()
     {
-        if (GetComponent<PointerCheck>().IsMouseOver()) text.SetActive(true);
-        else text.SetActive(false);
+        text.SetActive(GetComponent<PointerCheck>().IsMouseOver());
     }
 }

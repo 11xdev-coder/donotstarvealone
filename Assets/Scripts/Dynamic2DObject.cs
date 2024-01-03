@@ -3,12 +3,22 @@ using UnityEngine;
 public class Dynamic2DObject : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
-
+    
+    [Header("Ordering")]
     public int baseSortingOrder;
     public int orderOffset;
     public bool doSort;
-    private GameObject player;
+
+    [Header("Misc")] 
+    public bool deactivate;
+    public bool doColliderCheck;
     
+    [Header("Invertions")]
+    [Tooltip("For particles to keep them looking straight (z rotation must be -90)")]
+    public bool invertRotationForParticle;
+    public bool invertXRotation;
+    
+    private GameObject player;
     private Camera _camera;
     private bool isActive = true;
 
@@ -38,8 +48,25 @@ public class Dynamic2DObject : MonoBehaviour
             {
                 _spriteRenderer.sortingOrder = baseSortingOrder - Mathf.FloorToInt(transform.position.y) + orderOffset;
             }
-
-            transform.eulerAngles = new Vector3(_camera.transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z);
+            
+            var eulerAngles = transform.eulerAngles;
+            var cameraEulerAngles = _camera.transform.eulerAngles;
+            
+            if (invertRotationForParticle)
+            {
+                eulerAngles = new Vector3(eulerAngles.x, eulerAngles.y, -90 - cameraEulerAngles.x + cameraEulerAngles.x);
+            }
+            else if (invertXRotation)
+            {
+                eulerAngles = new Vector3(-90 - cameraEulerAngles.x + cameraEulerAngles.x, eulerAngles.y, eulerAngles.z);
+            }
+            else
+            {
+                eulerAngles = new Vector3(cameraEulerAngles.x, eulerAngles.y, eulerAngles.z);
+            }
+            
+            transform.eulerAngles = eulerAngles;
+            
 
             UpdateSortingLayers();
         }
@@ -50,22 +77,27 @@ public class Dynamic2DObject : MonoBehaviour
         }
     }
 
-    private bool IsInView()
+    public bool IsInView()
     {
-        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(_camera);
-        return GeometryUtility.TestPlanesAABB(planes, GetComponent<Collider2D>().bounds);
+        if (doColliderCheck)
+        {
+            Plane[] planes = GeometryUtility.CalculateFrustumPlanes(_camera);
+            return GeometryUtility.TestPlanesAABB(planes, GetComponent<Collider2D>().bounds);
+        }
+
+        return true;
     }
 
     private void ActivateObject()
     {
-        // Enable components or behaviors as needed
+        if(deactivate) gameObject.SetActive(true);
         if (_spriteRenderer != null)
             _spriteRenderer.enabled = true;
     }
 
     private void DeactivateObject()
     {
-        // Disable components or behaviors as needed
+        if (deactivate) gameObject.SetActive(false);
         if (_spriteRenderer != null)
             _spriteRenderer.enabled = false;
     }

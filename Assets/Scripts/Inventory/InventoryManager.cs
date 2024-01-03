@@ -220,32 +220,61 @@ public class InventoryManager : MonoBehaviour
 
     public bool Remove(ItemClass item, int count)
     {
-        SlotClass temp = Contains(item);
-        if (temp != null)
+        // if the item is in movingSlot
+        if (isMovingItem && movingSlot.item == item)
         {
-            if(temp.count > 1)
-                temp.SubCount(count);
+            // remove it
+            if (movingSlot.count >= count)
+            {
+                // -1
+                movingSlot.SubCount(count);
+                if (movingSlot.count <= 0) // if no left
+                {
+                    movingSlot.Clear(); // clear it
+                    isMovingItem = false;
+                }
+                Refresh();
+                return true;
+            }
             else
             {
-                int removeSlotIndex = 0;
-                for(int index = 0; index < items.Length; index++)
-                {
-                    if (items[index].item == item)
-                    {
-                        removeSlotIndex = index;
-                        break;
-                    }
-                }
+                // if movingSlot doesnt have enough items, subtract what we can and continue to main inventory
+                count -= movingSlot.count;
+                movingSlot.Clear();
+                isMovingItem = false;
+            }
+        }
 
-                items[removeSlotIndex].Clear();
+        // continue to remove from main inventory
+        SlotClass slot = Contains(item);
+        if (slot != null)
+        {
+            if (slot.count >= count)
+            {
+                slot.SubCount(count);
+                if (slot.count <= 0 && slot != movingSlot)
+                {
+                    slot.Clear();
+                }
+            }
+            else
+            {
+                // if not enough items in the slot, return false indicating partial or no removal
+                Refresh();
+                return false;
             }
         }
         else
+        {
+            // if item not found in inventory, return false
+            Refresh();
             return false;
-        
+        }
+
         Refresh();
         return true;
     }
+
 
     public SlotClass Contains(ItemClass item)
     {

@@ -1,9 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Vector2 = UnityEngine.Vector2;
@@ -20,6 +24,7 @@ public class PlayerController : MonoBehaviour
     public GameObject currentDroppingTarget;
     public GameObject currentInteractableSlot;
     public CraftingRecipeClass currentCraftable;
+    public WorldGenerator.PossibleBiomes currentBiome;
     private readonly RaycastHit2D[] _hits = new RaycastHit2D[5];
     private GameObject _console;
     private KeyBindingManager _keyBindingManager;
@@ -32,6 +37,7 @@ public class PlayerController : MonoBehaviour
     public InventoryManager inventory;
     public WorldGenerator world;
     public GameObject handToolSpriteRenderer;
+    [CanBeNull] public UnityEvent onBiomeChanged;
     private TalkerComponent _talker;
     
     [Header("-- Health - Important --")]
@@ -111,12 +117,20 @@ public class PlayerController : MonoBehaviour
     public Vector3 invertedHoveringOffset;
     private bool _isOverSlot;
     private AutoSizeTMP _autoSizeHovering;
+
+    [Header("Post Processing")] 
+    public PostProcessVolume ppv;
+    [Range(0f, 1f)]
+    public float ashBiomeEnterSmoothness;
+    [Range(0f, 1f)]
+    public float ashBiomeExitSmoothness;
+    private MusicManager _musicManger;
     
     private void Awake()
     {
-        _keyBindingManager = FindObjectOfType<KeyBindingManager>().instance;
+        _keyBindingManager = FindFirstObjectByType<KeyBindingManager>().instance;
         
-        _console = FindObjectOfType<ConsoleManager>().gameObject;
+        _console = FindFirstObjectByType<ConsoleManager>().gameObject;
         _console.SetActive(false);
         
         // setting up the body parts
@@ -133,11 +147,14 @@ public class PlayerController : MonoBehaviour
 
         _autoSizeHovering = hoveringText.GetComponent<AutoSizeTMP>();
         _talker = GetComponent<TalkerComponent>();
-        world = FindObjectOfType<WorldGenerator>();
+        world = FindFirstObjectByType<WorldGenerator>();
+        _musicManger = FindFirstObjectByType<MusicManager>().Instance;
 
         AddListeners();
         
         ChangeHandToolSprite(inventory.equippedTool.item);
+
+        StartCoroutine(GetCurrentBiome());
     }
 
     private void UpdateAnimations()
@@ -204,6 +221,41 @@ public class PlayerController : MonoBehaviour
         // call everything before we disable controller script
         GetComponent<PlayerController>().enabled = false;
     }
+
+    public void HandleBiomeChange()
+    {
+        Vignette vignette;
+        
+        if (ppv.profile.TryGetSettings(out vignette))
+        {
+            if (currentBiome == WorldGenerator.PossibleBiomes.Ash)
+            {
+                StartCoroutine(world.TransitionValues(vignette.smoothness.value, ashBiomeEnterSmoothness, 1f,
+                    finalValue => vignette.smoothness.value = finalValue));
+            }
+            else
+            {
+                StartCoroutine(world.TransitionValues(vignette.smoothness.value, ashBiomeExitSmoothness, 1f,
+                    finalValue => vignette.smoothness.value = finalValue));
+            }
+        }
+        
+        _musicManger.ChangeCurrentMusic(world.GetBiomeByPosition(_rb.position).music);
+    }
+    
+    private IEnumerator GetCurrentBiome()
+    {
+        while (true)
+        {
+            if (currentBiome != world.GetBiomeByPositionEnum(_rb.position))
+            {
+                currentBiome = world.GetBiomeByPositionEnum(_rb.position);
+                onBiomeChanged?.Invoke();
+            }
+
+            yield return new WaitForSeconds(1f);
+        }
+    }
     
     public void OnAttackEnd()
     {
@@ -216,6 +268,7 @@ public class PlayerController : MonoBehaviour
     {
         if (healthComponent.onDamageTaken != null) healthComponent.onDamageTaken.AddListener(HandleDamage);
         if (healthComponent.onDeath != null) healthComponent.onDeath.AddListener(HandleDeath);
+        if (onBiomeChanged != null) onBiomeChanged.AddListener(HandleBiomeChange);
         inventory.OnToolChanged += HandleToolChange;
     }
 
@@ -223,6 +276,7 @@ public class PlayerController : MonoBehaviour
     {
         if (healthComponent.onDamageTaken != null) healthComponent.onDamageTaken.RemoveListener(HandleDamage);
         if (healthComponent.onDeath != null) healthComponent.onDeath.RemoveListener(HandleDeath);
+        if (onBiomeChanged != null) onBiomeChanged.RemoveListener(HandleBiomeChange);
         inventory.OnToolChanged -= HandleToolChange;
     }
 
@@ -514,12 +568,6 @@ public class PlayerController : MonoBehaviour
             if (inventory.movingSlot.item != null && inventory.movingSlot.item.GetTilePlacer() != null)
             {
                 inventory.movingSlot.item.RightClick(this, targetTilePosition);
-                inventory.movingSlot.SubCount(1);
-                if (inventory.movingSlot.count <= 0)
-                {
-                    inventory.movingSlot.Clear();
-                    inventory.isMovingItem = false;
-                }
                 hasRightClicked = false;
             }
         }
@@ -656,11 +704,7 @@ public class PlayerController : MonoBehaviour
         mouseWorldPoint.z = 1;
 
         // Round to the nearest whole number to get the tile position
-        Vector3Int intPosition = new Vector3Int(
-            Mathf.RoundToInt(mouseWorldPoint.x),
-            Mathf.RoundToInt(mouseWorldPoint.y),
-            0
-        );
+        Vector3Int intPosition = world.ClampVector3(mouseWorldPoint);
 
         Vector3Int tilePosition = world.triggerTilemap.WorldToCell(intPosition);
         tileIndicator.transform.position = tilePosition;
@@ -801,7 +845,7 @@ public class PlayerController : MonoBehaviour
                 {
                     movement.Normalize();
                 }
-        
+
                 _rb.velocity = movement * moveSpeed; 
             }
         }
@@ -856,14 +900,13 @@ public class PlayerController : MonoBehaviour
                     targetPosition.z = 1;
                     isDropping = true;
                 }
-                else if (Input.GetMouseButtonDown(1))
+                else if (Input.GetMouseButtonDown(1) && inventory.movingSlot.item.CanRightClick(this, tilePosition)) // right click
                 {
                     targetPosition = mainCamera.ScreenToWorldPoint(mousePos);
-                    targetPosition.z = 1;
-                    targetTilePosition = tilePosition;
-                    hasRightClicked = true;
+                    targetPosition.z = 1; // calculate target pos
+                    targetTilePosition = tilePosition; // already calculated tile position
+                    hasRightClicked = true; // start right click methods
                 }
-
 
                 ChangeCurrentSlotScale(false, null);
             }
@@ -1129,5 +1172,4 @@ public class PlayerController : MonoBehaviour
     //     Gizmos.color = Color.yellow;
     //     Gizmos.DrawWireSphere((Vector3)_rb.position + attackDetectionOffset, playerAttackDetectionRadius);
     // }
-
 }

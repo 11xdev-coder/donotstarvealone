@@ -38,7 +38,6 @@ public class KeyBindingManager : MonoBehaviour
             Destroy(gameObject); // Ensures that no more than one instance can exist at any time
         }
         
-        DontDestroyOnLoad(waitingForKeyText);
         waitingForKeyText.gameObject.SetActive(false);
     }
 

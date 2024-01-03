@@ -100,3 +100,5 @@ MonoBehaviour:
   baseSortingOrder: 0
   orderOffset: 0
   doSort: 1
+  doColliderCheck: 1
+  invertRotationForParticle: 0

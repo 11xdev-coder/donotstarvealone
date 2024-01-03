@@ -81,15 +81,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   animator: {fileID: 843045843684994102}
+  tileIndicator: {fileID: 0}
   attackTarget: {fileID: 0}
   currentAttackableTarget: {fileID: 0}
   currentDroppingTarget: {fileID: 0}
   currentInteractableSlot: {fileID: 0}
+  currentCraftable: {fileID: 0}
+  currentBiome: 0
   mainCamera: {fileID: 0}
   hoveringText: {fileID: 0}
   hud: {fileID: 0}
   inventory: {fileID: 6730677856030601245}
+  world: {fileID: 0}
   handToolSpriteRenderer: {fileID: 3164058945470142409}
+  onBiomeChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4730328541580573804}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: HandleBiomeChange
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   healthComponent: {fileID: 7775177542568461067}
   healthFillableImage: {fileID: 0}
   healthAmountText: {fileID: 0}
@@ -116,6 +135,8 @@ MonoBehaviour:
   mousePos: {x: 0, y: 0, z: 0}
   targetPosition: {x: 0, y: 0, z: 0}
   isHit: 0
+  hasRightClicked: 0
+  targetTilePosition: {x: 0, y: 0, z: 0}
   directionDifference: {x: 0, y: 0}
   isDropping: 0
   dropStopThreshold: 0.2
@@ -134,6 +155,9 @@ MonoBehaviour:
   attackYString: Attack Y
   hoveringOffset: {x: 0, y: 5, z: 0}
   invertedHoveringOffset: {x: 0, y: -5, z: 0}
+  ppv: {fileID: 0}
+  ashBiomeEnterSmoothness: 1
+  ashBiomeExitSmoothness: 0.4
 --- !u!114 &6730677856030601245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,7 +195,6 @@ MonoBehaviour:
     <item>k__BackingField: {fileID: 0}
     <count>k__BackingField: 0
   isMovingItem: 0
-  talker: {fileID: 9141836047373734915}
 --- !u!114 &9141836047373734915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -407,7 +430,10 @@ MonoBehaviour:
   baseSortingOrder: 0
   orderOffset: 0
   doSort: 0
-  player: {fileID: 0}
+  deactivate: 0
+  doColliderCheck: 0
+  invertRotationForParticle: 0
+  invertXRotation: 0
 --- !u!1 &1242480962830802973
 GameObject:
   m_ObjectHideFlags: 0
