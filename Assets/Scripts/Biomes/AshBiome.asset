@@ -39,3 +39,6 @@ MonoBehaviour:
   numberOfIslands: 1
   islandRadius: 15
   distanceFromMainIsland: 10
+  doGenerateBeach: 1
+  beachTile: {fileID: 11400000, guid: 615bc6f617b2a5e4eb29e817edb86a2d, type: 2}
+  beachWidth: 2

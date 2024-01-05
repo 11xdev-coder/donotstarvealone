@@ -8,6 +8,8 @@ public class Dynamic2DObject : MonoBehaviour
     public int baseSortingOrder;
     public int orderOffset;
     public bool doSort;
+    public bool useSrList;
+    public SpriteRenderer[] srs; 
 
     [Header("Misc")] 
     public bool deactivate;
@@ -27,7 +29,7 @@ public class Dynamic2DObject : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         if (doSort)
         {
-            baseSortingOrder = FindObjectOfType<WorldGenerator>().height;
+            baseSortingOrder = FindFirstObjectByType<WorldGenerator>().height;
             _spriteRenderer = GetComponent<SpriteRenderer>();
         }
         _camera = Camera.main;
@@ -112,17 +114,31 @@ public class Dynamic2DObject : MonoBehaviour
         Collider2D playerCollider = DefineCollider(playerColliders);
 
         // If we found the non-trigger colliders for both the player and the object
-        if (playerCollider != null && objectCollider != null && _spriteRenderer != null)
+        if (playerCollider != null && objectCollider != null && (_spriteRenderer != null || useSrList))
         {
             float playerBottom = playerCollider.bounds.min.y;
             float objectTop = objectCollider.bounds.max.y;
             if (playerBottom > objectTop)
             {
-                _spriteRenderer.sortingLayerName = "ObjectInFront";
+                if(!useSrList) _spriteRenderer.sortingLayerName = "ObjectInFront";
+                else
+                {
+                    foreach (SpriteRenderer sr in srs)
+                    {
+                        sr.sortingLayerName = "ObjectInFront";
+                    }
+                }
             }
             else
             {
-                _spriteRenderer.sortingLayerName = "ObjectBehind";
+                if(!useSrList) _spriteRenderer.sortingLayerName = "ObjectBehind";
+                else
+                {
+                    foreach (SpriteRenderer sr in srs)
+                    {
+                        sr.sortingLayerName = "ObjectBehind";
+                    }
+                }
             }
         }
     }

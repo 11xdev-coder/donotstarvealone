@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     public CraftingRecipeClass currentCraftable;
     public WorldGenerator.PossibleBiomes currentBiome;
     private readonly RaycastHit2D[] _hits = new RaycastHit2D[5];
-    private GameObject _console;
+    public GameObject console;
     private KeyBindingManager _keyBindingManager;
     private GameObject _hit;
     
@@ -130,8 +130,8 @@ public class PlayerController : MonoBehaviour
     {
         _keyBindingManager = FindFirstObjectByType<KeyBindingManager>().instance;
         
-        _console = FindFirstObjectByType<ConsoleManager>().gameObject;
-        _console.SetActive(false);
+        console = FindFirstObjectByType<ConsoleManager>().gameObject;
+        console.SetActive(false);
         
         // setting up the body parts
         _bodyParts.Add(body); _bodyParts.Add(head); _bodyParts.Add(armL); _bodyParts.Add(armR); _bodyParts.Add(legL);
@@ -723,14 +723,14 @@ public class PlayerController : MonoBehaviour
         if (!_keyBindingManager.isWaitingForKeyPress && 
             Input.GetKeyUp(_keyBindingManager.bindings.OpenConsole))
         {
-            if (_console.activeSelf)
+            if (console.activeSelf)
             {
-                _console.SetActive(false);
+                console.SetActive(false);
                 Time.timeScale = 1f; // Resume the game
             }
             else
             {
-                _console.SetActive(true);
+                console.SetActive(true);
                 Time.timeScale = 0f; // Freeze the game
             }
         }

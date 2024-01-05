@@ -1345,6 +1345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSource: {fileID: 1058628901}
   transitionTime: 0.5
+  targetVolume: 0.2
 --- !u!4 &1058628903
 Transform:
   m_ObjectHideFlags: 0
@@ -3289,7 +3290,8 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6485221939542350081, guid: d6073a028ab2d194290f8811440adebf, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

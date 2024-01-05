@@ -106,6 +106,7 @@
      <Compile Include="Assets\Scripts\Inventory\FireInflictWeapon.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\Inventory\ItemClass.cs" />
+     <Compile Include="Assets\Scripts\AI\LavaCrocodileAI.cs" />
      <Compile Include="Assets\Scripts\Inventory\ToolClass.cs" />
      <Compile Include="Assets\Scripts\ConsoleManager.cs" />
      <Compile Include="Assets\Scripts\Components\TalkerComponent.cs" />
@@ -143,6 +144,7 @@
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisDocumentationRulesDefault" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\pt-BR" />
+     <Folder Include="Assets\Animations\LavaCrocodile\idle" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\tr" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\zh-Hans" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\PortedFromFxCopRulesEnabled" />
@@ -194,10 +196,12 @@
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisReleaseTrackingRulesDefault" />
      <None Include="Assets\Packages\System.Collections.Immutable.7.0.0\useSharedDesignerContext.txt" />
      <Folder Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib" />
+     <Folder Include="Assets\Animations\LavaCrocodile" />
      <Folder Include="Assets\Animations\mlue\attack" />
      <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\buildTransitive\net6.0" />
      <Folder Include="Assets\Sprites\hud\health" />
      <Folder Include="Assets\Prefabs\mlue" />
+     <Folder Include="Assets\Animations\LavaCrocodile\walk" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\it" />
      <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\buildTransitive\netcoreapp2.0" />
      <Folder Include="Assets\Sprites\objects" />
@@ -228,6 +232,7 @@
      <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\lib\netstandard2.0" />
      <Folder Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.6.0.0" />
      <None Include="Assets\Packages\System.Reflection.Metadata.7.0.0\lib\netstandard2.0\System.Reflection.Metadata.xml" />
+     <Folder Include="Assets\Animations\LavaCrocodile\bite" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\es" />
      <Folder Include="Assets\Resources\Items" />
      <Folder Include="Assets\Sprites\tiles\old" />
@@ -286,6 +291,7 @@
      <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0\buildTransitive" />
      <Folder Include="Assets\Animations\mlue\hit" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\buildTransitive" />
+     <Folder Include="Assets\Sprites\Entities\LavaCrocodile" />
      <Folder Include="Assets\Sprites\mlue" />
      <Folder Include="Assets\Packages" />
      <Folder Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0\buildTransitive\netcoreapp2.0" />
@@ -296,6 +302,7 @@
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
      <Folder Include="Assets\SFX" />
      <None Include="Assets\Packages\Microsoft.CodeAnalysis.CSharp.Scripting.4.7.0\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Scripting.xml" />
+     <Folder Include="Assets\Animations\LavaCrocodile\scratch" />
      <Folder Include="Assets\Scripts\Components\InteractableComponentSettings" />
      <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Common.4.7.0\lib\netstandard2.0" />

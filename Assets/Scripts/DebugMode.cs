@@ -18,7 +18,8 @@ public class DebugMode : MonoBehaviour
     [Header("-- Debug Rendering --")]
     public LineRenderer attackDetectionRadiusRenderer;
     public LineRenderer searchRadiusRenderer;
-    public int segments = 50;  // Determines the smoothness of the circle
+    [Tooltip("Smoothness of a circle")]
+    public int segments = 50;
 
     [Header("-- Assignable - Important --")]
     public PlayerController pc;
@@ -93,7 +94,7 @@ public class DebugMode : MonoBehaviour
         
         // if not setting a key, pressed debug key and can access debug menu
         if (!keyBindingManager.instance.isWaitingForKeyPress && 
-            Input.GetKeyUp(keyBindingManager.instance.bindings.OpenDebugMenu) && canAccessDebug)
+            Input.GetKeyUp(keyBindingManager.instance.bindings.OpenDebugMenu) && canAccessDebug && !pc.console.activeSelf)
         {
             switch (menu.activeSelf)
             {

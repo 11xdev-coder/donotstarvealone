@@ -40,7 +40,6 @@ public class TreeNutterAI : MonoBehaviour
     private Transform m_Transform;
     private Rigidbody2D m_Rb;
     private AttackableComponent m_Health;
-    private HealthBarComponent m_HealthBarComponent;
     
     private enum State
     {
@@ -56,10 +55,7 @@ public class TreeNutterAI : MonoBehaviour
         m_Rb = GetComponent<Rigidbody2D>();
         m_Animator = GetComponent<Animator>();
         m_Health = GetComponent<AttackableComponent>();
-        m_HealthBarComponent = GetComponent<HealthBarComponent>();
         AddListeners();
-        
-        m_HealthBarComponent.SetMaxHealth(m_Health.maxHealth);
     }
 
     private void UpdateAnimations()
@@ -99,13 +95,12 @@ public class TreeNutterAI : MonoBehaviour
 
     private void HandleDeath()
     {
-        Destroy(m_HealthBarComponent.healthBarInstance); // destroy the healthbar because HealthBarComponent doesn't
         RemoveListeners();
     }
 
     private void HandleDamage()
     {
-        m_HealthBarComponent.SetHealth(m_Health.health); // setting the health becuase component doesnt
+        
     }
 
     public void Update()

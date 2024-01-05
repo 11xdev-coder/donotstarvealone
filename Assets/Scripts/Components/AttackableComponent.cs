@@ -44,7 +44,8 @@ public class AttackableComponent : MonoBehaviour
     
     private AudioSource m_AudioSource;
     private SpriteRenderer m_SpriteRenderer;
-
+    private HealthBarComponent _healthBarComponent;
+    
     public void Start()
     {
         self = gameObject;
@@ -53,6 +54,9 @@ public class AttackableComponent : MonoBehaviour
         
         m_SpriteRenderer = GetComponent<SpriteRenderer>();
         UpdateSpriteBasedOnHealth();
+
+        _healthBarComponent = GetComponent<HealthBarComponent>();
+        if(_healthBarComponent != null) _healthBarComponent.SetMaxHealth(maxHealth);
     }
     
     public void Update()
@@ -71,7 +75,9 @@ public class AttackableComponent : MonoBehaviour
         {
             m_AudioSource.PlayOneShot(hitSound);
         }
-    
+        
+        if(_healthBarComponent != null) _healthBarComponent.SetHealth(health);
+        
         if (health <= 0)
         {
             Dead();
@@ -105,6 +111,9 @@ public class AttackableComponent : MonoBehaviour
             ParticleSystem newDeathParticles = Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y, 5), Quaternion.identity);
             newDeathParticles.Play();
         }
+        
+        if(_healthBarComponent != null) Destroy(_healthBarComponent.healthBarInstance);
+        
         if(destroyOnDeath) Destroy(gameObject);
     }
     
