@@ -1,19 +1,22 @@
+using Mirror;
+using Singletons;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class DebugMode : MonoBehaviour
+public class DebugMode : NetworkBehaviour
 {
     [Header("BUTTONS")] 
     public Button searchRadius;
     public Button attackDetectionRadius;
 
     [Header("Main")] 
-    public KeyBindingManager keyBindingManager;
     public bool showSearchRadius;
     public bool showAttackDetectionRadius;
     public bool canAccessDebug;
-    public GameObject menu;
+    private GameObject _menu;
+    private KeyBindingManager _keyBindingManager;
     
     [Header("-- Debug Rendering --")]
     public LineRenderer attackDetectionRadiusRenderer;
@@ -26,9 +29,14 @@ public class DebugMode : MonoBehaviour
     public LineRenderer lrPrefab;
     public Image color;
 
-    private void Start()
+    public override void OnStartClient()
     {
-        keyBindingManager = FindObjectOfType<KeyBindingManager>();
+        searchRadius = SearchRadiusSingleton.Instance;
+        attackDetectionRadius = AttackRadiusSingleton.Instance;
+        _menu = GameObject.FindGameObjectWithTag("DebugMenu");
+        _keyBindingManager = KeyBindingManager.Instance;
+        color = ColorImageSingleton.Instance;
+        
         // Instantiate the LineRenderers
         var position = transform.position;
         attackDetectionRadiusRenderer = InstantiateLineRendererInactive(lrPrefab.gameObject, position);
@@ -46,6 +54,24 @@ public class DebugMode : MonoBehaviour
     private void Update()
     {
         var position = pc.GetComponent<Rigidbody2D>().position;
+        
+        if(searchRadius == null) searchRadius = SearchRadiusSingleton.Instance;
+        if (attackDetectionRadius == null) attackDetectionRadius = AttackRadiusSingleton.Instance;
+        if(color == null) color = ColorImageSingleton.Instance;
+        if(_keyBindingManager == null)  _keyBindingManager = KeyBindingManager.Instance;
+        
+        if (searchRadiusRenderer == null) // try to init it again if null
+        {
+            searchRadiusRenderer = InstantiateLineRendererInactive(lrPrefab.gameObject, position);
+            SetupLineRenderer(searchRadiusRenderer, pc.searchRadius);
+        }
+        
+        if (attackDetectionRadiusRenderer == null)
+        {
+            attackDetectionRadiusRenderer = InstantiateLineRendererInactive(lrPrefab.gameObject, position);
+            SetupLineRenderer(attackDetectionRadiusRenderer, pc.playerAttackDetectionRadius);
+        }
+        
         
         if (showSearchRadius) // show search radius
         {
@@ -91,18 +117,18 @@ public class DebugMode : MonoBehaviour
         searchRadiusRenderer.startColor = color.color;
         searchRadiusRenderer.endColor = color.color;
        
-        
+        // TODO: _keyBindingManager is null
         // if not setting a key, pressed debug key and can access debug menu
-        if (!keyBindingManager.instance.isWaitingForKeyPress && 
-            Input.GetKeyUp(keyBindingManager.instance.bindings.OpenDebugMenu) && canAccessDebug && !pc.console.activeSelf)
+        if (!_keyBindingManager.isWaitingForKeyPress && 
+            Input.GetKeyUp(_keyBindingManager.bindings.OpenDebugMenu) && canAccessDebug && !pc.console.activeSelf)
         {
-            switch (menu.activeSelf)
+            switch (_menu.activeSelf)
             {
                 case true:
-                    menu.SetActive(false);
+                    _menu.SetActive(false);
                     break;
                 case false:
-                    menu.SetActive(true);
+                    _menu.SetActive(true);
                     break;
             }
         }

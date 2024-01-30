@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47fe2a599ce35f84698e2a6724ccda00, type: 3}
   m_Name: Tool Looking Twig
   m_EditorClassIdentifier: 
+  itemId: 10
   itemName: Tool-looking Twig
   itemSprite: {fileID: 21300000, guid: 53f9014eec9f33e4288389ccfd2cdcf1, type: 3}
   droppedItemPrefab: {fileID: 8454655466585242356, guid: 30365ac2a77c0254982006af863e3cb0, type: 3}

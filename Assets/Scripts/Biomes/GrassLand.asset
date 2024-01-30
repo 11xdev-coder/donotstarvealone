@@ -18,10 +18,13 @@ MonoBehaviour:
   possibleBiome: 3
   music: {fileID: 8300000, guid: 756145be415ee954ba3aa3255d304411, type: 3}
   objects:
-  - {fileID: 2693553405234431134, guid: 4669f3f3be080ac41ac270d4a3e0a13f, type: 3}
+  - objectId: birchTree
   spawnChances:
   - 0.07
   isIsland: 0
   numberOfIslands: 0
   islandRadius: 0
   distanceFromMainIsland: 0
+  doGenerateBeach: 0
+  beachTile: {fileID: 0}
+  beachWidth: 0

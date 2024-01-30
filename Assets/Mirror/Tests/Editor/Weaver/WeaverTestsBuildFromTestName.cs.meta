@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: aa404c2d6a88488f9b6e42a87b01cd61
+timeCreated: 1629525351
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/WeaverTestsBuildFromTestName.cs
+  uploadId: 485797

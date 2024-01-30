@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 4266649743214694289}
   m_Layer: 5
   m_Name: HoveringText
-  m_TagString: Untagged
+  m_TagString: HoveringText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -364,7 +364,7 @@ GameObject:
   - component: {fileID: 1194285382706012256}
   m_Layer: 5
   m_Name: BoostMarks
-  m_TagString: Untagged
+  m_TagString: BoostMarks
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -435,9 +435,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3012779170841300866}
-  m_Layer: 5
+  - component: {fileID: 8491789255766348911}
+  m_Layer: 0
   m_Name: Itemcursor
-  m_TagString: Untagged
+  m_TagString: ItemCursor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -463,6 +464,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8491789255766348911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3012779170841300865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c96a3b6436b2447f879e8e1da19e0b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3012779170920810644
 GameObject:
   m_ObjectHideFlags: 0
@@ -670,9 +683,10 @@ GameObject:
   - component: {fileID: 3012779171243858647}
   - component: {fileID: 720460040042184971}
   - component: {fileID: 1502271279955606880}
+  - component: {fileID: 3485223203203441139}
   m_Layer: 5
   m_Name: Fillable
-  m_TagString: Untagged
+  m_TagString: HealthFillable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -746,6 +760,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8872c60276928ff409787bdbdfd3c345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  found: 0
   text: {fileID: 4710746380454217267}
 --- !u!114 &1502271279955606880
 MonoBehaviour:
@@ -759,6 +776,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3efb18952c3cc304e8121ffff0a9d997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3485223203203441139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3012779171243858645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 28a65fff13ca9e5499dee7cc6f707bef
+  hasSpawned: 0
 --- !u!1 &3012779171399422252
 GameObject:
   m_ObjectHideFlags: 0
@@ -809,7 +843,7 @@ GameObject:
   - component: {fileID: 3012779172028460138}
   m_Layer: 5
   m_Name: hud
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -889,9 +923,9 @@ GameObject:
   - component: {fileID: 3012779172269112193}
   - component: {fileID: 3012779172269112195}
   - component: {fileID: 3012779172269112194}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: Inventory
-  m_TagString: Inventory
+  m_TagString: SlotHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -979,7 +1013,7 @@ GameObject:
   - component: {fileID: 3012779172632777505}
   m_Layer: 5
   m_Name: HealthAmount
-  m_TagString: Untagged
+  m_TagString: HealthAmount
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1320,13 +1354,14 @@ GameObject:
   - component: {fileID: 9221345537502404889}
   - component: {fileID: 7449452888064379119}
   - component: {fileID: 8445307070623980447}
+  - component: {fileID: 6981319534081177936}
   m_Layer: 5
   m_Name: MaxHealthText
-  m_TagString: Untagged
+  m_TagString: MaxHealthAmount
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &9221345537502404889
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1443,6 +1478,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6981319534081177936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4710746380454217267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c142ebd558d764794363cb5f53694d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5306423160496814032
 GameObject:
   m_ObjectHideFlags: 0
@@ -1456,7 +1503,7 @@ GameObject:
   - component: {fileID: 1357460607094448377}
   m_Layer: 5
   m_Name: CurrentBoostMarker
-  m_TagString: Untagged
+  m_TagString: BoostPointer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1658,7 +1705,7 @@ GameObject:
   - component: {fileID: 1623484987290770986}
   m_Layer: 5
   m_Name: HealthImage
-  m_TagString: Untagged
+  m_TagString: HeartImage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1731,9 +1778,10 @@ GameObject:
   - component: {fileID: 670433919979500947}
   - component: {fileID: 8457289536001964453}
   - component: {fileID: 6614880928516541807}
+  - component: {fileID: 4310112880758073130}
   m_Layer: 0
   m_Name: TileIndicator
-  m_TagString: Untagged
+  m_TagString: TileIndicator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1747,7 +1795,7 @@ Transform:
   m_GameObject: {fileID: 8220015695828673082}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1920, y: -1080, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1817,7 +1865,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0c8f43d7cda6bd47a79782790bdad09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 0}
+  tileIndicator: {fileID: 8220015695828673082}
+--- !u!114 &4310112880758073130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8220015695828673082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee7b92e73deb2849afd47945aeacf93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &491094549690114337
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 03b44aff9b61b44768bcd3871e43f479
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/WeaverSyncSetTests_IsSuccess/SyncSetGenericInheritance.cs
+  uploadId: 485797

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b06345372a7df4b31b37cac6fc6e3b55
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/WeaverMonoBehaviourTests_IsSuccess/MonoBehaviourClientCallback.cs
+  uploadId: 485797

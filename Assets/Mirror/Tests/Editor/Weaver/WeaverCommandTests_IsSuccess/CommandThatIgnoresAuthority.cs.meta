@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e4265cfab73ff4eef80a01723f6fb5fa
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/WeaverCommandTests_IsSuccess/CommandThatIgnoresAuthority.cs
+  uploadId: 485797

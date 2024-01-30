@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Mirror;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class AttackableComponent : MonoBehaviour
+public class AttackableComponent : NetworkBehaviour
 {
-    public int health;
-    public int maxHealth;
+    [SyncVar] public int health;
+    [SyncVar] public int maxHealth;
     public GameObject self;
     
     [Header("Events")]
@@ -15,25 +16,25 @@ public class AttackableComponent : MonoBehaviour
     [CanBeNull] public UnityEvent onDeath;
     
     [Header("Drops")]
-    public bool doDrops;
+    [SyncVar] public bool doDrops;
     public List<ItemClass> drops;
     
     [Header("Enemy spawn")]
-    public bool doEnemySpawn;
-    public GameObject[] enemiesToSpawn;
+    [SyncVar] public bool doEnemySpawn;
+    public List<GameObject> enemiesToSpawn;
     
     [Header("Particles")]
-    public bool doDeathParticles;
+    [SyncVar] public bool doDeathParticles;
     public ParticleSystem deathParticles;
     
     [Header("Sounds")]
-    public bool hasHitSound;
+    [SyncVar] public bool hasHitSound;
     public AudioClip hitSound;
 
     [Header("Mining")] 
-    public int pickaxePower;
-    public int axePower;
-    public bool isMineable;
+    [SyncVar] public int pickaxePower;
+    [SyncVar] public int axePower;
+    [SyncVar] public bool isMineable;
     public Vector3 attackOffset;
     
     [Header("Other")]
@@ -53,7 +54,7 @@ public class AttackableComponent : MonoBehaviour
         if(hasHitSound) m_AudioSource = GetComponent<AudioSource>();
         
         m_SpriteRenderer = GetComponent<SpriteRenderer>();
-        UpdateSpriteBasedOnHealth();
+        UpdateSpriteBasedOnHealth(health);
 
         _healthBarComponent = GetComponent<HealthBarComponent>();
         if(_healthBarComponent != null) _healthBarComponent.SetMaxHealth(maxHealth);
@@ -63,18 +64,31 @@ public class AttackableComponent : MonoBehaviour
     {
         health = Math.Clamp(health, 0, maxHealth);
     }
-
-    public void TakeDamage(int dmg)
+    
+    public void DealDamage(int dmg)
     {
+        if (!isServer) return;
+        
+        if (dmg == 0) return;
         health -= dmg;
         onDamageTaken?.Invoke(); // invoke the event after taking damage because some scripts depend on it
         print($"{gameObject.name} took {dmg} damage");
         
-        UpdateSpriteBasedOnHealth();
+        ClientChanges(health);
+        
+        
+    }
+    
+    [ClientRpc]
+    void ClientChanges(int h)
+    {
+        health = h;
         if (hasHitSound)
         {
             m_AudioSource.PlayOneShot(hitSound);
         }
+        
+        UpdateSpriteBasedOnHealth(health);
         
         if(_healthBarComponent != null) _healthBarComponent.SetHealth(health);
         
@@ -83,16 +97,19 @@ public class AttackableComponent : MonoBehaviour
             Dead();
         }
     }
-
+    
     private void Dead()
     {
+        if (!isServer) return;
+        
         onDeath?.Invoke();
         
         if (doEnemySpawn)
         {
-            foreach (GameObject enemy in enemiesToSpawn)
+            foreach (GameObject enemyPrefab in enemiesToSpawn)
             {
-                Instantiate(enemy, transform.position, Quaternion.identity);
+                var enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+                NetworkServer.Spawn(enemy);
             }
         }
 
@@ -101,22 +118,27 @@ public class AttackableComponent : MonoBehaviour
             foreach (ItemClass item in drops)
             {
                 SlotClass slot = new SlotClass(item, 1);
-                
-                item.SpawnItemAsDropped(slot, transform);
+                var droppedItem = item.SpawnItemAsDropped(slot, transform);
+                if(droppedItem != null) NetworkServer.Spawn(droppedItem);
             }
         }
 
         if (doDeathParticles)
         {
             ParticleSystem newDeathParticles = Instantiate(deathParticles, new Vector3(transform.position.x, transform.position.y, 5), Quaternion.identity);
+            NetworkServer.Spawn(newDeathParticles.gameObject);
             newDeathParticles.Play();
         }
         
-        if(_healthBarComponent != null) Destroy(_healthBarComponent.healthBarInstance);
-        
-        if(destroyOnDeath) Destroy(gameObject);
+        if(_healthBarComponent != null) NetworkServer.Destroy(_healthBarComponent.healthBarInstance);
+
+        if (destroyOnDeath)
+        {
+            NetworkServer.Destroy(gameObject);
+            WorldGenerator.Instance.objects[WorldGenerator.Instance.ClampVector3(transform.position)] = null; // remove the object completely
+        }
     }
-    
+
     public bool DoCanAttackCheck(InventoryManager inventory)
     {
         if (isMineable)
@@ -133,13 +155,23 @@ public class AttackableComponent : MonoBehaviour
         return false;
     }
 
-    private void UpdateSpriteBasedOnHealth()
+    public int GetDamage(InventoryManager inventory)
+    {
+        if (inventory.equippedTool != null && inventory.equippedTool.item != null)
+        {
+            return inventory.equippedTool.item.damage;
+        }
+
+        return 0;
+    }
+    
+    private void UpdateSpriteBasedOnHealth(int h)
     {
         if (changeSpriteDependingOnHealth)
         {
             // This formula will calculate sprite depending on health
             // Sprites will be calculated from the end, like first damaged sprites will come from the end
-            int spriteIndex = health / 20;
+            int spriteIndex = h / 20;
         
             // Clamp the index to be within the array bounds
             spriteIndex = Mathf.Clamp(spriteIndex, 0, damagedSprites.Length - 1);

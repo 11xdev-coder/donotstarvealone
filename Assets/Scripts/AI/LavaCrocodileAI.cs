@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -290,7 +289,7 @@ public class LavaCrocodileAI : MonoBehaviour
         if (player != null)
         {
             int damage = _selectedAttack == AttackType.Bite ? biteDamage : scratchDamage;
-            player.GetComponent<AttackableComponent>().TakeDamage(damage);
+            player.GetComponent<AttackableComponent>().DealDamage(damage);
         }
     }   
     

@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: f0349d2e3a74454e9dc8badec1db0289
+timeCreated: 1613049868
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/InterestManagementTests_Common.cs
+  uploadId: 485797

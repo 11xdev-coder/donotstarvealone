@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: eedb822be9a941428259caf9f707bb45
+timeCreated: 1614573407
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/NetworkLoopTests.cs
+  uploadId: 485797

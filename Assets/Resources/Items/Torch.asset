@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff7a22aa412f7842abb332e0ae00673, type: 3}
   m_Name: Torch
   m_EditorClassIdentifier: 
+  itemId: 4
   itemName: Torch
   itemSprite: {fileID: 21300000, guid: f47aae99384abb944a15fbec9b9d6ac4, type: 3}
   droppedItemPrefab: {fileID: 8454655466585242356, guid: 4d474eb5d4326ea43a540ef5a02e7d8f, type: 3}

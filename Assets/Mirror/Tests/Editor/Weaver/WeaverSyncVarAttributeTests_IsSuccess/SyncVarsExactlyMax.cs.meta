@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: ecee7f6e569f44afbaa0b6c1cbf2d16c
+timeCreated: 1631799739
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/WeaverSyncVarAttributeTests_IsSuccess/SyncVarsExactlyMax.cs
+  uploadId: 485797

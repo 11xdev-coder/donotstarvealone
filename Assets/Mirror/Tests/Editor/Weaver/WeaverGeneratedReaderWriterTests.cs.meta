@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 0ee83eef537268344880fa60f2c7a059
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/WeaverGeneratedReaderWriterTests.cs
+  uploadId: 485797

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 63c380d6dae6946209ed0832388a657c
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Runtime/Transport/KCP/kcp2k/where-allocation/Scripts/where-allocations.asmdef
+  uploadId: 485797

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 48d47c0cf65be8d438e25f7039e50855
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/ExtraAssembly/ComplexClass.cs
+  uploadId: 485797

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 11c6caa4a9760bf4a909e72138dfb8e5
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Runtime/Scenes/SceneObjectSpawningTestsScene.unity
+  uploadId: 485797

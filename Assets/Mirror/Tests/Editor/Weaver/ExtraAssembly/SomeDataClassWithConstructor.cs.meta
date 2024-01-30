@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 1e73b5c53b6d21b47ab1442e5ad2265a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/ExtraAssembly/SomeDataClassWithConstructor.cs
+  uploadId: 485797

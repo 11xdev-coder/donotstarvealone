@@ -1,15 +1,38 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
-public class WorldGenerator : MonoBehaviour
+public class WorldGenerator : NetworkBehaviour
 {
-    public Dictionary<Vector3Int, GameObject> objects;
+    [Serializable]
+    public class WorldData
+    {
+        public List<TileData> tileData;
+        public List<TileData> collidableTileData;
+        public List<GameObjectData> gameObjectData;
+    }
+    
+    [Serializable]
+    public class TileData
+    {
+        public string tileId;
+        public Vector3Int position;
+    }
+    
+    [Serializable]
+    public class GameObjectData
+    {
+        public string objectId;
+        public Vector3Int position;
+    }
+
+    public Dictionary<Vector3Int, GameObjectData> objects;
     public List<HashSet<Vector3Int>> islands = new List<HashSet<Vector3Int>>();
-    public float globalTicks;
+    [SyncVar] public float globalTicks;
     
     [Header("Seed")] 
     public int seed;
@@ -41,19 +64,71 @@ public class WorldGenerator : MonoBehaviour
         Forest
     }
 
-    [Header("Player")] 
-    public GameObject player;
+    [Header("Spawn")] 
+    [SyncVar] public Vector3Int spawnPoint;
 
     private Vector2 _perlinOffset;
+    private Registry _registry;
+    private List<byte> _receivedChunks = new List<byte>();
+    private const int MaxChunkSize = 1000;
+    
+    public static WorldGenerator Instance { get; private set; }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        GenerateAndInitializeWorldForHost();
+    }
     
     void Awake()
     {
+        // Check if Instance already exists and warn if there are multiple instances
+        if (Instance != null)
+        {
+            Debug.LogWarning("Multiple instances of WorldGenerator found!");
+            return;
+        }
+
+        // Initialize the instance
+        Instance = this;
+
+        DontDestroyOnLoad(gameObject);
+        
         Random.InitState(seed);
         _perlinOffset = new Vector2(Random.Range(-10000f, 10000f), Random.Range(-10000f, 10000f));
-        objects = new Dictionary<Vector3Int, GameObject>();
+        _registry = Registry.Instance;
+        objects = new Dictionary<Vector3Int, GameObjectData>();
+    }
+    
+    public void GenerateAndInitializeWorldForHost()
+    {
+        GenerateEverything(); // Your existing world generation logic
+
+        // Serialize the current world state
+        byte[] worldData = SerializeWorldData();
+
+        // Send this data to all clients (existing and future ones)
+        RpcSendWorldDataToClients(worldData);
     }
 
-    void Start()
+    [ClientRpc]
+    void RpcSendWorldDataToClients(byte[] worldData)
+    {
+        // If this is the host itself, no need to deserialize again
+        if (isServer) return;
+
+        // Clients deserialize the world state
+        DeserializeWorldState(worldData);
+    }
+    
+    [TargetRpc]
+    public void TargetSendWorldDataToClient(NetworkConnection target, byte[] worldData)
+    {
+        // Client deserializes the world state
+        DeserializeWorldState(worldData);
+    }
+
+    public void GenerateEverything()
     {
         GenerateWorld();
         foreach (Biome biome in biomes)
@@ -91,7 +166,7 @@ public class WorldGenerator : MonoBehaviour
 
                 if (ShouldSpawnPlayer(x, y, currentBiome))
                 {
-                    player.transform.position = new Vector3(x, y, 0);
+                    spawnPoint = new Vector3Int(x, y, 0);
                     havePlayerSpawned = true;
                 }
 
@@ -269,7 +344,7 @@ public class WorldGenerator : MonoBehaviour
     {
         if (objects.ContainsKey(tilePos))
         {
-            Destroy(objects[tilePos]);
+            //Destroy(objects[tilePos]);
             objects.Remove(tilePos);
         }
     }
@@ -295,16 +370,16 @@ public class WorldGenerator : MonoBehaviour
 
     void TrySpawnObject(Biome biome, int x, int y)
     {
-        GameObject objectToInstantiate = biome.GetRandomObject();
-        if (objectToInstantiate != null)
+        string objectId = biome.GetRandomObjectId();
+        if (objectId != null)
         {
-            Vector3 objectPosition = new Vector3(x, y, 0);
-            GameObject instantiatedObject = Instantiate(objectToInstantiate, objectPosition, Quaternion.identity);
-            SetSortingOrder(instantiatedObject, width - y + 1);
+            //Vector3 objectPosition = new Vector3(x, y, 0);
+            //GameObject instantiatedObject = Instantiate(objectToInstantiate, objectPosition, Quaternion.identity);
+            //SetSortingOrder(instantiatedObject, width - y + 1);
             
             // record object
             Vector3Int tilePos = new Vector3Int(x, y, 0);
-            objects[tilePos] = instantiatedObject;
+            objects[tilePos] = new GameObjectData { objectId = objectId, position = tilePos };
         }
     }
 
@@ -339,7 +414,7 @@ public class WorldGenerator : MonoBehaviour
         // Remove any objects that might be on this tile
         if (objects.TryGetValue(pos, out var o))
         {
-            if (currentBiome.objects.Contains(o)) return; // does not clear any objects that correspond to current biome
+            if (currentBiome.objects.Contains(new BiomeObject { objectId = o.objectId})) return; // does not clear any objects that correspond to current biome
             RemoveSpawnedObject(pos);
         }
     }
@@ -498,4 +573,111 @@ public class WorldGenerator : MonoBehaviour
 
         return oceanBiome;
     }
+    
+    public byte[] SerializeWorldData()
+    {
+        List<TileData> tileDataList = new List<TileData>();
+        List<TileData> collidableTileDataList = new List<TileData>();
+        List<GameObjectData> objectDataList = new List<GameObjectData>();
+
+        // Serialize Tiles
+        foreach (var position in triggerTilemap.cellBounds.allPositionsWithin)
+        {
+            var tile = triggerTilemap.GetTile<Tile>(position);
+            if (tile != null)
+            {
+                tileDataList.Add(new TileData { position = position, tileId = tile.name });
+            }
+        }
+
+        foreach (var position in collidableTilemap.cellBounds.allPositionsWithin)
+        {
+            var tile = collidableTilemap.GetTile<Tile>(position);
+            if (tile != null)
+            {
+                collidableTileDataList.Add(new TileData { position = position, tileId = tile.name});
+            }
+        }
+
+        // Serialize Objects
+        foreach (var kvp in objects)
+        {
+            if (kvp.Value is {objectId: not null})
+            {
+                objectDataList.Add(new GameObjectData { position = kvp.Key, objectId = kvp.Value.objectId });
+            }
+        }
+
+
+        // Convert to byte array
+        string json = JsonUtility.ToJson(new WorldData { tileData = tileDataList, gameObjectData = objectDataList, collidableTileData = collidableTileDataList });
+        return System.Text.Encoding.UTF8.GetBytes(json);
+    }
+    
+    // Method to send data in chunks
+    public void SendWorldDataInChunks(NetworkConnection conn, byte[] worldData)
+    {
+        for (int i = 0; i < worldData.Length; i += MaxChunkSize)
+        {
+            int chunkSize = Mathf.Min(MaxChunkSize, worldData.Length - i);
+            byte[] chunk = new byte[chunkSize];
+            Array.Copy(worldData, i, chunk, 0, chunkSize);
+            TargetReceiveWorldChunk(conn, chunk, i == 0, i + chunkSize >= worldData.Length);
+        }
+    }
+    
+    
+    [TargetRpc]
+    private void TargetReceiveWorldChunk(NetworkConnection target, byte[] chunk, bool isFirstChunk, bool isLastChunk)
+    {
+        if (isFirstChunk)
+        {
+            _receivedChunks.Clear();
+        }
+
+        _receivedChunks.AddRange(chunk);
+
+        if (isLastChunk)
+        {
+            byte[] fullData = _receivedChunks.ToArray();
+            DeserializeWorldState(fullData);
+        }
+    }
+    
+    public void DeserializeWorldState(byte[] data)
+    {
+        string json = System.Text.Encoding.UTF8.GetString(data);
+        WorldData worldData = JsonUtility.FromJson<WorldData>(json);
+        
+        // basic tiles
+        foreach (var tileData in worldData.tileData)
+        {
+            Tile tile = _registry.GetTileById(tileData.tileId);
+            triggerTilemap.SetTile(tileData.position, tile);
+        }
+        
+        // ocean tiles (collidable)
+        foreach (var tileData in worldData.collidableTileData)
+        {
+            Tile tile = _registry.GetTileById(tileData.tileId);
+            collidableTilemap.SetTile(tileData.position, tile);
+        }
+
+        // Instantiate Objects
+        foreach (var objectData in worldData.gameObjectData)
+        {
+            GameObject prefab = _registry.GetObjectById(objectData.objectId);
+            if(isServer) 
+            {
+                GameObject go = Instantiate(prefab, objectData.position, Quaternion.identity);
+                NetworkServer.Spawn(go);
+                var position = go.transform.position;
+                Debug.Log($"[Server] Spawned object {go.name} with netId: {go.GetComponent<NetworkIdentity>().netId} at {Time.time}" +
+                          $"at x: {position.x} y: {position.y} z: {position.z}");
+            }
+
+        }
+    }
+
 }
+

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: bfc7cd9211e6145418289e9c9572ce55
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/NetworkWriterCollectionTest.cs
+  uploadId: 485797

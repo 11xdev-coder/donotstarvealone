@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8e3f2ecadd13149f29cd3e83ef6a4bff
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/ExponentialMovingAverageTest.cs
+  uploadId: 485797

@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Inventory;
+using Mirror;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ConsoleManager : MonoBehaviour
+public class ConsoleManager : NetworkBehaviour
 {
     public TMP_InputField codeInputField;
     public TMP_Text consoleOutput;
@@ -95,7 +97,7 @@ public class ConsoleManager : MonoBehaviour
             }
 
             // Assuming you have a player inventory instance available:
-            nearestPlayer.inventory.Add(item, count);
+            if(isLocalPlayer) nearestPlayer.inventory.RequestAddItem(ItemRegistry.Instance.GetIdByItem(item), count);
 
             AddConsoleOutputText($"Given {item.itemName} to the player.");
         }

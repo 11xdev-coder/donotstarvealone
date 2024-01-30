@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 78f0a3f755d35324e959f3ecdd993fb0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/TestPrefabs/invalidPrefabForClientScene.prefab
+  uploadId: 485797

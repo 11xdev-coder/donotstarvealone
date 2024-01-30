@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8f9e80c0fd45740d1923469de369a8d3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/WeaverMessageTests_IsSuccess/MessageValid.cs
+  uploadId: 485797

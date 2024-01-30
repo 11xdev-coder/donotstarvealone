@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: e09fed54f2b64402928a287b2fd8313f
+timeCreated: 1632232605
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/SyncVarGameObjectTests.cs
+  uploadId: 485797

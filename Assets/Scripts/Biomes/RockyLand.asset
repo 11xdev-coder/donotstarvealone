@@ -18,10 +18,13 @@ MonoBehaviour:
   possibleBiome: 1
   music: {fileID: 8300000, guid: 756145be415ee954ba3aa3255d304411, type: 3}
   objects:
-  - {fileID: 5387719478794832004, guid: f07c15d2e4411e941b7c4e54ce50ab4b, type: 3}
+  - objectId: miniBoulder
   spawnChances:
   - 0.075
   isIsland: 0
   numberOfIslands: 0
   islandRadius: 0
   distanceFromMainIsland: 0
+  doGenerateBeach: 0
+  beachTile: {fileID: 0}
+  beachWidth: 0

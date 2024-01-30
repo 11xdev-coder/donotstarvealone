@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 757a5c351d7046538812958112ce74f3
+timeCreated: 1624953125
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/NetworkTransform2kTests.cs
+  uploadId: 485797

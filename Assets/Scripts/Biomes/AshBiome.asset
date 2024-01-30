@@ -18,14 +18,14 @@ MonoBehaviour:
   possibleBiome: 0
   music: {fileID: 8300000, guid: bd00c35b2d4ec5b4e84ce6cab5ca5956, type: 3}
   objects:
-  - {fileID: 3418335907686926578, guid: 8cb588deeca94a741af224ad4160ea83, type: 3}
-  - {fileID: 8847047761419001490, guid: b90af03c7d897234b8653e3063aeec36, type: 3}
-  - {fileID: 8847047761419001490, guid: 19a8bd8f70c6292459bc3ec0d278bfc6, type: 3}
-  - {fileID: 8847047761419001490, guid: 06823697d184896439c417b1e4d1c340, type: 3}
-  - {fileID: 3418335907686926578, guid: bfedf54b27906924e80a3986d814bd3b, type: 3}
-  - {fileID: 8847047761419001490, guid: a6fc1bec1547fe645ba1efdd519346b7, type: 3}
-  - {fileID: 8847047761419001490, guid: d1a00b6f4c054404f823b1ea698c1dc5, type: 3}
-  - {fileID: 8847047761419001490, guid: e8aa485a7017a2c4fadb10d79772387b, type: 3}
+  - objectId: ashTree
+  - objectId: spikyBush
+  - objectId: littleRock1
+  - objectId: littleRock2
+  - objectId: ashGrass1
+  - objectId: ashGrass2
+  - objectId: ashGrass3
+  - objectId: volcano
   spawnChances:
   - 0.015
   - 0.009

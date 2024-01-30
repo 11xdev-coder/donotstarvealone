@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 6a60a4daf5b784bafadc07ffc475b596
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/WeaverSyncListTests_IsSuccess/SyncListNestedStruct.cs
+  uploadId: 485797

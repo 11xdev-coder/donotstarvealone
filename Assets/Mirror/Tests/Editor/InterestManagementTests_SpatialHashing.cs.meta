@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 63d9e0d6aa9a4eec8b4e2db07e6261bf
+timeCreated: 1613117841
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/InterestManagementTests_SpatialHashing.cs
+  uploadId: 485797

@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 6baedb85368e4347876f7b8b7c5110cb
+timeCreated: 1622030080
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Runtime/ClientSceneTests_LocalPlayer_AsHost.cs
+  uploadId: 485797

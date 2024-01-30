@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8b5d1ec150fb64234b3cdbae16ebb12f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/WeaverSyncDictionaryTests_IsSuccess/SyncDictionary.cs
+  uploadId: 485797

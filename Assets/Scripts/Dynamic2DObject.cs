@@ -20,13 +20,13 @@ public class Dynamic2DObject : MonoBehaviour
     public bool invertRotationForParticle;
     public bool invertXRotation;
     
-    private GameObject player;
+    private PlayerController _player;
     private Camera _camera;
     private bool isActive = true;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        _player = FindFirstObjectByType<PlayerController>();
         if (doSort)
         {
             baseSortingOrder = FindFirstObjectByType<WorldGenerator>().height;
@@ -83,7 +83,7 @@ public class Dynamic2DObject : MonoBehaviour
     {
         if (doColliderCheck)
         {
-            Plane[] planes = GeometryUtility.CalculateFrustumPlanes(_camera);
+            Plane[] planes = GeometryUtility.CalculateFrustumPlanes(_camera); // error
             return GeometryUtility.TestPlanesAABB(planes, GetComponent<Collider2D>().bounds);
         }
 
@@ -106,9 +106,10 @@ public class Dynamic2DObject : MonoBehaviour
 
     private void UpdateSortingLayers()
     {
+        if (_player == null) return;
         // Get all colliders attached to this object and the player
         Collider2D[] objectColliders = GetComponents<Collider2D>();
-        Collider2D[] playerColliders = player.GetComponents<Collider2D>();
+        Collider2D[] playerColliders = _player.GetComponents<Collider2D>();
 
         Collider2D objectCollider = DefineCollider(objectColliders);
         Collider2D playerCollider = DefineCollider(playerColliders);

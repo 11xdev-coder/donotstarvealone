@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c93dd180605f644c2b24cde840095dd7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/WeaverClientRpcTests_IsSuccess/BehaviourCanBeSentInRpc.cs
+  uploadId: 485797

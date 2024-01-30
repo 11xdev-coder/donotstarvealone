@@ -106,7 +106,7 @@ public class VolcanoAI : MonoBehaviour
             AttackableComponent attackable = hitCollider.GetComponent<AttackableComponent>();
             if (attackable != null && !attackable.isMineable)
             {
-                attackable.TakeDamage(damage);
+                attackable.DealDamage(damage);
             }
         }
     }

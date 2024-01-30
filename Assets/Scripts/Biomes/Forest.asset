@@ -18,8 +18,8 @@ MonoBehaviour:
   possibleBiome: 4
   music: {fileID: 8300000, guid: 756145be415ee954ba3aa3255d304411, type: 3}
   objects:
-  - {fileID: 5957941118420886137, guid: 381c69051f9e978449ab81a9277a67f4, type: 3}
-  - {fileID: 5387719478794832004, guid: f07c15d2e4411e941b7c4e54ce50ab4b, type: 3}
+  - objectId: pineTree
+  - objectId: miniBoulder
   spawnChances:
   - 0.1
   - 0.005
@@ -27,3 +27,6 @@ MonoBehaviour:
   numberOfIslands: 0
   islandRadius: 0
   distanceFromMainIsland: 0
+  doGenerateBeach: 0
+  beachTile: {fileID: 0}
+  beachWidth: 0

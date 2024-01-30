@@ -5,8 +5,27 @@ TagManager:
   serializedVersion: 2
   tags:
   - MainCanvas
-  - BlockPointer
   - Inventory
+  - FireParticle
+  - TileIndicator
+  - HoveringText
+  - HUD
+  - HealthFillable
+  - HeartImage
+  - HealthAmount
+  - MaxHealthAmount
+  - BoostMarks
+  - BoostPointer
+  - PPV
+  - DebugMenu
+  - SlotHolder
+  - ItemCursor
+  - TalkerText
+  - BlockPointer
+  - ColorPreview
+  - Console
+  - ShowPlayerRadiuses
+  - AttackDetectionRadiusButton
   layers:
   - Default
   - TransparentFX

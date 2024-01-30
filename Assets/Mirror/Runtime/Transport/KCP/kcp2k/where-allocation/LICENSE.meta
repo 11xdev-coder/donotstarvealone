@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a857d4e863bbf4a7dba70bc2cd1b5949
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Runtime/Transport/KCP/kcp2k/where-allocation/LICENSE
+  uploadId: 485797

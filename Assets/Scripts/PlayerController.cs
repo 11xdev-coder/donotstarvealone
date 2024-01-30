@@ -2,7 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Inventory;
 using JetBrains.Annotations;
+using Mirror;
+using Singletons;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,8 +15,9 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Vector2 = UnityEngine.Vector2;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
+    [SyncVar]
     public float moveSpeed = 2f;
     public Animator animator;
     public GameObject tileIndicator;
@@ -27,13 +31,13 @@ public class PlayerController : MonoBehaviour
     public WorldGenerator.PossibleBiomes currentBiome;
     private readonly RaycastHit2D[] _hits = new RaycastHit2D[5];
     public GameObject console;
-    private KeyBindingManager _keyBindingManager;
+    //private KeyBindingManager _keyBindingManager;
     private GameObject _hit;
     
     [Header("-- Assignable - Important --")]
-    public Camera mainCamera;
-    public TMP_Text hoveringText;
-    public GameObject hud;
+    private Camera _mainCamera;
+    private TMP_Text _hoveringText;
+    private GameObject _hud;
     public InventoryManager inventory;
     public WorldGenerator world;
     public GameObject handToolSpriteRenderer;
@@ -42,10 +46,10 @@ public class PlayerController : MonoBehaviour
     
     [Header("-- Health - Important --")]
     public AttackableComponent healthComponent;
-    public Image healthFillableImage;
-    public TMP_Text healthAmountText;
+    private Image _healthFillableImage;
+    private TMP_Text _healthAmountText;
     public TMP_Text maxHealthAmountText;
-    public Image heartImage;
+    private Image _heartImage;
     public Sprite heartImageFull;
     public Sprite heartImageCracked;
 
@@ -63,22 +67,22 @@ public class PlayerController : MonoBehaviour
     public Settings currentInteractionSettings;
     
     [Header("Interactions - Car")]
-    public bool isInCar;
-    public GameObject car;
+    [SyncVar] public bool isInCar;
+    [SyncVar] public GameObject car;
     public Rigidbody2D carRb;
-    public float carMoveSpeed;
-    public float carTurnSpeed;
-    public RectTransform boostPointer;
-    public RectTransform boostMarks;
+    [SyncVar] public float carMoveSpeed;
+    [SyncVar] public float carTurnSpeed;
+    private RectTransform _boostPointer;
+    private RectTransform _boostMarks;
     
     [Header("Movement")]
-    public float horizontal;
-    public float vertical;
-    public Vector2 movement;
+    [SyncVar] public float horizontal;
+    [SyncVar] public float vertical;
+    [SyncVar] public Vector2 movement;
     public Vector3 mousePos;
-    public Vector3 targetPosition;
-    public bool isHit;
-    private Rigidbody2D _rb;
+    [SyncVar] public Vector3 targetPosition;
+    [SyncVar] public bool isHit;
+    public Rigidbody2D rb;
     
     [Header("Right Clicking")]
     public bool hasRightClicked;
@@ -86,19 +90,19 @@ public class PlayerController : MonoBehaviour
     
     [Header("Dropping")]
     public Vector2 directionDifference;
-    public bool isDropping;
+    [SyncVar] public bool isDropping;
     public float dropStopThreshold = 0.2f;
     
     [Header("Mouse")]
-    public Vector3 direction;
-    public bool isMovingToMouse;
-    public bool canMoveToMouse;
+    [SyncVar] public Vector3 direction;
+    [SyncVar] public bool isMovingToMouse;
+    [SyncVar] public bool canMoveToMouse;
     public float minCursorDistance = 0.1f;
     public float bufferCursorDistance = 0.2f;
 
     [Header("Attacking")] 
-    public float searchRadius = 6f;
-    public float playerAttackDetectionRadius = 0.3f;
+    [SyncVar] public float searchRadius = 6f;
+    [SyncVar] public float playerAttackDetectionRadius = 0.3f;
     public Vector3 attackDetectionOffset;
     private bool _isMovingToTarget;
     private bool _isAttacking;
@@ -106,7 +110,7 @@ public class PlayerController : MonoBehaviour
     private float _dotProductRight;
     
     [Header("Animation")]
-    public bool animLocked;
+    [SyncVar] public bool animLocked;
     public string movementXString;
     public string movementYString;
     public string attackXString;
@@ -119,17 +123,44 @@ public class PlayerController : MonoBehaviour
     private AutoSizeTMP _autoSizeHovering;
 
     [Header("Post Processing")] 
-    public PostProcessVolume ppv;
+    private PostProcessVolume _ppv;
     [Range(0f, 1f)]
     public float ashBiomeEnterSmoothness;
     [Range(0f, 1f)]
     public float ashBiomeExitSmoothness;
     private MusicManager _musicManger;
     
-    private void Awake()
+    // ReSharper disable Unity.PerformanceAnalysis
+    public override void OnStartClient()
     {
-        _keyBindingManager = FindFirstObjectByType<KeyBindingManager>().instance;
+        base.OnStartClient();
         
+        enabled = true;
+        
+        // tag finding
+        tileIndicator = TileIndicatorSingleton.Instance;
+        
+        _mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        
+        console = GameObject.FindGameObjectWithTag("Console");
+        _hoveringText = GameObject.FindGameObjectWithTag("HoveringText").GetComponent<TMP_Text>();
+        _hud = GameObject.FindGameObjectWithTag("HUD");
+        
+        _healthFillableImage = GameObject.FindGameObjectWithTag("HealthFillable").GetComponent<Image>();
+        _healthAmountText = GameObject.FindGameObjectWithTag("HealthAmount").GetComponent<TMP_Text>();
+        maxHealthAmountText = MaxHealthSingleton.Instance;
+        _healthFillableImage.GetComponent<ShowUIText>().found = true;
+        _heartImage = GameObject.FindGameObjectWithTag("HeartImage").GetComponent<Image>();
+        // TODO: boostPointer not found
+        _boostPointer = GameObject.FindGameObjectWithTag("BoostPointer").GetComponent<RectTransform>();
+        _boostPointer.gameObject.SetActive(false);
+        _boostMarks = GameObject.FindGameObjectWithTag("BoostMarks").GetComponent<RectTransform>();
+        _boostMarks.gameObject.SetActive(false);
+        
+        _ppv = GameObject.FindGameObjectWithTag("PPV").GetComponent<PostProcessVolume>();
+
+        
+        // TODO: console not found
         console = FindFirstObjectByType<ConsoleManager>().gameObject;
         console.SetActive(false);
         
@@ -140,14 +171,18 @@ public class PlayerController : MonoBehaviour
         _originalSortingOrder = _bodyParts[0].GetComponent<SpriteRenderer>().sortingOrder;
 
         
-        hud.SetActive(true);
+        _hud.SetActive(true);
         canMoveToMouse = true;
-        _rb = GetComponent<Rigidbody2D>();
-        healthFillableImage.fillAmount = 1f;
+        rb = GetComponent<Rigidbody2D>();
+        _healthFillableImage.fillAmount = 1f;
 
-        _autoSizeHovering = hoveringText.GetComponent<AutoSizeTMP>();
+        _autoSizeHovering = _hoveringText.GetComponent<AutoSizeTMP>();
         _talker = GetComponent<TalkerComponent>();
-        world = FindFirstObjectByType<WorldGenerator>();
+        
+        world = WorldGenerator.Instance;
+        world.enabled = true;
+        transform.position = world.spawnPoint;
+        
         _musicManger = FindFirstObjectByType<MusicManager>().Instance;
 
         AddListeners();
@@ -157,8 +192,37 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(GetCurrentBiome());
     }
 
+    public override void OnStartAuthority()
+    {
+        base.OnStartAuthority();
+
+        enabled = true;
+        
+        _mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        _mainCamera.GetComponent<CameraFollow>().target = gameObject;
+        _mainCamera.GetComponent<CameraFollow>().enabled = true;
+        
+        transform.position = WorldGenerator.Instance.spawnPoint;
+    }
+    
+    [Command]
+    void CmdTriggerAnimation(string animationName)
+    {
+        RpcPlayAnimation(animationName);
+    }
+
+    [ClientRpc]
+    void RpcPlayAnimation(string animationName)
+    {
+        if (!isLocalPlayer) return;
+        
+        animator.Play(animationName);
+    }
+    
     private void UpdateAnimations()
     {
+        if (!isLocalPlayer) return;
+        
         if (!animLocked)
         {
             if (_isAttacking)
@@ -167,18 +231,18 @@ public class PlayerController : MonoBehaviour
                 {
                     animator.SetFloat(attackXString, Math.Sign(_dotProductRight));
                     animator.SetFloat(attackYString, Math.Sign(_dotProductForward));
-                    animator.Play("attack");
+                    CmdTriggerAnimation("attack");
                 }
             }
             else if (movement != Vector2.zero)
             {
                 animator.SetFloat(movementXString, Math.Sign(Mathf.Round(movement.x))); // -1, 0 or 1
                 animator.SetFloat(movementYString, Math.Sign(Mathf.Round(movement.y)));
-                animator.Play("walk");
+                CmdTriggerAnimation("walk");
             }
             else 
             {
-                animator.Play("idle");
+                CmdTriggerAnimation("idle");
             }
         }
     }
@@ -205,7 +269,7 @@ public class PlayerController : MonoBehaviour
 
     public void HandleDamage()
     {
-        animator.Play("hit");
+        if(isLocalPlayer) CmdTriggerAnimation("hit");
         isHit = true;
         animLocked = true;
         ResetAttackTargetAndMoving();
@@ -213,9 +277,9 @@ public class PlayerController : MonoBehaviour
 
     public void HandleDeath()
     {
-        animator.Play("death");
+        if(isLocalPlayer) CmdTriggerAnimation("death");
         animLocked = true;
-        hud.SetActive(false);
+        _hud.SetActive(false);
         ChangeHandToolSprite(null);
         RemoveListeners();
         // call everything before we disable controller script
@@ -226,7 +290,7 @@ public class PlayerController : MonoBehaviour
     {
         Vignette vignette;
         
-        if (ppv.profile.TryGetSettings(out vignette))
+        if (_ppv.profile.TryGetSettings(out vignette))
         {
             if (currentBiome == WorldGenerator.PossibleBiomes.Ash)
             {
@@ -240,16 +304,16 @@ public class PlayerController : MonoBehaviour
             }
         }
         
-        _musicManger.ChangeCurrentMusic(world.GetBiomeByPosition(_rb.position).music);
+        _musicManger.ChangeCurrentMusic(world.GetBiomeByPosition(rb.position).music);
     }
     
     private IEnumerator GetCurrentBiome()
     {
         while (true)
         {
-            if (currentBiome != world.GetBiomeByPositionEnum(_rb.position))
+            if (currentBiome != world.GetBiomeByPositionEnum(rb.position))
             {
-                currentBiome = world.GetBiomeByPositionEnum(_rb.position);
+                currentBiome = world.GetBiomeByPositionEnum(rb.position);
                 onBiomeChanged?.Invoke();
             }
 
@@ -322,7 +386,7 @@ public class PlayerController : MonoBehaviour
     private void PlayAnimationAndCancelHit(string anim)
     {
         animLocked = true;
-        animator.Play(anim);
+        if(isLocalPlayer) CmdTriggerAnimation(anim);
         isHit = false;
     }
     
@@ -349,7 +413,7 @@ public class PlayerController : MonoBehaviour
                     targetPosition = targetCollider.bounds.center + target.GetComponent<DroppedItem>().pickupOffset;
                 }
 
-                var position = _rb.position;
+                var position = rb.position;
                 direction = (targetPosition - (Vector3) position).normalized;
                 directionDifference = targetPosition - (Vector3)position;
                 // moving
@@ -361,7 +425,7 @@ public class PlayerController : MonoBehaviour
             }
 
             // Check if target's collider is within the character's interaction radius using OverlapCircleAll
-            Collider2D[] collidersWithinRadius = Physics2D.OverlapCircleAll((Vector3)_rb.position + attackDetectionOffset, playerAttackDetectionRadius);
+            Collider2D[] collidersWithinRadius = Physics2D.OverlapCircleAll((Vector3)rb.position + attackDetectionOffset, playerAttackDetectionRadius);
             bool targetIsWithinRadius;
             targetIsWithinRadius = doAttack ? 
                 collidersWithinRadius.Any(col => col.gameObject == target && !col.isTrigger) :
@@ -393,7 +457,7 @@ public class PlayerController : MonoBehaviour
             canMoveToMouse = false;
             isMovingToMouse = false;
 
-            var position = _rb.position;
+            var position = rb.position;
             direction = (targetPosition - (Vector3) position).normalized;
             // moving
             directionDifference = targetPosition - (Vector3)position;
@@ -435,23 +499,28 @@ public class PlayerController : MonoBehaviour
 
     public void PickUpTargetItem(GameObject target)
     {
-        DroppedItem droppedItem = target.GetComponent<DroppedItem>();
-        int remainingItems = inventory.Add(droppedItem.item, droppedItem.count);
-    
-        // Only decrease the items from the dropped item if they were successfully added to the inventory.
-        int successfullyAddedItems = droppedItem.count - remainingItems;
-    
-        if (successfullyAddedItems > 0)
-        {
-            droppedItem.count -= successfullyAddedItems;
+        if (!isServer) return;
 
-            if (droppedItem.count <= 0)
+        if (isLocalPlayer)
+        {
+            DroppedItem droppedItem = target.GetComponent<DroppedItem>();
+            inventory.RequestAddItem(ItemRegistry.Instance.GetIdByItem(droppedItem.item), droppedItem.count); 
+            int remainingItems = inventory.RemainingItems;
+    
+            // Only decrease the items from the dropped item if they were successfully added to the inventory.
+            int successfullyAddedItems = droppedItem.count - remainingItems;
+    
+            if (successfullyAddedItems > 0)
             {
-                Destroy(droppedItem.gameObject); // Destroy the dropped item game object only if all items were picked up
+                droppedItem.count -= successfullyAddedItems;
+
+                if (droppedItem.count <= 0)
+                {
+                    Destroy(droppedItem.gameObject); // Destroy the dropped item game object only if all items were picked up
+                }
             }
         }
     }
-
     
     public void SetAttackTarget(GameObject target)
     {
@@ -473,7 +542,7 @@ public class PlayerController : MonoBehaviour
     private GameObject FindNearestTarget(bool isSpaceHitted, bool isFHitted)
     {
         // Fetch all colliders within the search radius
-        Collider2D[] colliders = Physics2D.OverlapCircleAll((Vector3)_rb.position + attackDetectionOffset, searchRadius);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll((Vector3)rb.position + attackDetectionOffset, searchRadius);
 
         GameObject nearestTarget = null;
         float shortestDistance = Mathf.Infinity;
@@ -515,10 +584,33 @@ public class PlayerController : MonoBehaviour
         return nearestTarget;
     }
 
+    [Command]
+    public void CmdSetCurrentAttackableTarget(GameObject target)
+    {
+        // Validate the target on the server side
+        AttackableComponent attackableComponent = null;
+        if(target != null) attackableComponent = target.GetComponent<AttackableComponent>();
+        if (attackableComponent != null)
+        {
+            currentAttackableTarget = target;
+        }
+    }
 
+    public void AttemptToSetAttackTarget(GameObject target)
+    {
+        if (!isServer) // If we're on the client, send a command to the server
+        {
+            CmdSetCurrentAttackableTarget(target);
+        }
+        else // If we're on the server, we can set it directly
+        {
+            currentAttackableTarget = target;
+        }
+    }
+    
     private void Attack(GameObject target)
     {
-        Transform rbTransform = _rb.transform;
+        Transform rbTransform = rb.transform;
         Vector3 toObjectVector = (target.transform.position - rbTransform.position).normalized;
     
         // Since it's a 2D top-down view game, your forward vector will be along the Y axis
@@ -529,23 +621,30 @@ public class PlayerController : MonoBehaviour
         _dotProductForward = Vector3.Dot(toObjectVector, playerForward);
         _dotProductRight = Vector3.Dot(toObjectVector, playerRight);
 
-        currentAttackableTarget = target;
+        AttemptToSetAttackTarget(target);
     }
-
-    public void DealDamage() // call this in animation
+    
+    public void DealDamage() // Call this in animation
     {
-        AttackableComponent attackableComponent = currentAttackableTarget.GetComponent<AttackableComponent>();
-        try
+        if (!isServer) return;
+        
+        if (currentAttackableTarget == null)
         {
-            // item in hand
-            if(attackableComponent != null && currentAttackableTarget != healthComponent.self)
-                attackableComponent.TakeDamage(inventory.equippedTool.item.damage);
+            Debug.LogError("DealDamage: currentAttackableTarget is null");
+            return;
         }
-        catch
+        
+        AttackableComponent attackableComponent = currentAttackableTarget.GetComponent<AttackableComponent>();
+        if (attackableComponent != null && currentAttackableTarget != healthComponent.self)
         {
-            // nothing in hand
-            if(attackableComponent != null && !attackableComponent.isMineable && currentAttackableTarget != healthComponent.self)
-                attackableComponent.TakeDamage(5);
+            ItemClass item = inventory.equippedTool.item;
+            print($"DealDamage to {currentAttackableTarget.name}");
+            int damage = (item != null) ? item.damage : 2; // Default damage if no tool
+            attackableComponent.DealDamage(damage);
+        }
+        else
+        {
+            Debug.LogError("DealDamage: AttackableComponent is null or trying to damage self");
         }
     }
     
@@ -556,7 +655,7 @@ public class PlayerController : MonoBehaviour
         canMoveToMouse = false;
         isMovingToMouse = false;
 
-        var position = _rb.position;
+        var position = rb.position;
         direction = (targetTilePosition - (Vector3) position).normalized;
         // moving
         directionDifference = targetTilePosition - (Vector3)position;
@@ -581,10 +680,15 @@ public class PlayerController : MonoBehaviour
     
     private void HealthChanges()
     {
-        healthFillableImage.fillAmount = (float) healthComponent.health / healthComponent.maxHealth; // fill health sprite depending on health
-        healthAmountText.text = Convert.ToString(healthComponent.health); // change text to our hp
+        if (maxHealthAmountText == null)
+        {
+            maxHealthAmountText = MaxHealthSingleton.Instance;
+            if (maxHealthAmountText) Debug.LogWarning("maxHealthAmountText not found");
+        }
+        _healthFillableImage.fillAmount = (float) healthComponent.health / healthComponent.maxHealth; // fill health sprite depending on health
+        _healthAmountText.text = Convert.ToString(healthComponent.health); // change text to our hp
         maxHealthAmountText.text = "Max:\n " + Convert.ToString(healthComponent.maxHealth);
-        heartImage.sprite = healthComponent.health <= healthComponent.maxHealth / 2 ? heartImageCracked : heartImageFull;
+        _heartImage.sprite = healthComponent.health <= healthComponent.maxHealth / 2 ? heartImageCracked : heartImageFull;
     }
     
     #region Helper Funcs
@@ -603,13 +707,13 @@ public class PlayerController : MonoBehaviour
 
     private void UpdatePointerPosition(Settings settings)
     {
-        float bottomYPosition = -(boostMarks.sizeDelta.y / 2); // Bottom is half the height downwards from the center
-        float topYPosition = boostMarks.sizeDelta.y / 2;   // Top is half the height upwards from the center
+        float bottomYPosition = -(_boostMarks.sizeDelta.y / 2); // Bottom is half the height downwards from the center
+        float topYPosition = _boostMarks.sizeDelta.y / 2;   // Top is half the height upwards from the center
         
         float percentage = settings.CurrentBoost / settings.MaxBoost;
         float newYPosition = Mathf.Lerp(bottomYPosition, topYPosition, percentage);
 
-        boostPointer.anchoredPosition = new Vector2(boostPointer.anchoredPosition.x, newYPosition);
+        _boostPointer.anchoredPosition = new Vector2(_boostPointer.anchoredPosition.x, newYPosition);
     }
 
     public void ToggleVisibility(bool toggle)
@@ -693,35 +797,357 @@ public class PlayerController : MonoBehaviour
     
     #endregion
 
-    [Obsolete("Obsolete")]
-    private void Update()
+    private void HandleLocalInput()
     {
-        mousePos = Input.mousePosition;
-        mousePos.z = Mathf.Abs(mainCamera.transform.position.z);
-        Vector3 mouseWorldPoint = mainCamera.ScreenToWorldPoint(mousePos);
+        // horizontal = 0f;
+        // vertical = 0f;
+        //
+        // //  basic movement ------------------------
+        // if (Input.GetKey(KeyCode.W))
+        // {
+        //     vertical = 1;
+        //     ResetAttackTargetAndMoving();
+        //     if (!isHit) DisableAnimLock();
+        // }
+        //
+        // if (Input.GetKey(KeyCode.S))
+        // {
+        //     vertical = -1;
+        //     ResetAttackTargetAndMoving();
+        //     if (!isHit) DisableAnimLock();
+        // }
+        //
+        // if (Input.GetKey(KeyCode.A))
+        // {
+        //     horizontal = -1;
+        //     ResetAttackTargetAndMoving();
+        //     if (!isHit) DisableAnimLock();
+        // }
+        //
+        // if (Input.GetKey(KeyCode.D))
+        // {
+        //     horizontal = 1;
+        //     ResetAttackTargetAndMoving();
+        //     if (!isHit) DisableAnimLock();
+        // }
+    }
 
-        // Ensure the z-coordinate is set appropriately
-        mouseWorldPoint.z = 1;
+    private void HandleLocalMovement()
+    {
+        // movement = new Vector2(horizontal, vertical);
+        //
+        // if (!isHit) // if not hit
+        // {
+        //     if (!isMovingToMouse) // if not moving to mouse
+        //     {
+        //         // Normalize the vector if it's length is greater than 1 (this is when diagonal movement occurs)
+        //         if (movement.sqrMagnitude > 1)
+        //         {
+        //             movement.Normalize();
+        //         }
+        //
+        //         rb.velocity = movement * moveSpeed; 
+        //     }
+        // }
+        // else
+        // {
+        //     ResetAttackTargetAndMoving();
+        //     rb.velocity = Vector2.zero; // if hit - stop
+        // } 
+        //
+        // if (isInCar && car != null) // in car
+        // {
+        //     CarLogic();
+        // }
+    }
+    
+    private void HandleLocalInteractions()
+    {
+        // // attacking & mining ---------------------------------------
+        // if (Input.GetKey(KeyCode.F) && !_isAttacking) // if smacked F
+        // {
+        //     GameObject target = FindNearestTarget(false, true);
+        //     if (target != null)
+        //     {
+        //         SetAttackTarget(target); // set our current target to nearest one
+        //         _isMovingToTarget = true; // actually move to target
+        //     }
+        // }
+        // else if (Input.GetKey(KeyCode.Space) && !_isAttacking) // if smacked space bar
+        // {
+        //     GameObject target = FindNearestTarget(true, false);
+        //     if (target != null)
+        //     {
+        //         SetAttackTarget(target); // set our current target to nearest one
+        //         _isMovingToTarget = true; // actually move to target
+        //     }
+        // }
+        //
+        // // clicking -------------------------------------------------------------
+        // if (Input.GetMouseButton(0)) // if we left clicked and no target - move to mouse
+        // {
+        //     if (attackTarget != null) _isMovingToTarget = true;
+        //     else if (canMoveToMouse && !_isMovingToTarget) MoveToMouse();
+        // }
+        // else if (Input.GetMouseButtonUp(0))
+        //     isMovingToMouse = false;
+        //
+        //
+        // // if we want to move to target
+        // if (_isMovingToTarget)
+        // {
+        //     if (attackTarget.GetComponent<AttackableComponent>())
+        //         MoveTowardsTarget(attackTarget, true, false, false); // attack
+        //     else if (attackTarget.GetComponent<DroppedItem>())
+        //         MoveTowardsTarget(attackTarget, false, true, false); // pick up
+        // }
+        //
+        // if (isDropping)
+        // {
+        //     MoveTowardsTarget(attackTarget, false, false, true);
+        // }
+        //
+        // if (hasRightClicked)
+        // {
+        //     MoveToTileEdge();
+        // }
+        //
+        // if (!canMoveToMouse) isMovingToMouse = false;
+    }
 
-        // Round to the nearest whole number to get the tile position
-        Vector3Int intPosition = world.ClampVector3(mouseWorldPoint);
+    private void CommonUpdate()
+    {
+        // if(_mainCamera == null) {
+        //     _mainCamera = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<Camera>();
+        //     if(_mainCamera == null) {
+        //         Debug.LogWarning("Main camera not found");
+        //     }
+        // }
+        //
+        // if(world == null) {
+        //     world = WorldGenerator.Instance;
+        //     if(world == null) {
+        //         Debug.LogWarning("WorldGenerator instance not found");
+        //     }
+        // }
+        //
+        // if (tileIndicator == null)
+        // {
+        //     tileIndicator = TileIndicatorSingleton.Instance;
+        //     if (tileIndicator == null) Debug.LogWarning("_tileIndicator not found");
+        // }
+        //
+        // if (_hoveringText == null)
+        // {
+        //     _hoveringText = GameObject.FindGameObjectWithTag("HoveringText").GetComponent<TMP_Text>();
+        //     if (_hoveringText == null) Debug.LogWarning("_hoveringText not found");
+        // }
+        //
+        // if (_autoSizeHovering == null)
+        // {
+        //     _autoSizeHovering = _hoveringText.GetComponent<AutoSizeTMP>();
+        //     if (_autoSizeHovering == null) Debug.LogWarning("_autoSizeHovering not found");
+        // }
 
-        Vector3Int tilePosition = world.triggerTilemap.WorldToCell(intPosition);
-        tileIndicator.transform.position = tilePosition;
         
-        if (inventory.movingSlot.item != null && inventory.movingSlot.item.GetTilePlacer() != null)
-        {
-            tileIndicator.SetActive(true);
+        // mousePos = Input.mousePosition;
+        // mousePos.z = Mathf.Abs(_mainCamera.transform.position.z);
+        // Vector3 mouseWorldPoint = _mainCamera.ScreenToWorldPoint(mousePos);
+        //
+        // // Ensure the z-coordinate is set appropriately
+        // mouseWorldPoint.z = 1;
+        //
+        // // Round to the nearest whole number to get the tile position
+        // Vector3Int intPosition = world.ClampVector3(mouseWorldPoint);
+        //
+        // Vector3Int tilePosition = world.triggerTilemap.WorldToCell(intPosition);
+        // tileIndicator.transform.position = tilePosition;
+        //
+        // if (inventory.movingSlot.item != null && inventory.movingSlot.item.GetTilePlacer() != null)
+        // {
+        //     tileIndicator.SetActive(true);
+        // }
+        // else
+        // {
+        //     tileIndicator.SetActive(false);
+        // }
+        
+
+        
+        // if (!KeyBindingManager.Instance.isWaitingForKeyPress && 
+        //     Input.GetKeyUp(KeyBindingManager.Instance.bindings.OpenConsole))
+        // {
+        //     if (console.activeSelf)
+        //     {
+        //         console.SetActive(false);
+        //         Time.timeScale = 1f; // Resume the game
+        //     }
+        //     else
+        //     {
+        //         console.SetActive(true);
+        //         Time.timeScale = 0f; // Freeze the game
+        //     }
+        // }
+        
+        // HealthChanges();
+        // AdjustSortingLayers();
+        // UpdateAnimations();
+        
+        // #region Hovering
+        //
+        // _hoveringText.transform.position = Input.mousePosition + AdjustOffsetForScreenBorders(hoveringOffset, invertedHoveringOffset);
+        //
+        // if (!EventSystem.current.IsPointerOverGameObject()) // if not hovering over the button (can be annoying)
+        // {
+        //     if (inventory.FindClosestSlotItem() != null && inventory.FindClosestSlotItem().item != null)
+        //     {
+        //         canMoveToMouse = false;
+        //         _hoveringText.gameObject.SetActive(true);
+        //         _autoSizeHovering.UpdateText(inventory.FindClosestSlotItem().item.name);
+        //
+        //         ItemClass hoveredItem = inventory.FindClosestSlotItem().item;
+        //
+        //         if (hoveredItem != null)
+        //         {
+        //             var itemInfo = hoveredItem.GetDisplayInfo();
+        //             _autoSizeHovering.UpdateText(String.Join("\n", itemInfo));
+        //         }
+        //
+        //         _isOverSlot = true;
+        //         ChangeCurrentSlotScale(true, new Vector3(1.15f, 1.15f, 1.15f));
+        //     }
+        //     else if (inventory.IsOverSlot())
+        //     {
+        //         canMoveToMouse = false;
+        //         _hoveringText.gameObject.SetActive(true);
+        //         _autoSizeHovering.UpdateText("");
+        //         
+        //         _isOverSlot = true;
+        //         ChangeCurrentSlotScale(true, new Vector3(1.15f, 1.15f, 1.15f));
+        //     }
+        //     else if (inventory.isMovingItem && !inventory.IsOverSlot())
+        //     {
+        //         _hoveringText.gameObject.SetActive(true);
+        //         _autoSizeHovering.UpdateText("Drop");
+        //         if (Input.GetMouseButtonDown(0)) // if left clicked
+        //         {
+        //             Vector3 screenPos = Input.mousePosition;
+        //             screenPos.z = Mathf.Abs(_mainCamera.transform.position.z);
+        //             targetPosition = _mainCamera.ScreenToWorldPoint(screenPos);
+        //
+        //             targetPosition.z = 1;
+        //             isDropping = true;
+        //         }
+        //         else if (Input.GetMouseButtonDown(1) && inventory.movingSlot.item.CanRightClick(this, tilePosition)) // right click
+        //         {
+        //             targetPosition = _mainCamera.ScreenToWorldPoint(mousePos);
+        //             targetPosition.z = 1; // calculate target pos
+        //             targetTilePosition = tilePosition; // already calculated tile position
+        //             hasRightClicked = true; // start right click methods
+        //         }
+        //
+        //         ChangeCurrentSlotScale(false, null);
+        //     }
+        //     else if (!inventory.IsOverSlot())
+        //     {
+        //         _hoveringText.gameObject.SetActive(true);
+        //         if (IsPointerOverComponent<AttackableComponent>())
+        //         {
+        //             if (_hit.gameObject.GetComponent<AttackableComponent>()
+        //                 .DoCanAttackCheck(inventory)) // if we can mine the object
+        //             {
+        //                 _autoSizeHovering.UpdateText(_hit.gameObject.GetComponent<AttackableComponent>().onHoverText);
+        //                 if (Input.GetMouseButtonDown(0) && !_isAttacking)
+        //                     SetAttackTarget(_hit.gameObject.gameObject); // set attack target and ready to attack
+        //             }
+        //         }
+        //         else if (IsPointerOverComponent<DroppedItem>())
+        //         {
+        //             _hoveringText.gameObject.SetActive(true);
+        //             _autoSizeHovering.UpdateText("Pick up " + _hit.gameObject.GetComponent<DroppedItem>().item.itemName +
+        //                                     " x" +
+        //                                     _hit.gameObject.GetComponent<DroppedItem>().count);
+        //             if (Input.GetMouseButtonDown(0) &&
+        //                 !_isAttacking) // If the player clicks while hovering over a dropped item
+        //             {
+        //                 SetAttackTarget(_hit.gameObject.gameObject);
+        //             }
+        //         }
+        //         else if (IsPointerOverComponent<InteractableComponent>()) // Checking for Interactable component
+        //         {
+        //             InteractableComponent interactableComponent = _hit.gameObject.GetComponent<InteractableComponent>();
+        //             _hoveringText.gameObject.SetActive(true);
+        //             _autoSizeHovering.UpdateText("Interact");
+        //
+        //             if (Input.GetMouseButtonDown(0) && !_isAttacking)
+        //             {
+        //                 SetAttackTarget(_hit.gameObject
+        //                     .gameObject); // Assuming you're using the same mechanism to move to the object as with the attack target
+        //                 interactableComponent
+        //                     .Interact(gameObject); // Execute the action from the Interactable component
+        //             }
+        //         }
+        //         else
+        //         {
+        //             canMoveToMouse = true;
+        //             _autoSizeHovering.UpdateText("Walk");
+        //             if (!_isMovingToTarget && !_isAttacking) ResetAttackTargetAndMoving();
+        //         }
+        //         
+        //         _isOverSlot = false;
+        //         ChangeCurrentSlotScale(false, null);
+        //     }
+        //     else
+        //     {
+        //         _hoveringText.gameObject.SetActive(false);
+        //     }
+        // }
+        // else
+        // {
+        //     canMoveToMouse = false;
+        //     _hoveringText.gameObject.SetActive(false);
+        // }
+        //
+        //
+        // #endregion
+    }
+
+    void HandleLocalPlayer()
+    {
+        if(_mainCamera == null) {
+            _mainCamera = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<Camera>();
+            if(_mainCamera == null) {
+                Debug.LogWarning("Main camera not found");
+            }
         }
-        else
+        
+        if(world == null) {
+            world = WorldGenerator.Instance;
+            if(world == null) {
+                Debug.LogWarning("WorldGenerator instance not found");
+            }
+        }
+
+        if (tileIndicator == null)
         {
-            tileIndicator.SetActive(false);
+            tileIndicator = TileIndicatorSingleton.Instance;
+            if (tileIndicator == null) Debug.LogWarning("_tileIndicator not found");
+        }
+
+        if (_hoveringText == null)
+        {
+            _hoveringText = GameObject.FindGameObjectWithTag("HoveringText").GetComponent<TMP_Text>();
+            if (_hoveringText == null) Debug.LogWarning("_hoveringText not found");
         }
         
-
+        if (_autoSizeHovering == null)
+        {
+            _autoSizeHovering = _hoveringText.GetComponent<AutoSizeTMP>();
+            if (_autoSizeHovering == null) Debug.LogWarning("_autoSizeHovering not found");
+        }
         
-        if (!_keyBindingManager.isWaitingForKeyPress && 
-            Input.GetKeyUp(_keyBindingManager.bindings.OpenConsole))
+        if (!KeyBindingManager.Instance.isWaitingForKeyPress && 
+            Input.GetKeyUp(KeyBindingManager.Instance.bindings.OpenConsole))
         {
             if (console.activeSelf)
             {
@@ -735,18 +1161,37 @@ public class PlayerController : MonoBehaviour
             }
         }
         
-        HealthChanges();
-        AdjustSortingLayers();
-
         if (Time.timeScale == 0f) // Game is frozen
         {
             return; // Early exit from the Update method
         }
         
-        // Get input from the W, A, S, and D keys
+        mousePos = Input.mousePosition;
+        mousePos.z = Mathf.Abs(_mainCamera.transform.position.z);
+        Vector3 mouseWorldPoint = _mainCamera.ScreenToWorldPoint(mousePos);
+        
+        // Ensure the z-coordinate is set appropriately
+        mouseWorldPoint.z = 1;
+        
+        // Round to the nearest whole number to get the tile position
+        Vector3Int intPosition = world.ClampVector3(mouseWorldPoint);
+        
+        Vector3Int tilePosition = world.triggerTilemap.WorldToCell(intPosition);
+        tileIndicator.transform.position = tilePosition;
+        
+        if (inventory.movingSlot.item != null && inventory.movingSlot.item.GetTilePlacer() != null)
+        {
+            tileIndicator.SetActive(true);
+        }
+        else
+        {
+            tileIndicator.SetActive(false);
+        }
+        
         horizontal = 0f;
         vertical = 0f;
         
+        //  basic movement ------------------------
         if (Input.GetKey(KeyCode.W))
         {
             vertical = 1;
@@ -774,29 +1219,12 @@ public class PlayerController : MonoBehaviour
             ResetAttackTargetAndMoving();
             if (!isHit) DisableAnimLock();
         }
-
+        
+        HealthChanges();
+        AdjustSortingLayers();
         UpdateAnimations();
-
-        // if we want to move to target
-        if (_isMovingToTarget)
-        {
-            if (attackTarget.GetComponent<AttackableComponent>())
-                MoveTowardsTarget(attackTarget, true, false, false); // attack
-            else if (attackTarget.GetComponent<DroppedItem>())
-                MoveTowardsTarget(attackTarget, false, true, false); // pick up
-        }
-
-        if (isDropping)
-        {
-            MoveTowardsTarget(attackTarget, false, false, true);
-        }
-
-        if (hasRightClicked)
-        {
-            MoveToTileEdge();
-        }
-
-
+        
+        // attacking & mining ---------------------------------------
         if (Input.GetKey(KeyCode.F) && !_isAttacking) // if smacked F
         {
             GameObject target = FindNearestTarget(false, true);
@@ -815,7 +1243,8 @@ public class PlayerController : MonoBehaviour
                 _isMovingToTarget = true; // actually move to target
             }
         }
-
+        
+        // clicking -------------------------------------------------------------
         if (Input.GetMouseButton(0)) // if we left clicked and no target - move to mouse
         {
             if (attackTarget != null) _isMovingToTarget = true;
@@ -823,17 +1252,30 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
             isMovingToMouse = false;
-
-
-        if (isInCar && car != null) // in car
+        
+        
+        // if we want to move to target
+        if (_isMovingToTarget)
         {
-            CarLogic();
+            if (attackTarget.GetComponent<AttackableComponent>())
+                MoveTowardsTarget(attackTarget, true, false, false); // attack
+            else if (attackTarget.GetComponent<DroppedItem>())
+                MoveTowardsTarget(attackTarget, false, true, false); // pick up
         }
 
+        if (isDropping)
+        {
+            MoveTowardsTarget(attackTarget, false, false, true);
+        }
 
+        if (hasRightClicked)
+        {
+            MoveToTileEdge();
+        }
+        
         if (!canMoveToMouse) isMovingToMouse = false;
-
-
+        
+        
         movement = new Vector2(horizontal, vertical);
 
         if (!isHit) // if not hit
@@ -846,25 +1288,31 @@ public class PlayerController : MonoBehaviour
                     movement.Normalize();
                 }
 
-                _rb.velocity = movement * moveSpeed; 
+                rb.velocity = movement * moveSpeed; 
             }
         }
         else
         {
             ResetAttackTargetAndMoving();
-            _rb.velocity = Vector2.zero; // if hit - stop
+            rb.velocity = Vector2.zero; // if hit - stop
         } 
+        
+        if (isInCar && car != null) // in car
+        {
+            CarLogic();
+        }
+        
         
         #region Hovering
 
-        hoveringText.transform.position = Input.mousePosition + AdjustOffsetForScreenBorders(hoveringOffset, invertedHoveringOffset);
+        _hoveringText.transform.position = Input.mousePosition + AdjustOffsetForScreenBorders(hoveringOffset, invertedHoveringOffset);
 
         if (!EventSystem.current.IsPointerOverGameObject()) // if not hovering over the button (can be annoying)
         {
             if (inventory.FindClosestSlotItem() != null && inventory.FindClosestSlotItem().item != null)
             {
                 canMoveToMouse = false;
-                hoveringText.gameObject.SetActive(true);
+                _hoveringText.gameObject.SetActive(true);
                 _autoSizeHovering.UpdateText(inventory.FindClosestSlotItem().item.name);
 
                 ItemClass hoveredItem = inventory.FindClosestSlotItem().item;
@@ -881,7 +1329,7 @@ public class PlayerController : MonoBehaviour
             else if (inventory.IsOverSlot())
             {
                 canMoveToMouse = false;
-                hoveringText.gameObject.SetActive(true);
+                _hoveringText.gameObject.SetActive(true);
                 _autoSizeHovering.UpdateText("");
                 
                 _isOverSlot = true;
@@ -889,20 +1337,20 @@ public class PlayerController : MonoBehaviour
             }
             else if (inventory.isMovingItem && !inventory.IsOverSlot())
             {
-                hoveringText.gameObject.SetActive(true);
+                _hoveringText.gameObject.SetActive(true);
                 _autoSizeHovering.UpdateText("Drop");
                 if (Input.GetMouseButtonDown(0)) // if left clicked
                 {
                     Vector3 screenPos = Input.mousePosition;
-                    screenPos.z = Mathf.Abs(mainCamera.transform.position.z);
-                    targetPosition = mainCamera.ScreenToWorldPoint(screenPos);
+                    screenPos.z = Mathf.Abs(_mainCamera.transform.position.z);
+                    targetPosition = _mainCamera.ScreenToWorldPoint(screenPos);
 
                     targetPosition.z = 1;
                     isDropping = true;
                 }
                 else if (Input.GetMouseButtonDown(1) && inventory.movingSlot.item.CanRightClick(this, tilePosition)) // right click
                 {
-                    targetPosition = mainCamera.ScreenToWorldPoint(mousePos);
+                    targetPosition = _mainCamera.ScreenToWorldPoint(mousePos);
                     targetPosition.z = 1; // calculate target pos
                     targetTilePosition = tilePosition; // already calculated tile position
                     hasRightClicked = true; // start right click methods
@@ -912,7 +1360,7 @@ public class PlayerController : MonoBehaviour
             }
             else if (!inventory.IsOverSlot())
             {
-                hoveringText.gameObject.SetActive(true);
+                _hoveringText.gameObject.SetActive(true);
                 if (IsPointerOverComponent<AttackableComponent>())
                 {
                     if (_hit.gameObject.GetComponent<AttackableComponent>()
@@ -925,7 +1373,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (IsPointerOverComponent<DroppedItem>())
                 {
-                    hoveringText.gameObject.SetActive(true);
+                    _hoveringText.gameObject.SetActive(true);
                     _autoSizeHovering.UpdateText("Pick up " + _hit.gameObject.GetComponent<DroppedItem>().item.itemName +
                                             " x" +
                                             _hit.gameObject.GetComponent<DroppedItem>().count);
@@ -938,7 +1386,7 @@ public class PlayerController : MonoBehaviour
                 else if (IsPointerOverComponent<InteractableComponent>()) // Checking for Interactable component
                 {
                     InteractableComponent interactableComponent = _hit.gameObject.GetComponent<InteractableComponent>();
-                    hoveringText.gameObject.SetActive(true);
+                    _hoveringText.gameObject.SetActive(true);
                     _autoSizeHovering.UpdateText("Interact");
 
                     if (Input.GetMouseButtonDown(0) && !_isAttacking)
@@ -961,17 +1409,25 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                hoveringText.gameObject.SetActive(false);
+                _hoveringText.gameObject.SetActive(false);
             }
         }
         else
         {
             canMoveToMouse = false;
-            hoveringText.gameObject.SetActive(false);
+            _hoveringText.gameObject.SetActive(false);
         }
 
 
         #endregion
+    }
+    
+    private void Update()
+    {
+        if (isLocalPlayer)
+        {
+            HandleLocalPlayer();
+        }
     }
     
     #region FUNCS FOR HOVERING
@@ -1014,7 +1470,7 @@ public class PlayerController : MonoBehaviour
         Vector3 scaledInvertedOffset = CalculateScaledOffset(invertOffset);
 
         // getting rect transform
-        RectTransform textRectTransform = hoveringText.GetComponent<RectTransform>();
+        RectTransform textRectTransform = _hoveringText.GetComponent<RectTransform>();
 
         // adjustment factor
         float screenHeightAdjustmentFactor = DetermineScreenHeightAdjustmentFactor(Screen.height);
@@ -1074,7 +1530,7 @@ public class PlayerController : MonoBehaviour
         Vector3 mouseScreenPosition = Input.mousePosition;
 
         // Create a ray from the camera through the mouse position
-        Ray ray = mainCamera.ScreenPointToRay(mouseScreenPosition);
+        Ray ray = _mainCamera.ScreenPointToRay(mouseScreenPosition);
 
         // Determine the point where this ray intersects with the plane of your game (assuming it's at z=0)
         // This requires calculating the distance along the ray that corresponds to z=0
@@ -1131,33 +1587,33 @@ public class PlayerController : MonoBehaviour
         
         // Get the mouse position in screen space, then convert to world space
         Vector3 screenPos = Input.mousePosition;
-        screenPos.z = Mathf.Abs(mainCamera.transform.position.z);
-        mousePos = mainCamera.ScreenToWorldPoint(screenPos);
+        screenPos.z = Mathf.Abs(_mainCamera.transform.position.z);
+        mousePos = _mainCamera.ScreenToWorldPoint(screenPos);
 
         // Reset the Z coordinate to match your 2D world
         mousePos.z = 1;
         
-        float distance = Vector2.Distance(mousePos, _rb.position);
+        float distance = Vector2.Distance(mousePos, rb.position);
         
         // calculating direction
-        direction = ((Vector2)mousePos - _rb.position).normalized;
+        direction = ((Vector2)mousePos - rb.position).normalized;
         horizontal = direction.x;
         vertical = direction.y; // setting up these variables for animations to work
         
         // moving
         if (distance > bufferCursorDistance) // if cursor is far away
         {
-            _rb.velocity = direction * moveSpeed; // simply move
+            rb.velocity = direction * moveSpeed; // simply move
         }
         else if (distance > minCursorDistance) // if cursor is in buffer distance
         {
             // Interpolate velocity from full to zero within the buffer zone
             float bufferFraction = (distance - minCursorDistance) / (bufferCursorDistance - minCursorDistance);
-            _rb.velocity = direction * (moveSpeed * bufferFraction);
+            rb.velocity = direction * (moveSpeed * bufferFraction);
         }
         else // else (if cursor is in minimum distance) dont move
         {
-            _rb.velocity = Vector2.zero;
+            rb.velocity = Vector2.zero;
             horizontal = 0f;
             vertical = 0f;
         }

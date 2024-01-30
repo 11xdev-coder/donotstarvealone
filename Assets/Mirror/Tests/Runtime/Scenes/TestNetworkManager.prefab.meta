@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b243904f0fa5b04418e0e135533686b0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Runtime/Scenes/TestNetworkManager.prefab
+  uploadId: 485797

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class TalkerComponent : MonoBehaviour
@@ -13,12 +14,18 @@ public class TalkerComponent : MonoBehaviour
     // Update is called once per frame
     void Start()
     {
-        talkerText = talkerText.GetComponent<Text>();
+        talkerText = GameObject.FindGameObjectWithTag("TalkerText").GetComponent<Text>();
         remainTime = disappearDelay;
     }
 
     public void Update()
     {
+        if (talkerText == null)
+        {
+            talkerText = GameObject.FindGameObjectWithTag("TalkerText").GetComponent<Text>();
+        }
+
+        
         talkerText.transform.localPosition = talker.transform.position + offset;
         if (runTimer)
         {

@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 6680af475e674f8c8f5cbe5a3089c115
+timeCreated: 1644906912
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/SyncVarAttributeHook_HostModeTest.cs
+  uploadId: 485797

@@ -47,6 +47,8 @@ MonoBehaviour:
   baseSortingOrder: 0
   orderOffset: 0
   doSort: 0
+  useSrList: 0
+  srs: []
   deactivate: 0
   doColliderCheck: 0
   invertRotationForParticle: 0
@@ -65,6 +67,7 @@ GameObject:
   - component: {fileID: 228715736974033951}
   - component: {fileID: 3683228454180912235}
   - component: {fileID: 148823511784734419}
+  - component: {fileID: -3048524418277935196}
   m_Layer: 0
   m_Name: Volcano
   m_TagString: Untagged
@@ -81,7 +84,7 @@ Transform:
   m_GameObject: {fileID: 3418335907686926578}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 72, y: 101, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -274,10 +277,29 @@ MonoBehaviour:
   baseSortingOrder: 0
   orderOffset: 0
   doSort: 1
+  useSrList: 0
+  srs: []
   deactivate: 0
   doColliderCheck: 1
   invertRotationForParticle: 0
   invertXRotation: 0
+--- !u!114 &-3048524418277935196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3418335907686926578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: bfedf54b27906924e80a3986d814bd3b
+  hasSpawned: 0
 --- !u!1001 &3055445586987952628
 PrefabInstance:
   m_ObjectHideFlags: 0

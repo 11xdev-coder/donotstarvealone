@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 94259792df2a404892c3e2377f58d0cb
+timeCreated: 1644998104
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Runtime/NetworkWriterExtensions.cs
+  uploadId: 485797

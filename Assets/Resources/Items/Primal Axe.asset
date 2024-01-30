@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afef0b10b3fa5024981087bbac4e14e8, type: 3}
   m_Name: Primal Axe
   m_EditorClassIdentifier: 
+  itemId: 1
   itemName: Primal Axe
   itemSprite: {fileID: 21300000, guid: a3734b3c741741142b07b469ec52d858, type: 3}
   droppedItemPrefab: {fileID: 8454655466585242356, guid: 7eab515789e9bad4e83d262459bb32f9, type: 3}

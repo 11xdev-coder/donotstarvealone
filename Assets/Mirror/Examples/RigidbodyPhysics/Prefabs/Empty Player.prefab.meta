@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4ab0a427bdc13244499c6e044ad7eb40
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Examples/RigidbodyPhysics/Prefabs/Empty Player.prefab
+  uploadId: 485797

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d0dceb2ddf6478fbd6b5cb4afc96839, type: 3}
   m_Name: Planks
   m_EditorClassIdentifier: 
+  itemId: 9
   itemName: Planks
   itemSprite: {fileID: 21300000, guid: 5dee0c7596b37d7418d7d46bf26d0e5c, type: 3}
   droppedItemPrefab: {fileID: 8454655466585242356, guid: b07804af9da7f9d45b7945b2569b74e0, type: 3}

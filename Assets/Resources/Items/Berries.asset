@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 199640a56c3a4854880657b15d8fc90c, type: 3}
   m_Name: Berries
   m_EditorClassIdentifier: 
+  itemId: 3
   itemName: Berries
   itemSprite: {fileID: 21300000, guid: 11b78bbbb2220034991ff8cb2c199348, type: 3}
   droppedItemPrefab: {fileID: 8454655466585242356, guid: fc99c104e588ddb4499b87cb0874c484, type: 3}
@@ -19,5 +20,7 @@ MonoBehaviour:
   maxStack: 30
   damage: 0
   handScale: {x: 0, y: 0, z: 0}
+  pickaxePower: 0
+  axePower: 0
   displayTextEntries: []
   heals: 3

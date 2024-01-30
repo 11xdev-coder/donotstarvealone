@@ -13,7 +13,7 @@ public class KeyBindingManager : MonoBehaviour
         public Button keybindingButton;
     }
     
-    public KeyBindingManager instance { get; private set; }
+    public static KeyBindingManager Instance { get; private set; }
 
     [Header("Bindings")]
     public ControlBindings bindings; // Assign this in the inspector
@@ -28,15 +28,13 @@ public class KeyBindingManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance != null)
         {
-            instance = this;
-            DontDestroyOnLoad(gameObject); // This makes sure the object persists across scene loads
+            Debug.LogWarning("Multiple instances of KeyBindingManager found!");
+            return;
         }
-        else
-        {
-            Destroy(gameObject); // Ensures that no more than one instance can exist at any time
-        }
+
+        Instance = this;
         
         waitingForKeyText.gameObject.SetActive(false);
     }

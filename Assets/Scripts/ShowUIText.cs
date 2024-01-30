@@ -1,19 +1,21 @@
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ShowUIText : MonoBehaviour
+public class ShowUIText : NetworkBehaviour
 {
+    public bool found;
     public GameObject text;
     
-    private void Start()
+    public void Awake()
     {
-        text.SetActive(false);
+       text.SetActive(true);
     }
 
     private void Update()
     {
-        text.SetActive(GetComponent<PointerCheck>().IsMouseOver());
+        if(found) text.SetActive(GetComponent<PointerCheck>().IsMouseOver());
     }
 }

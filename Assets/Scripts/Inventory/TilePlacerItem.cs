@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Inventory;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -15,10 +16,13 @@ public class TilePlacerItem : ItemClass
     // ReSharper disable Unity.PerformanceAnalysis
     public override void RightClick(PlayerController caller, Vector3Int tilePosition)
     {
-        caller.world.collidableTilemap.SetTile(tilePosition, null); // remove ocean tiles
-        caller.world.triggerTilemap.SetTile(tilePosition, tile); // set new tile
+        if (caller.inventory.isLocalPlayer)
+        {
+            caller.world.collidableTilemap.SetTile(tilePosition, null); // remove ocean tiles
+            caller.world.triggerTilemap.SetTile(tilePosition, tile); // set new tile
 
-        caller.inventory.Remove(this, 1);
+            caller.inventory.CmdRemoveItem(ItemRegistry.Instance.GetIdByItem(this), 1);
+        }
     }
 
     

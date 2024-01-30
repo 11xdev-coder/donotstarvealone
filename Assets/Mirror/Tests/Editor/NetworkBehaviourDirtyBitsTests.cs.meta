@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 71cd60f7177a4d3da75bb87f5ac13a18
+timeCreated: 1631772886
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/NetworkBehaviourDirtyBitsTests.cs
+  uploadId: 485797

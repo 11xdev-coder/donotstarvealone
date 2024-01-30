@@ -4904,6 +4904,9 @@ MonoBehaviour:
   baseSortingOrder: 0
   orderOffset: 0
   doSort: 0
+  useSrList: 0
+  srs: []
+  deactivate: 0
   doColliderCheck: 0
   invertRotationForParticle: 1
   invertXRotation: 0

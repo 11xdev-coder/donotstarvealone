@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4e9aca8a359ab48de906aedbfa1ffe21
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Common/Mirror.Tests.Common.asmdef
+  uploadId: 485797

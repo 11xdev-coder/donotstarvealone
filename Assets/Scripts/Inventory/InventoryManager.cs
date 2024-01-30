@@ -1,15 +1,22 @@
 using System;
+using Inventory;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Mirror;
+using Singletons;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : NetworkBehaviour
 {
-    public GameObject slotHolder;
-    
+    private GameObject _slotHolder;
+
     public SlotClass[] startingItems;
-    public SlotClass[] items;
+    public SyncList<SlotClass> items = new SyncList<SlotClass>();
+
+    private ItemRegistry _itemRegistry;
+    
     //public List<SlotClass> equips = new List<SlotClass>();
 
     public GameObject[] slots;
@@ -19,9 +26,9 @@ public class InventoryManager : MonoBehaviour
     public event ToolChangedAction OnToolChanged;
     
     [Header("Tool")]
-    public int equippedToolIndex;
+    [SyncVar] public int equippedToolIndex;
     public bool isEquippedTool;
-    public SlotClass equippedTool;
+    [SyncVar] public SlotClass equippedTool;
     public ItemClass previouslyEquippedTool;
 
     [Header("Moving")] 
@@ -31,29 +38,141 @@ public class InventoryManager : MonoBehaviour
     public SlotClass movingSlot;
     public bool isMovingItem;
     
-    public void Start()
-    {
-        // set slots to amount of children that have "Inventory" panel
-        slots = new GameObject[slotHolder.transform.childCount];
-        items = new SlotClass[slots.Length];
-            
-        for (int s = 0; s < items.Length; s++)
-            items[s] = new SlotClass();
+    private int _remainingItems;
 
-        // set all the slots
-        for (int i = 0; i < slotHolder.transform.childCount; i++)
-            slots[i] = slotHolder.transform.GetChild(i).gameObject;
+    public int RemainingItems { get; private set; }
+
+    private bool _isInitialized;
+    private bool _isGivenStartingItems;
+    private bool _isEmptiedInventory;
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        enabled = true;
+
+        if (!isServer)
+        {
+            InitializeInventory();
+            RequestEmptyInventory();
+        }
         
-        // add all starting items
-        foreach (var startingItem in startingItems)
-            Add(startingItem.item, startingItem.count);
+    }
+    
+    public override void OnStartAuthority()
+    {
+        base.OnStartAuthority();
+
+        enabled = true;
         
-        equippedToolIndex = items.Length - 1;
-        Refresh();
+        
+        if(!isServer)RequestStartingItems();
     }
 
+    void RequestEmptyInventory()
+    {
+        //if (!_isEmptiedInventory) CmdRequestEmptyInventory();
+        slots = new GameObject[_slotHolder.transform.childCount];
+        items = new SyncList<SlotClass>();
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            slots[i] = _slotHolder.transform.GetChild(i).gameObject;
+            items.Add(new SlotClass());
+        }
+
+        equippedToolIndex = items.Count - 1;
+
+        _isEmptiedInventory = true;
+    }
+    
+    void RequestStartingItems()
+    {
+        if(isLocalPlayer && hasAuthority && !_isGivenStartingItems) CmdRequestStartingItems();
+    }
+    
+    [Command]
+    private void CmdRequestStartingItems()
+    {
+        GiveStartingItems(connectionToClient);
+    }
+    
+    [Server]
+    private void GiveStartingItems(NetworkConnection target)
+    {
+        if (_itemRegistry == null)
+        {
+            _itemRegistry = ItemRegistry.Instance;
+        } 
+        
+        foreach (var startingItem in startingItems)
+        {
+            TargetAddItem(target, _itemRegistry.GetIdByItem(startingItem.item), startingItem.count);
+        }
+    }
+    
+    [TargetRpc]
+    private void TargetAddItem(NetworkConnection target, int id, int count)
+    {
+        RequestAddItem(id, count);
+        _isGivenStartingItems = true;
+    }
+    
+    private void InitializeInventory()
+    {
+        if (_isInitialized) return;
+        
+        if (_slotHolder == null)
+        {
+            _slotHolder = GameObject.FindGameObjectWithTag("SlotHolder");
+            if (_slotHolder == null)
+            {
+                Debug.LogError("SlotHolder not found in the scene.");
+                return;
+            }
+        }
+
+        if (itemCursor == null)
+        {
+            itemCursor = ItemCursorSingleton.Instance;
+        }
+
+        if (_itemRegistry == null)
+        {
+            _itemRegistry = ItemRegistry.Instance;
+        }
+        
+        Refresh();
+        _isInitialized = true;
+    }
+
+    
     public void Update()
     {
+        if (!isLocalPlayer) return;
+        
+        if(!_isInitialized)
+        {
+            InitializeInventory();
+        }
+        
+        if (!_isEmptiedInventory)
+        {
+            RequestEmptyInventory();
+        }
+        
+        if(!_isGivenStartingItems && isLocalPlayer && hasAuthority)
+        {
+            RequestStartingItems();
+        }
+        
+        if (itemCursor == null)
+        {
+            itemCursor = ItemCursorSingleton.Instance;
+            if(itemCursor == null) Debug.LogError("Item Cursor is null!");
+        }
+        
         // setting active item cursor if me moving item
         itemCursor.SetActive(isMovingItem);
         itemCursor.transform.position = Input.mousePosition;
@@ -62,7 +181,6 @@ public class InventoryManager : MonoBehaviour
             itemCursor.GetComponentInChildren<Image>().sprite = movingSlot.item.itemSprite;
             itemCursor.GetComponentInChildren<Text>().text = movingSlot.item.isStackable ? movingSlot.count.ToString() : "";
         }
-            
         
         if (Input.GetMouseButtonDown(0)) // left click
         {
@@ -77,14 +195,17 @@ public class InventoryManager : MonoBehaviour
                 ItemMoveOnLeftClick();
         }
         // if there is an item in tool slot
-        if (items[equippedToolIndex].item != null)
+        if (items != null && equippedToolIndex >= 0 && equippedToolIndex < items.Count)
         {
-            // check if it isnt a tool and we are hovered on tool slot where this item is
-            if (items[equippedToolIndex].item.GetTool() == null && FindClosestSlotItem() != null && items[equippedToolIndex].item != null &&
-                FindClosestSlotItem().item == items[equippedToolIndex].item)
+            if (items[equippedToolIndex].item != null)
             {
-                // start moving item so it wouldnt be put in to a slot
-                ItemMoveOnLeftClick();
+                // check if it isnt a tool and we are hovered on tool slot where this item is
+                if (items[equippedToolIndex].item.GetTool() == null && FindClosestSlotItem() != null && items[equippedToolIndex].item != null &&
+                    FindClosestSlotItem().item == items[equippedToolIndex].item)
+                {
+                    // start moving item so it wouldnt be put in to a slot
+                    ItemMoveOnLeftClick();
+                }
             }
         }
         
@@ -96,21 +217,53 @@ public class InventoryManager : MonoBehaviour
         // TOOL SWAP CHECKS
         
         // If the currently equipped tool is different from the previously equipped one
-        if (items[equippedToolIndex].item != previouslyEquippedTool)
+        if (equippedToolIndex >= 0 && equippedToolIndex < items.Count)
         {
-            // Update the previously equipped tool
-            previouslyEquippedTool = items[equippedToolIndex].item;
+            if (items != null && items[equippedToolIndex].item != previouslyEquippedTool)
+            {
+                // Update the previously equipped tool
+                previouslyEquippedTool = items[equippedToolIndex].item;
 
-            // Check if there is a tool equipped and set the flag accordingly
-            isEquippedTool = items[equippedToolIndex].item != null;
+                // Check if there is a tool equipped and set the flag accordingly
+                isEquippedTool = items[equippedToolIndex].item != null;
 
-            // Trigger the OnToolChanged event
-            OnToolChanged?.Invoke(isEquippedTool ? items[equippedToolIndex].item : null);
+                // Trigger the OnToolChanged event
+                OnToolChanged?.Invoke(isEquippedTool ? items[equippedToolIndex].item : null);
+                EquipToolLocal(isEquippedTool ? items[equippedToolIndex].item.itemId : 0);
+            }
+        }
+        else
+        {
+            equippedToolIndex = items.Count - 1;
         }
         
-        if (items[equippedToolIndex].item != null)
-            equippedTool = items[equippedToolIndex];
     }
+
+    // This function is called on the server when a player equips a new tool
+    // This function is called on the client to equip a new tool
+    void EquipToolLocal(int newId)
+    {
+        if (!isLocalPlayer)
+            return;
+
+        CmdEquipTool(newId);
+    }
+
+    // The Command that runs on the server
+    [Command]
+    void CmdEquipTool(int newId)
+    {
+        equippedTool = new SlotClass(ItemRegistry.Instance.GetItemById(newId), 1); // Update the equipped tool on the server
+        RpcUpdateEquippedTool(newId); // Call a ClientRpc to update all clients
+    }
+
+    // ClientRpc to update the equipped tool on all clients
+    [ClientRpc]
+    void RpcUpdateEquippedTool(int newId)
+    {
+        equippedTool = new SlotClass(ItemRegistry.Instance.GetItemById(newId), 1); // Update the equipped tool on clients
+    }
+
 
     public bool IsInventoryFull()
     {
@@ -155,10 +308,28 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
-    
-    public int Add(ItemClass item, int count)
+
+    public void RequestAddItem(int id, int count)
     {
-        
+        if(isLocalPlayer && hasAuthority) CmdAddItem(id, count);
+    }
+    
+    [Command]
+    void CmdAddItem(int id, int count)
+    {
+        AddServer(connectionToClient, id, count);
+    }
+
+    [Server]
+    void AddServer(NetworkConnection target, int id, int count)
+    {
+        AddInternal(target, id, count);
+    }
+    
+    [TargetRpc]
+    private void AddInternal(NetworkConnection target, int id, int count)
+    {
+        ItemClass item = _itemRegistry.GetItemById(id);
         SlotClass slot = Contains(item);
 
         // Step 1: Try to add to existing slot
@@ -172,7 +343,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         // Step 2: If there are more items, try to find another slot with the same item, but not full
-        for (int i = 0; i < items.Length && count > 0; i++)
+        for (int i = 0; i < items.Count && count > 0; i++)
         {
             if (items[i].item == item && items[i].count < item.maxStack)
             {
@@ -185,7 +356,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         // Step 3: If there are any remaining items to add, find an empty slot
-        for (int i = 0; i < items.Length && count > 0; i++)
+        for (int i = 0; i < items.Count && count > 0; i++)
         {
             if (i != equippedToolIndex && items[i].item == null) 
             {
@@ -197,7 +368,7 @@ public class InventoryManager : MonoBehaviour
                 count -= quantityToAdd;
             }
         }
-        
+    
         if(count > 0 && movingSlot.count < item.maxStack)
         {
             int countCanAddToMovingSlot = Mathf.Min(item.maxStack - movingSlot.count, count);
@@ -205,20 +376,25 @@ public class InventoryManager : MonoBehaviour
             count -= countCanAddToMovingSlot;
             isMovingItem = true;
         }
-        
+    
         Refresh();
 
-        return count; // Returns true if all items were added, false otherwise
+        RemainingItems = count;
     }
-
 
     public void UseSelected(ItemClass item)
     {
-        Remove(item, 1);
+        if(isLocalPlayer) CmdRemoveItem(_itemRegistry.GetIdByItem(item), 1);
         Refresh();
     }
-
-    public bool Remove(ItemClass item, int count)
+    
+    [Command]
+    public void CmdRemoveItem(int id, int count)
+    {
+        RemoveInternal(_itemRegistry.GetItemById(id), count);
+    }
+    
+    private bool RemoveInternal(ItemClass item, int count)
     {
         // if the item is in movingSlot
         if (isMovingItem && movingSlot.item == item)
@@ -278,7 +454,7 @@ public class InventoryManager : MonoBehaviour
 
     public SlotClass Contains(ItemClass item)
     {
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < items.Count; i++)
         {
             if (items[i].item == item)
                 return items[i];
@@ -289,7 +465,7 @@ public class InventoryManager : MonoBehaviour
     
     public bool ContainsBool(ItemClass item, int count)
     {
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < items.Count; i++)
         {
             if (items[i].item == item && items[i].count >= count)
                 return true;
@@ -308,7 +484,7 @@ public class InventoryManager : MonoBehaviour
         if (clickedSlot == null || clickedSlot.item == null) 
             return; // No item to interact with.
 
-        int clickedIndex = Array.IndexOf(items, clickedSlot);
+        int clickedIndex = items.IndexOf(clickedSlot);
 
         // If we right-clicked the equipped tool.
         if(clickedIndex == equippedToolIndex)
@@ -334,6 +510,11 @@ public class InventoryManager : MonoBehaviour
                 items[equippedToolIndex].AddItem(clickedSlot.item, clickedSlot.count);
                 clickedSlot.Clear();
             }
+            
+            if(isServer)
+            {
+            }
+
             Refresh();
         }
     }
@@ -345,7 +526,7 @@ public class InventoryManager : MonoBehaviour
             return;
 
         // Find the first available slot.
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < items.Count; i++)
         {
             if (items[i].item == null)
             {
@@ -354,6 +535,11 @@ public class InventoryManager : MonoBehaviour
                 break;
             }
         }
+        
+        if(isServer)
+        {
+        }
+
         Refresh();
     }
     
@@ -366,6 +552,10 @@ public class InventoryManager : MonoBehaviour
         movingSlot = new SlotClass(originalSlot);
         originalSlot.Clear(); // clearing slot we clicked on since we picked up the item
         isMovingItem = true;
+        if(isServer)
+        {
+        }
+
         Refresh();
         return true;
     }
@@ -382,6 +572,10 @@ public class InventoryManager : MonoBehaviour
             originalSlot.Clear();
         
         isMovingItem = true;
+        if(isServer)
+        {
+        }
+
         Refresh();
         return true;
     }
@@ -410,6 +604,11 @@ public class InventoryManager : MonoBehaviour
                     else
                     {
                         movingSlot.SubCount(countCanAdd);
+                        
+                        if(isServer)
+                        {
+                        }
+
                         Refresh();
                         return false;
                     }
@@ -420,6 +619,11 @@ public class InventoryManager : MonoBehaviour
                     tempSlot = new SlotClass(originalSlot);
                     originalSlot.AddItem(movingSlot.item, movingSlot.count);
                     movingSlot.AddItem(tempSlot.item, tempSlot.count);
+                    
+                    if(isServer)
+                    {
+                    }
+
                     Refresh();
                     return true;
                 }
@@ -432,6 +636,10 @@ public class InventoryManager : MonoBehaviour
         }
 
         isMovingItem = false;
+        if(isServer)
+        {
+        }
+
         Refresh();
         return true;
     }
@@ -461,6 +669,10 @@ public class InventoryManager : MonoBehaviour
         else
             isMovingItem = true;
         
+        if(isServer)
+        {
+        }
+
         Refresh();
         return true;
     }

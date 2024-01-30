@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
 public abstract class ItemClass : ScriptableObject
 {
-    [Header("Item")]
+    [Header("Item")] 
+    public int itemId;
     public string itemName;
     public Sprite itemSprite;
     public GameObject droppedItemPrefab;
@@ -38,27 +40,36 @@ public abstract class ItemClass : ScriptableObject
     
     public void DropItem(SlotClass slot, Transform dropTransform, InventoryManager inventoryManager)
     {
-        // Create the dropped item object using the prefab
+        if (!inventoryManager.isServer)
+        {
+            return; // Ensure this is only executed on the server
+        }
+
         var position = dropTransform.position;
         GameObject droppedItem = Instantiate(droppedItemPrefab, new Vector3(position.x, position.y, 0), Quaternion.identity);
 
         // Assign the item's data to the dropped item
         droppedItem.GetComponent<DroppedItem>().Initialize(slot.item, slot.count);
+
+        // Spawn the dropped item on the network
+        NetworkServer.Spawn(droppedItem);
 
         // Remove the item from the inventory
         slot.Clear();
         inventoryManager.isMovingItem = false;
     }
     
-    public void SpawnItemAsDropped(SlotClass slot, Transform dropTransform)
+    public GameObject SpawnItemAsDropped(SlotClass slot, Transform dropTransform)
     {
-        // Create the dropped item object using the prefab
         var position = dropTransform.position;
         GameObject droppedItem = Instantiate(droppedItemPrefab, new Vector3(position.x, position.y, 0), Quaternion.identity);
 
         // Assign the item's data to the dropped item
         droppedItem.GetComponent<DroppedItem>().Initialize(slot.item, slot.count);
+
+        return droppedItem;
     }
+
     
     #endregion
     

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d4635f4b5c7734921bb185fb09daef52
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/WeaverSyncVarAttributeHookTests_IsSuccess/FindsPrivateHook.cs
+  uploadId: 485797

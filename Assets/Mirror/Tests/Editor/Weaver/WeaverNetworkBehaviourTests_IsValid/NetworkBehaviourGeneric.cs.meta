@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: b279c2f37eaa4de09c1f15a5b80029b4
+timeCreated: 1643560588
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/WeaverNetworkBehaviourTests_IsValid/NetworkBehaviourGeneric.cs
+  uploadId: 485797

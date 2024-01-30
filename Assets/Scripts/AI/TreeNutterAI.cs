@@ -249,7 +249,7 @@ public class TreeNutterAI : MonoBehaviour
             AttackableComponent health = player.GetComponent<AttackableComponent>();
             if (health != null)
             {
-                health.TakeDamage(damage);
+                health.DealDamage(damage);
             }
         }
     }

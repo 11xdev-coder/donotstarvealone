@@ -26,7 +26,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\Bin\Debug\Assembly-CSharp\</OutputPath>
-    <DefineConstants>UNITY_2023_1_13;UNITY_2023_1;UNITY_2023;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_2021_1_OR_NEWER;UNITY_2021_2_OR_NEWER;UNITY_2021_3_OR_NEWER;UNITY_2022_1_OR_NEWER;UNITY_2022_2_OR_NEWER;UNITY_2022_3_OR_NEWER;UNITY_2023_1_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_EDITOR_GAME_SERVICES;ENABLE_UNITY_GAME_SERVICES_ANALYTICS_SUPPORT;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_GENERATE_NATIVE_PLUGINS_FOR_ASSEMBLIES_API;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_MARSHALLING_TESTS;ENABLE_VIDEO;ENABLE_ACCELERATOR_CLIENT_DEBUGGING;ENABLE_NAVIGATION_PACKAGE_DEBUG_VISUALIZATION;ENABLE_NAVIGATION_HEIGHTMESH_RUNTIME_SUPPORT;ENABLE_NAVIGATION_UI_REQUIRES_PACKAGE;PLATFORM_STANDALONE;TEXTCORE_1_0_OR_NEWER;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_NVIDIA;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;GFXDEVICE_WAITFOREVENT_MESSAGEPUMP;PLATFORM_INITIALIZES_MEMORY_MANAGER_EXPLICITLY;PLATFORM_SUPPORTS_WAIT_FOR_PRESENTATION;ENABLE_MONO;NET_STANDARD_2_0;NET_STANDARD;NET_STANDARD_2_1;NETSTANDARD;NETSTANDARD2_1;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_INPUT_SYSTEM;ENABLE_LEGACY_INPUT_MANAGER;TEXTCORE_FONT_ENGINE_1_5_OR_NEWER;UNITY_POST_PROCESSING_STACK_V2;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
+    <DefineConstants>UNITY_2023_1_13;UNITY_2023_1;UNITY_2023;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_2021_1_OR_NEWER;UNITY_2021_2_OR_NEWER;UNITY_2021_3_OR_NEWER;UNITY_2022_1_OR_NEWER;UNITY_2022_2_OR_NEWER;UNITY_2022_3_OR_NEWER;UNITY_2023_1_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_EDITOR_GAME_SERVICES;ENABLE_UNITY_GAME_SERVICES_ANALYTICS_SUPPORT;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_GENERATE_NATIVE_PLUGINS_FOR_ASSEMBLIES_API;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_MARSHALLING_TESTS;ENABLE_VIDEO;ENABLE_ACCELERATOR_CLIENT_DEBUGGING;ENABLE_NAVIGATION_PACKAGE_DEBUG_VISUALIZATION;ENABLE_NAVIGATION_HEIGHTMESH_RUNTIME_SUPPORT;ENABLE_NAVIGATION_UI_REQUIRES_PACKAGE;PLATFORM_STANDALONE;TEXTCORE_1_0_OR_NEWER;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_NVIDIA;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;GFXDEVICE_WAITFOREVENT_MESSAGEPUMP;PLATFORM_INITIALIZES_MEMORY_MANAGER_EXPLICITLY;PLATFORM_SUPPORTS_WAIT_FOR_PRESENTATION;ENABLE_MONO;NET_STANDARD_2_0;NET_STANDARD;NET_STANDARD_2_1;NETSTANDARD;NETSTANDARD2_1;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_INPUT_SYSTEM;ENABLE_LEGACY_INPUT_MANAGER;TEXTCORE_FONT_ENGINE_1_5_OR_NEWER;UNITY_POST_PROCESSING_STACK_V2;MIRROR;MIRROR_17_0_OR_NEWER;MIRROR_18_0_OR_NEWER;MIRROR_24_0_OR_NEWER;MIRROR_26_0_OR_NEWER;MIRROR_27_0_OR_NEWER;MIRROR_28_0_OR_NEWER;MIRROR_29_0_OR_NEWER;MIRROR_30_0_OR_NEWER;MIRROR_30_5_2_OR_NEWER;MIRROR_32_1_2_OR_NEWER;MIRROR_32_1_4_OR_NEWER;MIRROR_35_0_OR_NEWER;MIRROR_35_1_OR_NEWER;MIRROR_37_0_OR_NEWER;MIRROR_38_0_OR_NEWER;MIRROR_39_0_OR_NEWER;MIRROR_40_0_OR_NEWER;MIRROR_41_0_OR_NEWER;MIRROR_42_0_OR_NEWER;MIRROR_43_0_OR_NEWER;MIRROR_44_0_OR_NEWER;MIRROR_46_0_OR_NEWER;MIRROR_47_0_OR_NEWER;MIRROR_53_0_OR_NEWER;MIRROR_55_0_OR_NEWER;MIRROR_57_0_OR_NEWER;MIRROR_58_0_OR_NEWER;MIRROR_65_0_OR_NEWER;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169,0649</NoWarn>
@@ -75,14 +75,17 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2023.1.13f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Registry.cs" />
      <Compile Include="Assets\Scripts\Inventory\CraftingRecipeClass.cs" />
      <Compile Include="Assets\Scripts\FixTexturePlatformSettings.cs" />
      <Compile Include="Assets\Scripts\GameObjectScaler.cs" />
+     <Compile Include="Assets\Scripts\Singletons\ItemCursorSingleton.cs" />
      <Compile Include="Assets\Scripts\Dynamic2DObject.cs" />
      <Compile Include="Assets\Scripts\ShowUIText.cs" />
      <Compile Include="Assets\Scripts\Components\InteractableComponentSettings\Settings.cs" />
      <Compile Include="Assets\Scripts\Inventory\SlotClass.cs" />
      <Compile Include="Assets\Scripts\Inventory\MiscClass.cs" />
+     <Compile Include="Assets\Scripts\CustomNetworkManager.cs" />
      <Compile Include="Assets\Scripts\AI\TreeNutterAI.cs" />
      <Compile Include="Assets\Scripts\AI\VolcanoAI.cs" />
      <Compile Include="Assets\Scripts\AutoSizeTMP.cs" />
@@ -93,19 +96,25 @@
      <Compile Include="Assets\Scripts\Inventory\DroppedItem.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\Components\InteractableComponentSettings\CarSettings.cs" />
+     <Compile Include="Assets\Scripts\Singletons\TileIndicatorSingleton.cs" />
      <Compile Include="Assets\Scripts\MusicManager.cs" />
      <Compile Include="Assets\Scripts\Components\InteractableComponent.cs" />
      <Compile Include="Assets\Scripts\Controls\ControlsBinding.cs" />
      <Compile Include="Assets\Scripts\ColorPicker.cs" />
      <Compile Include="Assets\Scripts\DebugMode.cs" />
      <Compile Include="Assets\Scripts\HealthBarComponent.cs" />
+     <Compile Include="Assets\Scripts\Inventory\ItemRegistry.cs" />
      <Compile Include="Assets\Scripts\Inventory\InventoryManager.cs" />
      <Compile Include="Assets\Scripts\Inventory\TilePlacerItem.cs" />
      <Compile Include="Assets\Scripts\RecipeScroller.cs" />
+     <Compile Include="Assets\Scripts\Singletons\ColorImageSingleton.cs" />
+     <Compile Include="Assets\Scripts\Singletons\AttackRadiusSingleton.cs" />
      <Compile Include="Assets\Scripts\Inventory\ConsumableClass.cs" />
      <Compile Include="Assets\Scripts\Inventory\FireInflictWeapon.cs" />
+     <Compile Include="Assets\Scripts\Singletons\SearchRadiusSingleton.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\Inventory\ItemClass.cs" />
+     <Compile Include="Assets\Scripts\Singletons\MaxHealthSingleton.cs" />
      <Compile Include="Assets\Scripts\AI\LavaCrocodileAI.cs" />
      <Compile Include="Assets\Scripts\Inventory\ToolClass.cs" />
      <Compile Include="Assets\Scripts\ConsoleManager.cs" />
@@ -141,9 +150,11 @@
      <Folder Include="Assets\Animations\mlue\drop" />
      <Folder Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0\buildTransitive" />
      <Folder Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.6.0.0\buildTransitive" />
+     <None Include="Assets\ScriptTemplates\51-Mirror__Network Authenticator-NewNetworkAuthenticator.cs.txt" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisDocumentationRulesDefault" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\pt-BR" />
+     <Folder Include="Assets\Scripts\Singletons" />
      <Folder Include="Assets\Animations\LavaCrocodile\idle" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\tr" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\zh-Hans" />
@@ -166,6 +177,7 @@
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\AllRulesDefault" />
      <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
+     <None Include="Assets\ScriptTemplates\56-Mirror__Network Discovery-NewNetworkDiscovery.cs.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\ru" />
      <Folder Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0\lib\netstandard2.0" />
@@ -182,6 +194,7 @@
      <Folder Include="Assets\Sprites\hud\crafting" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Scripting.Common.4.7.0" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\de" />
+     <Folder Include="Assets\Mirror\Plugins" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\ko" />
      <Folder Include="Assets\Sprites\items\OLD" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\DataflowRulesDefault" />
@@ -200,9 +213,11 @@
      <Folder Include="Assets\Animations\mlue\attack" />
      <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\buildTransitive\net6.0" />
      <Folder Include="Assets\Sprites\hud\health" />
+     <None Include="Assets\Mirror\Version.txt" />
      <Folder Include="Assets\Prefabs\mlue" />
      <Folder Include="Assets\Animations\LavaCrocodile\walk" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\it" />
+     <None Include="Assets\Mirror\Readme.txt" />
      <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\buildTransitive\netcoreapp2.0" />
      <Folder Include="Assets\Sprites\objects" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Common.4.7.0" />
@@ -213,6 +228,7 @@
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\es" />
      <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0\buildTransitive\netcoreapp2.0" />
+     <None Include="Assets\ScriptTemplates\57-Mirror__Network Transform-NewNetworkTransform.cs.txt" />
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
@@ -226,6 +242,7 @@
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <Folder Include="Assets\Sprites\hud" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\pl" />
+     <None Include="Assets\ScriptTemplates\52-Mirror__Network Behaviour-NewNetworkBehaviour.cs.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
      <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0\buildTransitive\net461" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\MicrosoftCodeAnalysisCompatibilityRulesDefault" />
@@ -247,6 +264,7 @@
      <Folder Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\netstandard2.0" />
      <Folder Include="Assets\Animations\TreeNutter\Walk" />
      <Folder Include="Assets\Animations\TreeNutter\Attack" />
+     <None Include="Assets\Mirror\Notice.txt" />
      <Folder Include="Assets\Sprites\hud\boost" />
      <Folder Include="Assets\Resources\DroppedItems" />
      <Folder Include="Assets\Scripts\Inventory" />
@@ -276,31 +294,39 @@
      <Folder Include="Assets\Resources" />
      <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\lib" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\rulesets" />
+     <None Include="Assets\Mirror\Plugins\Mono.Cecil\License.txt" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\DataflowRulesEnabled" />
      <Folder Include="Assets\Scripts" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\pl" />
      <Folder Include="Assets\Sprites\tiles\General" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Scripting.4.7.0" />
+     <None Include="Assets\ScriptTemplates\55-Mirror__Network Room Player-NewNetworkRoomPlayer.cs.txt" />
      <Folder Include="Assets\Packages\System.Reflection.Metadata.7.0.0\buildTransitive\net462" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\LibraryRulesDefault" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\buildTransitive\config" />
+     <Folder Include="Assets\Mirror" />
+     <Folder Include="Assets\ScriptTemplates" />
      <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0\lib\netstandard2.0" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\ko" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\it" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
      <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0\buildTransitive" />
+     <None Include="Assets\ScriptTemplates\53-Mirror__Custom Interest Management-CustomInterestManagement.cs.txt" />
      <Folder Include="Assets\Animations\mlue\hit" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\buildTransitive" />
      <Folder Include="Assets\Sprites\Entities\LavaCrocodile" />
+     <Folder Include="Assets\Mirror\Tests" />
      <Folder Include="Assets\Sprites\mlue" />
      <Folder Include="Assets\Packages" />
      <Folder Include="Assets\Packages\System.Text.Encoding.CodePages.7.0.0\buildTransitive\netcoreapp2.0" />
      <Folder Include="Assets\Resources\Prefabs\Entities" />
      <Folder Include="Assets\Sprites\items" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
+     <None Include="Assets\ScriptTemplates\50-Mirror__Network Manager-NewNetworkManager.cs.txt" />
      <None Include="Assets\Packages\System.Reflection.Metadata.7.0.0\useSharedDesignerContext.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
      <Folder Include="Assets\SFX" />
+     <None Include="Assets\ScriptTemplates\54-Mirror__Network Room Manager-NewNetworkRoomManager.cs.txt" />
      <None Include="Assets\Packages\Microsoft.CodeAnalysis.CSharp.Scripting.4.7.0\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.Scripting.xml" />
      <Folder Include="Assets\Animations\LavaCrocodile\scratch" />
      <Folder Include="Assets\Scripts\Components\InteractableComponentSettings" />
@@ -309,6 +335,7 @@
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\vb\zh-Hant" />
      <Folder Include="Assets\TextMesh Pro\Documentation" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\editorconfig\CorrectnessRulesDefault" />
+     <Folder Include="Assets\Mirror\Plugins\Mono.Cecil" />
      <Folder Include="Assets\Packages\System.Collections.Immutable.7.0.0" />
      <Folder Include="Assets\Packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\zh-Hans" />
      <Folder Include="Assets\Sprites\objects\Decor" />
@@ -599,6 +626,15 @@
      <Reference Include="System.Reflection.Metadata">
      <HintPath>D:\Projects\donotstarvealone\Assets\Packages\System.Reflection.Metadata.7.0.0\lib\netstandard2.0\System.Reflection.Metadata.dll</HintPath>
      </Reference>
+     <Reference Include="Mono.CecilX">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Mirror\Plugins\Mono.Cecil\Mono.CecilX.dll</HintPath>
+     </Reference>
+     <Reference Include="NSubstitute">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Mirror\Tests\Common\NSubstitute.dll</HintPath>
+     </Reference>
+     <Reference Include="Mono.CecilX.Mdb">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Mdb.dll</HintPath>
+     </Reference>
      <Reference Include="System.Collections.Immutable">
      <HintPath>D:\Projects\donotstarvealone\Assets\Packages\System.Collections.Immutable.7.0.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
      </Reference>
@@ -616,6 +652,15 @@
      </Reference>
      <Reference Include="Microsoft.CodeAnalysis">
      <HintPath>D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Common.4.7.0\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
+     </Reference>
+     <Reference Include="Mono.CecilX.Pdb">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Pdb.dll</HintPath>
+     </Reference>
+     <Reference Include="Castle.Core">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Mirror\Tests\Common\Castle.Core.dll</HintPath>
+     </Reference>
+     <Reference Include="Mono.CecilX.Rocks">
+     <HintPath>D:\Projects\donotstarvealone\Assets\Mirror\Plugins\Mono.Cecil\Mono.CecilX.Rocks.dll</HintPath>
      </Reference>
      <Reference Include="Microsoft.CodeAnalysis.Scripting">
      <HintPath>D:\Projects\donotstarvealone\Assets\Packages\Microsoft.CodeAnalysis.Scripting.Common.4.7.0\lib\netstandard2.0\Microsoft.CodeAnalysis.Scripting.dll</HintPath>
@@ -1207,6 +1252,50 @@
      </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Mirror.csproj">
+      <Project>{a488c206-112e-2598-9a1b-38b3de79f429}</Project>
+      <Name>Mirror</Name>
+    </ProjectReference>
+    <ProjectReference Include="Mirror.Editor.csproj">
+      <Project>{bf196cea-2117-e3c6-e522-9af1b699cb13}</Project>
+      <Name>Mirror.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="SimpleWebTransport.csproj">
+      <Project>{ebd3890a-e7e6-12d6-d8b0-bd74b5327ded}</Project>
+      <Name>SimpleWebTransport</Name>
+    </ProjectReference>
+    <ProjectReference Include="Mirror.Components.csproj">
+      <Project>{d027aed4-b34d-9ffd-d038-b251ba27a75c}</Project>
+      <Name>Mirror.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="WeaverTestExtraAssembly.csproj">
+      <Project>{70054fde-7550-401b-f4df-d2844e4c18fd}</Project>
+      <Name>WeaverTestExtraAssembly</Name>
+    </ProjectReference>
+    <ProjectReference Include="Telepathy.csproj">
+      <Project>{2b28c001-69c7-3c6f-4267-085cab452654}</Project>
+      <Name>Telepathy</Name>
+    </ProjectReference>
+    <ProjectReference Include="Mirror.CompilerSymbols.csproj">
+      <Project>{5c2d2fbf-111b-3030-bb8d-f3d983edf098}</Project>
+      <Name>Mirror.CompilerSymbols</Name>
+    </ProjectReference>
+    <ProjectReference Include="Mirror.Authenticators.csproj">
+      <Project>{2b1b10ce-4789-9a0f-5cc2-39c10679d383}</Project>
+      <Name>Mirror.Authenticators</Name>
+    </ProjectReference>
+    <ProjectReference Include="kcp2k.csproj">
+      <Project>{001af8b2-7d13-7c45-1570-719df4e582cc}</Project>
+      <Name>kcp2k</Name>
+    </ProjectReference>
+    <ProjectReference Include="Mirror.Examples.csproj">
+      <Project>{8df957d7-f924-64ab-49a2-f7d5afd997e4}</Project>
+      <Name>Mirror.Examples</Name>
+    </ProjectReference>
+    <ProjectReference Include="where-allocations.csproj">
+      <Project>{80de594c-ed82-1274-ad81-169d82a54935}</Project>
+      <Name>where-allocations</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

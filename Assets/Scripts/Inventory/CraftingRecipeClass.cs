@@ -1,4 +1,5 @@
 
+using Inventory;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Crafting Recipe", menuName = "Crafting/Recipe")]
@@ -25,11 +26,14 @@ public class CraftingRecipeClass : ScriptableObject
 
     public void Craft(InventoryManager inv)
     {
-        for (int i = 0; i < inputItems.Length; i++)
+        if (inv.isLocalPlayer)
         {
-            inv.Remove(inputItems[i].item, inputItems[i].count);
-        }
+            for (int i = 0; i < inputItems.Length; i++)
+            {
+                inv.CmdRemoveItem(ItemRegistry.Instance.GetIdByItem(inputItems[i].item), inputItems[i].count);
+            }
 
-        inv.Add(outputItem.item, outputItem.count);
+            inv.RequestAddItem(ItemRegistry.Instance.GetIdByItem(outputItem.item), outputItem.count);
+        }
     }
 }

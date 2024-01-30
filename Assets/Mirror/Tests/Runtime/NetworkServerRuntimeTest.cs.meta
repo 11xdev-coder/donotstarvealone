@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a94e088c9596a284cb2cb960746ef2ce
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Runtime/NetworkServerRuntimeTest.cs
+  uploadId: 485797

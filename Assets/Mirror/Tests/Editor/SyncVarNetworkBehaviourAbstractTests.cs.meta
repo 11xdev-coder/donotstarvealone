@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 3149b1d08c904a0092a504b4345afbd1
+timeCreated: 1633753766
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/SyncVarNetworkBehaviourAbstractTests.cs
+  uploadId: 485797

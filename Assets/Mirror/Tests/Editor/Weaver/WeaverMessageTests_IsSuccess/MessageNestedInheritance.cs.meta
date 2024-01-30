@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 57ca45dd13a334f3e82bec8161e2a309
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 129321
+  packageName: Mirror
+  packageVersion: 65.0.0
+  assetPath: Assets/Mirror/Tests/Editor/Weaver/WeaverMessageTests_IsSuccess/MessageNestedInheritance.cs
+  uploadId: 485797

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47fe2a599ce35f84698e2a6724ccda00, type: 3}
   m_Name: SharpRock
   m_EditorClassIdentifier: 
+  itemId: 6
   itemName: Sharp Rock
   itemSprite: {fileID: 21300000, guid: 7da69a29d5989e74ca4045ac55fe8b9c, type: 3}
   droppedItemPrefab: {fileID: 8454655466585242356, guid: 66cc4cf1e377bcd4d89f26a6322ed2f3, type: 3}
