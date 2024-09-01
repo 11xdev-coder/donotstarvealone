@@ -251,18 +251,28 @@ public class InventoryManager : NetworkBehaviour
 
     // The Command that runs on the server
     [Command]
-    void CmdEquipTool(int newId)
+    void CmdEquipTool(int newId, NetworkConnectionToClient sender = null)
     {
-        equippedTool = new SlotClass(ItemRegistry.Instance.GetItemById(newId), 1); // Update the equipped tool on the server
-        RpcUpdateEquippedTool(newId); // Call a ClientRpc to update all clients
+        Debug.LogError($"[Server] CmdEquipTool called with newId: {newId}");
+        equippedTool = new SlotClass(ItemRegistry.Instance.GetItemById(newId), 1);
+        RpcUpdateEquippedTool(newId);
+        TargetConfirmToolUpdate(sender, newId);
     }
 
-    // ClientRpc to update the equipped tool on all clients
+    [TargetRpc]
+    private void TargetConfirmToolUpdate(NetworkConnection target, int newId)
+    {
+        Debug.LogError($"[TargetRpc] Updating equippedTool for target with newId: {newId}");
+        equippedTool = new SlotClass(ItemRegistry.Instance.GetItemById(newId), 1);
+    }
+
     [ClientRpc]
     void RpcUpdateEquippedTool(int newId)
     {
-        equippedTool = new SlotClass(ItemRegistry.Instance.GetItemById(newId), 1); // Update the equipped tool on clients
+        Debug.LogError($"[ClientRpc] Updating equippedTool on all clients with newId: {newId}");
+        equippedTool = new SlotClass(ItemRegistry.Instance.GetItemById(newId), 1);
     }
+
 
 
     public bool IsInventoryFull()

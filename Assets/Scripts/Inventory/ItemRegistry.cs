@@ -52,6 +52,12 @@ namespace Inventory
         
         public int GetIdByItem(ItemClass item)
         {
+            if (item == null)
+            {
+                Debug.LogWarning("Attempted to get ID for null item.");
+                return 0;
+            }
+
             foreach (var entry in itemById)
             {
                 if (entry.Value == item)
@@ -60,7 +66,7 @@ namespace Inventory
                 }
             }
             
-            Debug.LogWarning($"ID {item.itemId} not found in registry.");
+            Debug.LogWarning($"Item '{item.itemName}' not found in registry.");
             return 0;
         }
     }

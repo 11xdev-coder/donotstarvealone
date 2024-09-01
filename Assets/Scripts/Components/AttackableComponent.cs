@@ -138,12 +138,12 @@ public class AttackableComponent : NetworkBehaviour
             WorldGenerator.Instance.objects[WorldGenerator.Instance.ClampVector3(transform.position)] = null; // remove the object completely
         }
     }
-
+    
     public bool DoCanAttackCheck(InventoryManager inventory)
     {
         if (isMineable)
         {
-            if (inventory.equippedTool != null && inventory.equippedTool.item != null)
+            if (inventory.equippedTool != null && inventory.equippedTool.item != null) // TODO: null
             {
                 if (inventory.equippedTool.item.pickaxePower >= pickaxePower &&
                     inventory.equippedTool.item.axePower >= axePower) return true;

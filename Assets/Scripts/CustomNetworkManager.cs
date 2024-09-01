@@ -5,6 +5,26 @@ using UnityEngine;
 
 public class CustomNetworkManager : NetworkManager
 {
+    public bool offline;
+    
+    public override void Start()
+    {
+        if (offline)
+        {
+            OfflineMode();
+        }
+        else
+        {
+            base.Start();
+        }
+    }
+
+    public void OfflineMode()
+    {
+        GameObject player = Instantiate(playerPrefab);
+        NetworkServer.AddPlayerForConnection(new NetworkConnectionToClient(1), player);
+    }
+
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         base.OnServerAddPlayer(conn);

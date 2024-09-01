@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RecipeLoader : MonoBehaviour
+public class RecipeLoader : NetworkBehaviour
 {
     [Header("Main")]
     public GameObject recipeButtonPrefab;
@@ -25,14 +26,16 @@ public class RecipeLoader : MonoBehaviour
     [SerializeField] private float fadeInSpeed;
     [SerializeField] private float fadeOutSpeed;
     
-    private List<CraftingRecipeClass> _craftingRecipes = new List<CraftingRecipeClass>();
+    private static List<CraftingRecipeClass> _craftingRecipes = new List<CraftingRecipeClass>();
     private Coroutine _currentFadeCoroutine;
     private GameObject _currentlyHidingButton;
     private GameObject _buttonWithShownMaterials;
 
-    private void Awake()
+    public override void OnStartClient()
     {
-        player = FindObjectOfType<PlayerController>();
+        base.OnStartClient();
+        
+        player = NetworkClient.connection.identity.GetComponent<PlayerController>();
         LoadRecipes();
         CreateButtons();
     }
@@ -205,11 +208,17 @@ public class RecipeLoader : MonoBehaviour
     {
         // Find the recipe associated with the button
         string recipeName = button.name.Replace(" Recipe", "");
-        CraftingRecipeClass recipeToCraft = _craftingRecipes.Find(r => r.outputItem.item.itemName == recipeName);
+        CraftingRecipeClass recipeToCraft = FindRecipeByName(recipeName);
 
         if (recipeToCraft != null)
         {
-            player.Craft(recipeToCraft);
+            player.TryCraftItem(recipeName);
         }
+    }
+
+    public static CraftingRecipeClass FindRecipeByName(string recipeName)
+    {
+        CraftingRecipeClass recipeToCraft = _craftingRecipes.Find(r => r.outputItem.item.itemName == recipeName);
+        return recipeToCraft;
     }
 }

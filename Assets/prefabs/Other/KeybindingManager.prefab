@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9208229423918656205}
   m_Layer: 0
   m_Name: KeybindingManager
-  m_TagString: Untagged
+  m_TagString: KeybindingManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 626832230451217822}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9208229423918656205
 MonoBehaviour:
@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bindings: {fileID: 11400000, guid: 8cf85c25a57801d4cb63bf9f6aac3997, type: 2}
+  isWaitingForKeyPress: 0
   keybindings:
   - actionName: OpenDebugMenu
-    keybindingButton: {fileID: 0}
+    tag: OpenMenuBindingButton

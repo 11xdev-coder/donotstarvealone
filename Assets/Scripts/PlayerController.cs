@@ -23,8 +23,8 @@ public class PlayerController : NetworkBehaviour
     public GameObject tileIndicator;
 
     [Header("-- Debug --")] 
-    public GameObject attackTarget;
-    public GameObject currentAttackableTarget;
+    public GameObject attackTargetMovingTo;
+    public GameObject currentlyAttackingTarget;
     public GameObject currentDroppingTarget;
     public GameObject currentInteractableSlot;
     public CraftingRecipeClass currentCraftable;
@@ -33,6 +33,9 @@ public class PlayerController : NetworkBehaviour
     public GameObject console;
     //private KeyBindingManager _keyBindingManager;
     private GameObject _hit;
+    [SyncVar] private bool _valid;
+    private GameObject _validatedObject;
+    private List<GameObject> _skippedTargets = new List<GameObject>();
     
     [Header("-- Assignable - Important --")]
     private Camera _mainCamera;
@@ -129,7 +132,7 @@ public class PlayerController : NetworkBehaviour
     [Range(0f, 1f)]
     public float ashBiomeExitSmoothness;
     private MusicManager _musicManger;
-    
+
     // ReSharper disable Unity.PerformanceAnalysis
     public override void OnStartClient()
     {
@@ -208,6 +211,10 @@ public class PlayerController : NetworkBehaviour
     [Command]
     void CmdTriggerAnimation(string animationName)
     {
+        if (!NetworkClient.ready)
+        {
+            return;
+        }
         RpcPlayAnimation(animationName);
     }
 
@@ -370,19 +377,51 @@ public class PlayerController : NetworkBehaviour
         }
     }
     
-    public void Craft(CraftingRecipeClass craft)
+    public void TryCraftItem(string recipeName)
     {
-        if (craft.CanCraft(inventory))
+        if (isLocalPlayer)
         {
-            PlayAnimationAndCancelHit("use");
-            currentCraftable = craft;
-        }
-        else
-        {
-            if (_talker != null) _talker.Say("Cant craft!");
+            CmdCraftItem(recipeName);
         }
     }
 
+    [Command]
+    private void CmdCraftItem(string recipeName)
+    {
+        CraftingRecipeClass recipeToCraft = RecipeLoader.FindRecipeByName(recipeName);
+        if (recipeToCraft != null)
+        {
+            Craft(recipeName);
+        }
+    }
+    
+    [Server]
+    public void Craft(string recipeName)
+    {
+        CraftingRecipeClass recipeToCraft = RecipeLoader.FindRecipeByName(recipeName);
+        if (recipeToCraft.CanCraft(inventory))
+        {
+            RpcCraftAnimation(recipeName);
+        }
+        else
+        {
+            RpcTalkerSay("Cant craft!");
+        }
+    }
+
+    [ClientRpc]
+    private void RpcCraftAnimation(string recipeName)
+    {
+        PlayAnimationAndCancelHit("use");
+        currentCraftable = RecipeLoader.FindRecipeByName(recipeName);
+    }
+
+    [ClientRpc]
+    private void RpcTalkerSay(string text)
+    {
+        if (_talker != null) _talker.Say(text);
+    }
+    
     private void PlayAnimationAndCancelHit(string anim)
     {
         animLocked = true;
@@ -522,9 +561,33 @@ public class PlayerController : NetworkBehaviour
         }
     }
     
+    [Command]
+    void CmdSetAttackTargetMovingTo(GameObject target)
+    {
+        // Validate the target on the server side
+        if (target != null)
+        {
+            // Set the current attackable target and inform the client
+            attackTargetMovingTo = target;
+            RpcSetAttackTarget(target);
+        }
+    }
+
+    [ClientRpc]
+    void RpcSetAttackTarget(GameObject target)
+    {
+        // This is run on all clients
+        if (hasAuthority) // Make sure this runs only on the owning client
+        {
+            _isMovingToTarget = true;
+            attackTargetMovingTo = target;
+        }
+    }
+
+    
     public void SetAttackTarget(GameObject target)
     {
-        attackTarget = target;
+        attackTargetMovingTo = target;
         hasRightClicked = false;
         canMoveToMouse = false;
     }
@@ -535,68 +598,145 @@ public class PlayerController : NetworkBehaviour
         _isMovingToTarget = false;
         isDropping = false;
         _isAttacking = false;
-        attackTarget = null;
+        attackTargetMovingTo = null;
         hasRightClicked = false;
+        CmdClearSkippedTargets();
     }
-
-    private GameObject FindNearestTarget(bool isSpaceHitted, bool isFHitted)
+    
+    private GameObject FindNearestTarget(bool isSpaceHit, bool isFHit)
     {
-        // Fetch all colliders within the search radius
-        Collider2D[] colliders = Physics2D.OverlapCircleAll((Vector3)rb.position + attackDetectionOffset, searchRadius);
-
         GameObject nearestTarget = null;
         float shortestDistance = Mathf.Infinity;
 
-        // Iterate through all fetched colliders
-        foreach (var searchingCollider in colliders)
+        var colliders = Physics2D.OverlapCircleAll((Vector3)rb.position + attackDetectionOffset, searchRadius);
+        foreach (Collider2D collider in colliders)
         {
-            if (searchingCollider.gameObject == healthComponent.self) // skip self
-                continue;
-            
-            if (isFHitted)
+            if (collider.gameObject == healthComponent.self || _skippedTargets.Contains(collider.gameObject))
+                continue; // Skip self and already skipped targets
+
+            AttackableComponent attackableComponent = collider.GetComponent<AttackableComponent>();
+            bool canAttack = attackableComponent != null && attackableComponent.DoCanAttackCheck(inventory);
+
+            if ((isFHit && canAttack && !attackableComponent.isMineable) || isSpaceHit)
             {
-                AttackableComponent attackableComponent = searchingCollider.GetComponent<AttackableComponent>();
-                if (attackableComponent && attackableComponent.DoCanAttackCheck(inventory) && !attackableComponent.isMineable)
+                float distanceToTarget = Vector2.Distance(transform.position, collider.transform.position);
+                if (distanceToTarget < shortestDistance)
                 {
-                    float distanceToTarget = Vector2.Distance(transform.position, searchingCollider.transform.position);
-                    if (distanceToTarget < shortestDistance)
-                    {
-                        nearestTarget = searchingCollider.gameObject;
-                        shortestDistance = distanceToTarget;
-                    }
+                    nearestTarget = collider.gameObject;
+                    shortestDistance = distanceToTarget;
                 }
             }
-            else if (isSpaceHitted)
-            {
-                AttackableComponent attackableComponent = searchingCollider.GetComponent<AttackableComponent>();
-                if (searchingCollider.GetComponent<DroppedItem>() || (attackableComponent && attackableComponent.isMineable && attackableComponent.DoCanAttackCheck(inventory)))
-                {
-                    float distanceToTarget = Vector2.Distance(transform.position, searchingCollider.transform.position);
-                    if (distanceToTarget < shortestDistance)
-                    {
-                        nearestTarget = searchingCollider.gameObject;
-                        shortestDistance = distanceToTarget;
-                    }
-                }
-            }   
         }
-    
+
         return nearestTarget;
+    }
+    
+    [ClientRpc]
+    void RpcValidateTarget(GameObject target, bool state)
+    {
+        if (state)
+        {
+            CmdSetAttackTargetMovingTo(target);
+        }
+        else
+        {
+            // handle the case where target is not valid
+            TryAttackNearestTarget();
+        }
+    }
+
+    void TryAttackNearestTarget()
+    {
+        if (!isServer && !hasAuthority) return; // Only run this on the server or client with authority
+
+        GameObject target = FindNearestTarget(true, false);
+        if (target != null)
+        {
+            if (!_skippedTargets.Contains(target))
+            {
+                CmdValidateTarget(target);
+                if(!_valid) _skippedTargets.Add(target);
+                else if (_valid) _skippedTargets.Clear();
+            }
+        }
     }
 
     [Command]
-    public void CmdSetCurrentAttackableTarget(GameObject target)
+    void CmdValidateTarget(GameObject target)
     {
+        if (target)
+        {
+            AttackableComponent attackableComponent = target.GetComponent<AttackableComponent>();
+            bool isDroppedItem = target.GetComponent<DroppedItem>() != null;
+            bool isMineable = false;
+            bool canAttack = false;
+            if (attackableComponent) 
+            {
+                isMineable = attackableComponent != null && attackableComponent.isMineable;
+                canAttack = attackableComponent != null && attackableComponent.DoCanAttackCheck(inventory);
+            }
+        
+            if ((isDroppedItem || (isMineable && canAttack)) &&  !_skippedTargets.Contains(target))
+            {
+                _valid = true;
+                _validatedObject = target;
+                CmdClearSkippedTargets();
+            }
+            else
+            {
+                _valid = false;
+                CmdAddToSkippedTargets(target);
+            }
+            
+            RpcValidateTarget(_validatedObject, _valid);
+        }
+    
+    }
+
+    [ClientRpc]
+    void RpcAddToSkippedTargets(GameObject target)
+    {
+        if (!_skippedTargets.Contains(target))
+            _skippedTargets.Add(target);
+    }
+    
+    [ClientRpc]
+    void RpcClearSkippedTargets()
+    {
+        _skippedTargets.Clear();
+    }
+    
+    [Command]
+    void CmdAddToSkippedTargets(GameObject target)
+    {
+        if (!_skippedTargets.Contains(target))
+            _skippedTargets.Add(target);
+        RpcAddToSkippedTargets(target);
+    }
+    
+    [Command]
+    void CmdClearSkippedTargets()
+    {
+        RpcClearSkippedTargets();
+    }
+
+
+    [Command]
+    void CmdSetCurrentAttackableTarget(GameObject target)
+    {
+        //Debug.LogError($"CmdSetCurrentAttackableTarget called on server for target: {target?.name}");
         // Validate the target on the server side
         AttackableComponent attackableComponent = null;
         if(target != null) attackableComponent = target.GetComponent<AttackableComponent>();
         if (attackableComponent != null)
         {
-            currentAttackableTarget = target;
+            currentlyAttackingTarget = target;
+            _isMovingToTarget = true;
+            _skippedTargets.Clear();
         }
     }
-
-    public void AttemptToSetAttackTarget(GameObject target)
+    
+    public void AttemptToSetCurrentAttackTarget(GameObject target)
     {
         if (!isServer) // If we're on the client, send a command to the server
         {
@@ -604,7 +744,7 @@ public class PlayerController : NetworkBehaviour
         }
         else // If we're on the server, we can set it directly
         {
-            currentAttackableTarget = target;
+            currentlyAttackingTarget = target;
         }
     }
     
@@ -621,24 +761,24 @@ public class PlayerController : NetworkBehaviour
         _dotProductForward = Vector3.Dot(toObjectVector, playerForward);
         _dotProductRight = Vector3.Dot(toObjectVector, playerRight);
 
-        AttemptToSetAttackTarget(target);
+        AttemptToSetCurrentAttackTarget(target);
     }
     
     public void DealDamage() // Call this in animation
     {
         if (!isServer) return;
         
-        if (currentAttackableTarget == null)
+        if (currentlyAttackingTarget == null)
         {
-            Debug.LogError("DealDamage: currentAttackableTarget is null");
+            //Debug.LogError("DealDamage: currentAttackableTarget is null");
             return;
         }
         
-        AttackableComponent attackableComponent = currentAttackableTarget.GetComponent<AttackableComponent>();
-        if (attackableComponent != null && currentAttackableTarget != healthComponent.self)
+        AttackableComponent attackableComponent = currentlyAttackingTarget.GetComponent<AttackableComponent>();
+        if (attackableComponent != null && currentlyAttackingTarget != healthComponent.self)
         {
             ItemClass item = inventory.equippedTool.item;
-            print($"DealDamage to {currentAttackableTarget.name}");
+            //print($"DealDamage to {currentAttackableTarget.name}");
             int damage = (item != null) ? item.damage : 2; // Default damage if no tool
             attackableComponent.DealDamage(damage);
         }
@@ -797,321 +937,6 @@ public class PlayerController : NetworkBehaviour
     
     #endregion
 
-    private void HandleLocalInput()
-    {
-        // horizontal = 0f;
-        // vertical = 0f;
-        //
-        // //  basic movement ------------------------
-        // if (Input.GetKey(KeyCode.W))
-        // {
-        //     vertical = 1;
-        //     ResetAttackTargetAndMoving();
-        //     if (!isHit) DisableAnimLock();
-        // }
-        //
-        // if (Input.GetKey(KeyCode.S))
-        // {
-        //     vertical = -1;
-        //     ResetAttackTargetAndMoving();
-        //     if (!isHit) DisableAnimLock();
-        // }
-        //
-        // if (Input.GetKey(KeyCode.A))
-        // {
-        //     horizontal = -1;
-        //     ResetAttackTargetAndMoving();
-        //     if (!isHit) DisableAnimLock();
-        // }
-        //
-        // if (Input.GetKey(KeyCode.D))
-        // {
-        //     horizontal = 1;
-        //     ResetAttackTargetAndMoving();
-        //     if (!isHit) DisableAnimLock();
-        // }
-    }
-
-    private void HandleLocalMovement()
-    {
-        // movement = new Vector2(horizontal, vertical);
-        //
-        // if (!isHit) // if not hit
-        // {
-        //     if (!isMovingToMouse) // if not moving to mouse
-        //     {
-        //         // Normalize the vector if it's length is greater than 1 (this is when diagonal movement occurs)
-        //         if (movement.sqrMagnitude > 1)
-        //         {
-        //             movement.Normalize();
-        //         }
-        //
-        //         rb.velocity = movement * moveSpeed; 
-        //     }
-        // }
-        // else
-        // {
-        //     ResetAttackTargetAndMoving();
-        //     rb.velocity = Vector2.zero; // if hit - stop
-        // } 
-        //
-        // if (isInCar && car != null) // in car
-        // {
-        //     CarLogic();
-        // }
-    }
-    
-    private void HandleLocalInteractions()
-    {
-        // // attacking & mining ---------------------------------------
-        // if (Input.GetKey(KeyCode.F) && !_isAttacking) // if smacked F
-        // {
-        //     GameObject target = FindNearestTarget(false, true);
-        //     if (target != null)
-        //     {
-        //         SetAttackTarget(target); // set our current target to nearest one
-        //         _isMovingToTarget = true; // actually move to target
-        //     }
-        // }
-        // else if (Input.GetKey(KeyCode.Space) && !_isAttacking) // if smacked space bar
-        // {
-        //     GameObject target = FindNearestTarget(true, false);
-        //     if (target != null)
-        //     {
-        //         SetAttackTarget(target); // set our current target to nearest one
-        //         _isMovingToTarget = true; // actually move to target
-        //     }
-        // }
-        //
-        // // clicking -------------------------------------------------------------
-        // if (Input.GetMouseButton(0)) // if we left clicked and no target - move to mouse
-        // {
-        //     if (attackTarget != null) _isMovingToTarget = true;
-        //     else if (canMoveToMouse && !_isMovingToTarget) MoveToMouse();
-        // }
-        // else if (Input.GetMouseButtonUp(0))
-        //     isMovingToMouse = false;
-        //
-        //
-        // // if we want to move to target
-        // if (_isMovingToTarget)
-        // {
-        //     if (attackTarget.GetComponent<AttackableComponent>())
-        //         MoveTowardsTarget(attackTarget, true, false, false); // attack
-        //     else if (attackTarget.GetComponent<DroppedItem>())
-        //         MoveTowardsTarget(attackTarget, false, true, false); // pick up
-        // }
-        //
-        // if (isDropping)
-        // {
-        //     MoveTowardsTarget(attackTarget, false, false, true);
-        // }
-        //
-        // if (hasRightClicked)
-        // {
-        //     MoveToTileEdge();
-        // }
-        //
-        // if (!canMoveToMouse) isMovingToMouse = false;
-    }
-
-    private void CommonUpdate()
-    {
-        // if(_mainCamera == null) {
-        //     _mainCamera = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<Camera>();
-        //     if(_mainCamera == null) {
-        //         Debug.LogWarning("Main camera not found");
-        //     }
-        // }
-        //
-        // if(world == null) {
-        //     world = WorldGenerator.Instance;
-        //     if(world == null) {
-        //         Debug.LogWarning("WorldGenerator instance not found");
-        //     }
-        // }
-        //
-        // if (tileIndicator == null)
-        // {
-        //     tileIndicator = TileIndicatorSingleton.Instance;
-        //     if (tileIndicator == null) Debug.LogWarning("_tileIndicator not found");
-        // }
-        //
-        // if (_hoveringText == null)
-        // {
-        //     _hoveringText = GameObject.FindGameObjectWithTag("HoveringText").GetComponent<TMP_Text>();
-        //     if (_hoveringText == null) Debug.LogWarning("_hoveringText not found");
-        // }
-        //
-        // if (_autoSizeHovering == null)
-        // {
-        //     _autoSizeHovering = _hoveringText.GetComponent<AutoSizeTMP>();
-        //     if (_autoSizeHovering == null) Debug.LogWarning("_autoSizeHovering not found");
-        // }
-
-        
-        // mousePos = Input.mousePosition;
-        // mousePos.z = Mathf.Abs(_mainCamera.transform.position.z);
-        // Vector3 mouseWorldPoint = _mainCamera.ScreenToWorldPoint(mousePos);
-        //
-        // // Ensure the z-coordinate is set appropriately
-        // mouseWorldPoint.z = 1;
-        //
-        // // Round to the nearest whole number to get the tile position
-        // Vector3Int intPosition = world.ClampVector3(mouseWorldPoint);
-        //
-        // Vector3Int tilePosition = world.triggerTilemap.WorldToCell(intPosition);
-        // tileIndicator.transform.position = tilePosition;
-        //
-        // if (inventory.movingSlot.item != null && inventory.movingSlot.item.GetTilePlacer() != null)
-        // {
-        //     tileIndicator.SetActive(true);
-        // }
-        // else
-        // {
-        //     tileIndicator.SetActive(false);
-        // }
-        
-
-        
-        // if (!KeyBindingManager.Instance.isWaitingForKeyPress && 
-        //     Input.GetKeyUp(KeyBindingManager.Instance.bindings.OpenConsole))
-        // {
-        //     if (console.activeSelf)
-        //     {
-        //         console.SetActive(false);
-        //         Time.timeScale = 1f; // Resume the game
-        //     }
-        //     else
-        //     {
-        //         console.SetActive(true);
-        //         Time.timeScale = 0f; // Freeze the game
-        //     }
-        // }
-        
-        // HealthChanges();
-        // AdjustSortingLayers();
-        // UpdateAnimations();
-        
-        // #region Hovering
-        //
-        // _hoveringText.transform.position = Input.mousePosition + AdjustOffsetForScreenBorders(hoveringOffset, invertedHoveringOffset);
-        //
-        // if (!EventSystem.current.IsPointerOverGameObject()) // if not hovering over the button (can be annoying)
-        // {
-        //     if (inventory.FindClosestSlotItem() != null && inventory.FindClosestSlotItem().item != null)
-        //     {
-        //         canMoveToMouse = false;
-        //         _hoveringText.gameObject.SetActive(true);
-        //         _autoSizeHovering.UpdateText(inventory.FindClosestSlotItem().item.name);
-        //
-        //         ItemClass hoveredItem = inventory.FindClosestSlotItem().item;
-        //
-        //         if (hoveredItem != null)
-        //         {
-        //             var itemInfo = hoveredItem.GetDisplayInfo();
-        //             _autoSizeHovering.UpdateText(String.Join("\n", itemInfo));
-        //         }
-        //
-        //         _isOverSlot = true;
-        //         ChangeCurrentSlotScale(true, new Vector3(1.15f, 1.15f, 1.15f));
-        //     }
-        //     else if (inventory.IsOverSlot())
-        //     {
-        //         canMoveToMouse = false;
-        //         _hoveringText.gameObject.SetActive(true);
-        //         _autoSizeHovering.UpdateText("");
-        //         
-        //         _isOverSlot = true;
-        //         ChangeCurrentSlotScale(true, new Vector3(1.15f, 1.15f, 1.15f));
-        //     }
-        //     else if (inventory.isMovingItem && !inventory.IsOverSlot())
-        //     {
-        //         _hoveringText.gameObject.SetActive(true);
-        //         _autoSizeHovering.UpdateText("Drop");
-        //         if (Input.GetMouseButtonDown(0)) // if left clicked
-        //         {
-        //             Vector3 screenPos = Input.mousePosition;
-        //             screenPos.z = Mathf.Abs(_mainCamera.transform.position.z);
-        //             targetPosition = _mainCamera.ScreenToWorldPoint(screenPos);
-        //
-        //             targetPosition.z = 1;
-        //             isDropping = true;
-        //         }
-        //         else if (Input.GetMouseButtonDown(1) && inventory.movingSlot.item.CanRightClick(this, tilePosition)) // right click
-        //         {
-        //             targetPosition = _mainCamera.ScreenToWorldPoint(mousePos);
-        //             targetPosition.z = 1; // calculate target pos
-        //             targetTilePosition = tilePosition; // already calculated tile position
-        //             hasRightClicked = true; // start right click methods
-        //         }
-        //
-        //         ChangeCurrentSlotScale(false, null);
-        //     }
-        //     else if (!inventory.IsOverSlot())
-        //     {
-        //         _hoveringText.gameObject.SetActive(true);
-        //         if (IsPointerOverComponent<AttackableComponent>())
-        //         {
-        //             if (_hit.gameObject.GetComponent<AttackableComponent>()
-        //                 .DoCanAttackCheck(inventory)) // if we can mine the object
-        //             {
-        //                 _autoSizeHovering.UpdateText(_hit.gameObject.GetComponent<AttackableComponent>().onHoverText);
-        //                 if (Input.GetMouseButtonDown(0) && !_isAttacking)
-        //                     SetAttackTarget(_hit.gameObject.gameObject); // set attack target and ready to attack
-        //             }
-        //         }
-        //         else if (IsPointerOverComponent<DroppedItem>())
-        //         {
-        //             _hoveringText.gameObject.SetActive(true);
-        //             _autoSizeHovering.UpdateText("Pick up " + _hit.gameObject.GetComponent<DroppedItem>().item.itemName +
-        //                                     " x" +
-        //                                     _hit.gameObject.GetComponent<DroppedItem>().count);
-        //             if (Input.GetMouseButtonDown(0) &&
-        //                 !_isAttacking) // If the player clicks while hovering over a dropped item
-        //             {
-        //                 SetAttackTarget(_hit.gameObject.gameObject);
-        //             }
-        //         }
-        //         else if (IsPointerOverComponent<InteractableComponent>()) // Checking for Interactable component
-        //         {
-        //             InteractableComponent interactableComponent = _hit.gameObject.GetComponent<InteractableComponent>();
-        //             _hoveringText.gameObject.SetActive(true);
-        //             _autoSizeHovering.UpdateText("Interact");
-        //
-        //             if (Input.GetMouseButtonDown(0) && !_isAttacking)
-        //             {
-        //                 SetAttackTarget(_hit.gameObject
-        //                     .gameObject); // Assuming you're using the same mechanism to move to the object as with the attack target
-        //                 interactableComponent
-        //                     .Interact(gameObject); // Execute the action from the Interactable component
-        //             }
-        //         }
-        //         else
-        //         {
-        //             canMoveToMouse = true;
-        //             _autoSizeHovering.UpdateText("Walk");
-        //             if (!_isMovingToTarget && !_isAttacking) ResetAttackTargetAndMoving();
-        //         }
-        //         
-        //         _isOverSlot = false;
-        //         ChangeCurrentSlotScale(false, null);
-        //     }
-        //     else
-        //     {
-        //         _hoveringText.gameObject.SetActive(false);
-        //     }
-        // }
-        // else
-        // {
-        //     canMoveToMouse = false;
-        //     _hoveringText.gameObject.SetActive(false);
-        // }
-        //
-        //
-        // #endregion
-    }
-
     void HandleLocalPlayer()
     {
         if(_mainCamera == null) {
@@ -1236,18 +1061,19 @@ public class PlayerController : NetworkBehaviour
         }
         else if (Input.GetKey(KeyCode.Space) && !_isAttacking) // if smacked space bar
         {
-            GameObject target = FindNearestTarget(true, false);
-            if (target != null)
-            {
-                SetAttackTarget(target); // set our current target to nearest one
-                _isMovingToTarget = true; // actually move to target
-            }
+            // GameObject target = FindNearestTarget(true, false);
+            // if (target != null)
+            // {
+            //     SetAttackTarget(target); // set our current target to nearest one
+            //     _isMovingToTarget = true; // actually move to target
+            // }
+            TryAttackNearestTarget();
         }
         
         // clicking -------------------------------------------------------------
         if (Input.GetMouseButton(0)) // if we left clicked and no target - move to mouse
         {
-            if (attackTarget != null) _isMovingToTarget = true;
+            if (attackTargetMovingTo != null) _isMovingToTarget = true;
             else if (canMoveToMouse && !_isMovingToTarget) MoveToMouse();
         }
         else if (Input.GetMouseButtonUp(0))
@@ -1255,17 +1081,17 @@ public class PlayerController : NetworkBehaviour
         
         
         // if we want to move to target
-        if (_isMovingToTarget)
+        if (_isMovingToTarget && attackTargetMovingTo)
         {
-            if (attackTarget.GetComponent<AttackableComponent>())
-                MoveTowardsTarget(attackTarget, true, false, false); // attack
-            else if (attackTarget.GetComponent<DroppedItem>())
-                MoveTowardsTarget(attackTarget, false, true, false); // pick up
+            if (attackTargetMovingTo.GetComponent<AttackableComponent>())
+                MoveTowardsTarget(attackTargetMovingTo, true, false, false); // attack
+            else if (attackTargetMovingTo.GetComponent<DroppedItem>())
+                MoveTowardsTarget(attackTargetMovingTo, false, true, false); // pick up
         }
 
         if (isDropping)
         {
-            MoveTowardsTarget(attackTarget, false, false, true);
+            MoveTowardsTarget(attackTargetMovingTo, false, false, true);
         }
 
         if (hasRightClicked)

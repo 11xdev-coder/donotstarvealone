@@ -26,6 +26,9 @@ TagManager:
   - Console
   - ShowPlayerRadiuses
   - AttackDetectionRadiusButton
+  - KeybindingManager
+  - KeybidingWaitingText
+  - OpenMenuBindingButton
   layers:
   - Default
   - TransparentFX

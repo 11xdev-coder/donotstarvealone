@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 241341373}
   m_Layer: 5
   m_Name: WaitingForKeyText
-  m_TagString: Untagged
+  m_TagString: KeybidingWaitingText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -313,7 +313,7 @@ MonoBehaviour:
   ReliableMaxMessageSize: 298449
   UnreliableMaxMessageSize: 1199
   debugLog: 0
-  statisticsGUI: 1
+  statisticsGUI: 0
   statisticsLog: 0
 --- !u!4 &383847251
 Transform:
@@ -342,7 +342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetX: 0
+  offsetX: 105
   offsetY: 0
 --- !u!114 &383847253
 MonoBehaviour:
@@ -392,6 +392,7 @@ MonoBehaviour:
   - {fileID: 8847047761419001490, guid: b90af03c7d897234b8653e3063aeec36, type: 3}
   - {fileID: 3418335907686926578, guid: bfedf54b27906924e80a3986d814bd3b, type: 3}
   - {fileID: 1231736053040336203, guid: 3f6ca38d19d179d4eb39b82139a0f7a0, type: 3}
+  offline: 0
 --- !u!1 &394193534
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,6 +538,7 @@ GameObject:
   - component: {fileID: 477360156}
   - component: {fileID: 477360155}
   - component: {fileID: 477360158}
+  - component: {fileID: 477360159}
   m_Layer: 5
   m_Name: CraftingMenu
   m_TagString: Untagged
@@ -615,6 +617,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 362d29a6907679f47a7abdc49b3fec20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   recipeButtonPrefab: {fileID: 847225228483737564, guid: 62f2960d932fe8240936327c946dfd4d, type: 3}
   materialButtonPrefab: {fileID: 847225228483737564, guid: 08bab8eb5a1ab474eba49def6a87ca4d, type: 3}
   contentPanel: {fileID: 1178315558}
@@ -627,6 +631,23 @@ MonoBehaviour:
   materialOpenAnimationDuration: 0.2
   fadeInSpeed: 3.5
   fadeOutSpeed: 3
+--- !u!114 &477360159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477360153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 1803425474
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &478647067 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 626832230451217822, guid: b0569825f0f143f49a184f7a0602283f, type: 3}
@@ -2352,6 +2373,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3894671441759522437, guid: 28a65fff13ca9e5499dee7cc6f707bef, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4041424720615737130, guid: 28a65fff13ca9e5499dee7cc6f707bef, type: 3}
       propertyPath: sceneId
       value: 939664654
@@ -2861,6 +2886,10 @@ PrefabInstance:
     - target: {fileID: 2984762041611918958, guid: d6073a028ab2d194290f8811440adebf, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3210874352162906786, guid: d6073a028ab2d194290f8811440adebf, type: 3}
+      propertyPath: m_TagString
+      value: OpenMenuBindingButton
       objectReference: {fileID: 0}
     - target: {fileID: 3345164371430425684, guid: d6073a028ab2d194290f8811440adebf, type: 3}
       propertyPath: m_xAdvance

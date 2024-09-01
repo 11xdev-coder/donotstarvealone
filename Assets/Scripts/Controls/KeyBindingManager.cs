@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 public class KeyBindingManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class KeyBindingManager : MonoBehaviour
     public class KeybindingObject
     {
         public string actionName; // MoveForward, Jump, etc.
-        public Button keybindingButton;
+        public string tag;
     }
     
     public static KeyBindingManager Instance { get; private set; }
@@ -23,7 +24,7 @@ public class KeyBindingManager : MonoBehaviour
     private KeyCode m_CurrentKey;
 
     [Header("UI")] 
-    public TMP_Text waitingForKeyText;
+    private TMP_Text _waitingForKeyText;
     public List<KeybindingObject> keybindings; // List of KeybindingObjects
 
     private void Awake()
@@ -35,8 +36,9 @@ public class KeyBindingManager : MonoBehaviour
         }
 
         Instance = this;
-        
-        waitingForKeyText.gameObject.SetActive(false);
+
+        _waitingForKeyText = GameObject.FindGameObjectWithTag("KeybidingWaitingText").GetComponent<TMP_Text>();
+        _waitingForKeyText.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -44,7 +46,7 @@ public class KeyBindingManager : MonoBehaviour
         foreach (var binding in keybindings)
         {
             string localAction = binding.actionName;
-            Button localBtn = binding.keybindingButton;
+            Button localBtn = GameObject.FindGameObjectWithTag(binding.tag).GetComponent<Button>();
             localBtn.GetComponent<Button>().onClick.AddListener(() => StartRebindingKey(localAction, localBtn));
         }
         UpdateButtonLabels();
@@ -64,6 +66,8 @@ public class KeyBindingManager : MonoBehaviour
                 }
             }
         }
+
+        Instance = this;
     }
     
     #region rebinding
@@ -72,8 +76,8 @@ public class KeyBindingManager : MonoBehaviour
         if (!isWaitingForKeyPress)
         {
             isWaitingForKeyPress = true;
-            waitingForKeyText.gameObject.SetActive(true);
-            StartCoroutine(FadeIn(waitingForKeyText.GetComponent<CanvasGroup>()));
+            _waitingForKeyText.gameObject.SetActive(true);
+            StartCoroutine(FadeIn(_waitingForKeyText.GetComponent<CanvasGroup>()));
             StartCoroutine(WaitForKeyPress(keyName, buttonToUpdate));
         }
     }
@@ -90,7 +94,7 @@ public class KeyBindingManager : MonoBehaviour
         {
             field.SetValue(bindings, m_CurrentKey);
         }
-        StartCoroutine(FadeOut(waitingForKeyText.GetComponent<CanvasGroup>()));
+        StartCoroutine(FadeOut(_waitingForKeyText.GetComponent<CanvasGroup>()));
         UpdateButtonLabels();
     }
 
@@ -99,7 +103,7 @@ public class KeyBindingManager : MonoBehaviour
         foreach (var binding in keybindings)
         {
             string action = binding.actionName;
-            Button btn = binding.keybindingButton;
+            Button btn = GameObject.FindGameObjectWithTag(binding.tag).GetComponent<Button>();
             System.Reflection.FieldInfo field = bindings.GetType().GetField(action);
             if (field != null)
             {

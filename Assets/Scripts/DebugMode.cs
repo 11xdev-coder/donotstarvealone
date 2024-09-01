@@ -28,14 +28,27 @@ public class DebugMode : NetworkBehaviour
     public PlayerController pc;
     public LineRenderer lrPrefab;
     public Image color;
+    
+    [SyncVar]
+    private bool _isMenuActive;
 
+    private void Awake()
+    {
+        _keyBindingManager = GameObject.FindGameObjectWithTag("KeybindingManager").GetComponent<KeyBindingManager>();
+    }
+
+    public override void OnStartLocalPlayer()
+    {
+        _menu = GameObject.FindGameObjectWithTag("DebugMenu");
+    }
+    
     public override void OnStartClient()
     {
         searchRadius = SearchRadiusSingleton.Instance;
         attackDetectionRadius = AttackRadiusSingleton.Instance;
         _menu = GameObject.FindGameObjectWithTag("DebugMenu");
-        _keyBindingManager = KeyBindingManager.Instance;
         color = ColorImageSingleton.Instance;
+        _keyBindingManager = GameObject.FindGameObjectWithTag("KeybindingManager").GetComponent<KeyBindingManager>();
         
         // Instantiate the LineRenderers
         var position = transform.position;
@@ -58,7 +71,8 @@ public class DebugMode : NetworkBehaviour
         if(searchRadius == null) searchRadius = SearchRadiusSingleton.Instance;
         if (attackDetectionRadius == null) attackDetectionRadius = AttackRadiusSingleton.Instance;
         if(color == null) color = ColorImageSingleton.Instance;
-        if(_keyBindingManager == null)  _keyBindingManager = KeyBindingManager.Instance;
+        if (_keyBindingManager == null) _keyBindingManager = GameObject.FindGameObjectWithTag("KeybindingManager").GetComponent<KeyBindingManager>();
+        if (_menu == null)  _menu = GameObject.FindGameObjectWithTag("DebugMenu");
         
         if (searchRadiusRenderer == null) // try to init it again if null
         {
@@ -117,20 +131,31 @@ public class DebugMode : NetworkBehaviour
         searchRadiusRenderer.startColor = color.color;
         searchRadiusRenderer.endColor = color.color;
        
-        // TODO: _keyBindingManager is null
         // if not setting a key, pressed debug key and can access debug menu
         if (!_keyBindingManager.isWaitingForKeyPress && 
             Input.GetKeyUp(_keyBindingManager.bindings.OpenDebugMenu) && canAccessDebug && !pc.console.activeSelf)
         {
-            switch (_menu.activeSelf)
+            _isMenuActive = !_isMenuActive;
+            if (_menu != null)
             {
-                case true:
-                    _menu.SetActive(false);
-                    break;
-                case false:
-                    _menu.SetActive(true);
-                    break;
+                _menu.SetActive(_isMenuActive);
             }
+        }
+    }
+    
+    [Command]
+    private void CmdToggleMenu()
+    {
+        _isMenuActive = !_isMenuActive;
+        RpcSetMenuActive(_isMenuActive);
+    }
+
+    [ClientRpc]
+    private void RpcSetMenuActive(bool isActive)
+    {
+        if (_menu != null)
+        {
+            _menu.SetActive(isActive);
         }
     }
     
